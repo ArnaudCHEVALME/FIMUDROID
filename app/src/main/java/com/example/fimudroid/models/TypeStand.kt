@@ -1,6 +1,6 @@
 package com.example.fimudroid.models
 
-data class Genre(
+data class TypeStand(
     val id: Int,
     val libelle: String
 )
