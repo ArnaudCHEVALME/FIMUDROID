@@ -8,9 +8,9 @@ class DataSource {
     fun LoadActu(): List<Actualite> {
         return listOf<Actualite>(
             Actualite(
+                1,
                 "j'aime manger des enfants",
                 "22/10/2022",
-                1,
                 1,
                 "Ma passion!",
                 TypeActu(
