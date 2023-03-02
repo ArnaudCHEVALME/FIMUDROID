@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
-import com.example.fimudroid.activities.NewsFragment
+import com.example.fimudroid.ui.news.NewsFragment
 import com.example.fimudroid.models.Actualite
 
 /**

@@ -1,35 +1,43 @@
 package com.example.fimudroid.network
 
+import com.example.fimudroid.models.Actualite
+import com.example.fimudroid.models.Categorie
+import com.example.fimudroid.models.Genre
 import com.example.fimudroid.models.Pays
-import okhttp3.OkHttpClient
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 
-private const val BASE_URL =
-    "http://localhost::3000"
 
-private val retrofit = Retrofit.Builder()
-    .baseUrl(BASE_URL)
-    .client(getHttpClient())
-    .addConverterFactory(MoshiConverterFactory.create())
+private const val BASE_URL = "http://10.0.2.2:3000"
+val moshi = Moshi.Builder()
+    .add(KotlinJsonAdapterFactory())
     .build()
 
-private fun getHttpClient(): OkHttpClient {
-    val okHttpBuilder = OkHttpClient.Builder()
-    okHttpBuilder.addInterceptor { chain ->
-        val requestWithUserAgent = chain.request().newBuilder()
-            .header("User-Agent", "My custom user agent")
-            .build()
-        chain.proceed(requestWithUserAgent)
-    }
-    return okHttpBuilder.build()
-}
+val retrofit = Retrofit.Builder()
+    .baseUrl(BASE_URL)
+    .addConverterFactory(MoshiConverterFactory.create(moshi))
+    .build()
+
 
 interface FimuApiService {
+
+
+    @GET("actualite")
+    suspend fun getNews(): List<Actualite>
+
+    @GET("categorie")
+    suspend fun getCategories():List<Categorie>
+
+    @GET("genre")
+    suspend fun getGenres() : List<Genre>
+
     @GET("pays")
-    fun getPays():Call<List<Pays>>
+    suspend fun getPays(): List<Pays>
 }
 
 object FimuApi {

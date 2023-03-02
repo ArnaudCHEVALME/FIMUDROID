@@ -2,7 +2,6 @@ package com.example.fimudroid.data
 
 import com.example.fimudroid.models.*
 import com.example.fimudroid.models.Artiste
-import com.example.fimudroid.network.FimuApi
 
 class DataSource {
     fun LoadActu(): List<Actualite> {
@@ -20,9 +19,7 @@ class DataSource {
             )
         )
     }
-
-
-    fun LoadArtists(): List<Artiste> {
+    fun loadArtists(): List<Artiste> {
         return listOf<Artiste>(
             Artiste(
                 1,
@@ -31,13 +28,13 @@ class DataSource {
                     1,
                     "HG",
                     "Jul"
-                ), LoadGenre(),
+                ), loadGenres(),
                 "baka.com",
                 "baka.ytb",
                 "BakaName",
                 loadPays(),
                 "img.png",
-                LoadLiens()
+                loadLiens()
             ),
             Artiste(
                 2,
@@ -46,20 +43,20 @@ class DataSource {
                     1,
                     "HG",
                     "Jul"
-                ), LoadGenre(),
+                ), loadGenres(),
                 "baka.com",
                 "baka.ytb",
                 "BakaName",
                 loadPays(),
                 "img.png",
-                LoadLiens()
+                loadLiens()
             )
 
 
         )
     }
 
-    fun LoadGenre(): List<Genre> {
+    fun loadGenres(): List<Genre> {
         return listOf<Genre>(
             Genre(1, "Omelette"),
             Genre(2, "chat"),
@@ -67,18 +64,22 @@ class DataSource {
         )
     }
 
-    fun loadPays(): List<Pays>? {
-        return FimuApi.retrofitService.getPays().execute().body()
+    fun loadPays(): List<Pays>
+    {
+        return  listOf<Pays>(
+            Pays(1, "Shreklambourg"),
+            Pays(2, "ArnaudCity"),
+            Pays(3, "ChonkMael")
+        )
     }
-
-    fun LoadLiens(): List<Lien> {
+    fun loadLiens(): List<Lien> {
         return listOf<Lien>(
-            Lien(LoadCategories()[0], "www.intenet.com"),
-            Lien(LoadCategories()[1], "www.POPILE.com"),
+            Lien(loadCategories()[0], "www.intenet.com"),
+            Lien(loadCategories()[1], "www.POPILE.com"),
         )
     }
 
-    fun LoadCategories(): List<LienCategorie> {
+    fun loadCategories(): List<LienCategorie> {
         return listOf<LienCategorie>(
             LienCategorie(1, "lama", "logo"),
             LienCategorie(2, "chèvre", "logo"),
