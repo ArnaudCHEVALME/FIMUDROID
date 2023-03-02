@@ -1,17 +1,12 @@
 package com.example.fimudroid.ui.artistes
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
-import android.widget.TextView
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil.setContentView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
 import com.example.fimudroid.adapter.ItemArtistAdapter
@@ -23,37 +18,27 @@ class ArtistListFragment : Fragment() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
-    @SuppressLint("MissingInflatedId")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-//
-//        binding = ActivityMainBinding.inflate(layoutInflater)
-//        setContentView(binding.root)
-//
-//        setSupportActionBar(binding.toolbar)
-        setContentView(R.layout.activity_main)
-
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View {
+        val view = inflater.inflate(R.layout.artist_list_layout, container, false)
 
         // Initialize data.
-        val myDataset = DataSource().LoadArtists()
+        val myDataset = DataSource().loadArtists()
 
         Log.d("TAG", myDataset.toString())
 
+        val recyclerView = view.findViewById<RecyclerView>(R.id.artist_recycler_view)
 
+        Log.d("TAG", recyclerView.toString())
 
-        val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
-
-        Log.d("TAG", "recyclerView.toString()")
-
-        recyclerView.adapter = ItemArtistAdapter(this, myDataset)
+        recyclerView.adapter = ItemArtistAdapter(requireContext(), myDataset)
 
         // Use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
         recyclerView.setHasFixedSize(true)
 
+        return view
     }
-
     private fun <T> findViewById(recyclerView: Int): Any {
         TODO("Not yet implemented")
     }

@@ -1,9 +1,6 @@
 package com.example.fimudroid.network
 
-import com.example.fimudroid.models.Actualite
-import com.example.fimudroid.models.Categorie
-import com.example.fimudroid.models.Genre
-import com.example.fimudroid.models.Pays
+import com.example.fimudroid.models.*
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Call
@@ -38,6 +35,9 @@ interface FimuApiService {
 
     @GET("pays")
     suspend fun getPays(): List<Pays>
+
+    @GET("artiste")
+    suspend fun getArtistes(): List<Artiste>
 }
 
 object FimuApi {

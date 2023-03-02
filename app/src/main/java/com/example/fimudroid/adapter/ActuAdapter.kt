@@ -1,20 +1,19 @@
 package com.example.fimudroid.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
-import com.example.fimudroid.ui.news.NewsFragment
+import com.example.fimudroid.ui.news.NewsListFragment
 import com.example.fimudroid.models.Actualite
 
 /**
  * Adapter for the [RecyclerView] in [MainActivity]. Displays [Affirmation] data object.
  */
 class ActuAdapter(
-    private val context: NewsFragment,
+//    private val context: NewsListFragment,
     private val dataset: List<Actualite>
 ) : RecyclerView.Adapter<ActuAdapter.ActuViewHolder>() {
 
