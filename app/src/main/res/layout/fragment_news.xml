@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.NewsFragment">
+    tools:context=".activities.NewsFragment">
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -11,7 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="760dp"
         android:scrollbars="vertical"
-        app:layoutManager="LinearLayoutManager"
         />
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="214dp"
+        android:layout_height="270dp"
+        android:text="TextView" />
 
 </FrameLayout>
