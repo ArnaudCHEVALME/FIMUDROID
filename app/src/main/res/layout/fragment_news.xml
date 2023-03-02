@@ -5,14 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".activities.NewsFragment">
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/actu_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="760dp"
-        android:scrollbars="vertical"
-        />
-
     <TextView
         android:id="@+id/tv"
         android:layout_width="214dp"

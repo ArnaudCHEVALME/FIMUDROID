@@ -8,8 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.fimudroid.R
 import com.example.fimudroid.data.DataSource
-import com.example.fimudroid.fragment.ARG_PARAM1
-import com.example.fimudroid.fragment.ARG_PARAM2
+import com.example.fimudroid.databinding.FragmentNewsBinding
 
 /**
  * A simple [Fragment] subclass.
@@ -18,26 +17,22 @@ import com.example.fimudroid.fragment.ARG_PARAM2
  */
 class NewsFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var _binding: FragmentNewsBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        binding.tv.text = DataSource().LoadActu()[0].contenu;
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_news, container, false)
 
-        val tv: TextView = findViewById(R.id.tv)
-        tv.text = DataSource.loadActu().size().toString();
+    ): View? {
+        _binding = FragmentNewsBinding.inflate(inflater, container, false)
+        return binding.root
+        //return inflater.inflate(R.layout.fragment_news, container, false)
     }
 
     companion object {
@@ -51,12 +46,8 @@ class NewsFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance() =
             NewsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
             }
     }
 }
