@@ -1,4 +1,4 @@
-package com.example.fimudroid.activities
+package com.example.fimudroid.ui.artistes
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -6,6 +6,8 @@ import android.util.Log
 import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil.setContentView
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -16,7 +18,7 @@ import com.example.fimudroid.adapter.ItemArtistAdapter
 import com.example.fimudroid.databinding.ActivityMainBinding
 import com.example.fimudroid.data.DataSource
 
-class ArtistListFragment : AppCompatActivity() {
+class ArtistListFragment : Fragment() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
@@ -50,5 +52,9 @@ class ArtistListFragment : AppCompatActivity() {
         // in content do not change the layout size of the RecyclerView
         recyclerView.setHasFixedSize(true)
 
+    }
+
+    private fun <T> findViewById(recyclerView: Int): Any {
+        TODO("Not yet implemented")
     }
 }

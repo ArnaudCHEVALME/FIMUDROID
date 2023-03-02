@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.NewsFragment">
+    tools:context=".ui.news.NewsFragment">
 
     <TextView
         android:id="@+id/tv"
         android:layout_width="214dp"
         android:layout_height="270dp"
-        android:text="TextView" />
+        android:text="@string/title_news" />
 
 </FrameLayout>

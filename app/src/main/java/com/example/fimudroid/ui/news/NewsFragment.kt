@@ -1,12 +1,10 @@
-package com.example.fimudroid.activities
+package com.example.fimudroid.ui.news
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.example.fimudroid.R
 import com.example.fimudroid.data.DataSource
 import com.example.fimudroid.databinding.FragmentNewsBinding
 
@@ -20,17 +18,13 @@ class NewsFragment : Fragment() {
     private var _binding: FragmentNewsBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding.tv.text = DataSource().LoadActu()[0].contenu;
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
 
     ): View? {
         _binding = FragmentNewsBinding.inflate(inflater, container, false)
+        binding.tv.text = DataSource().LoadActu()[0].contenu;
         return binding.root
         //return inflater.inflate(R.layout.fragment_news, container, false)
     }
