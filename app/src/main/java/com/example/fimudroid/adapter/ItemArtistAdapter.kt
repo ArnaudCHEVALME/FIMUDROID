@@ -9,17 +9,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
 import com.example.fimudroid.models.Artiste
 
-class ItemArtistAdapter(private val context: Context, private val dataset: List<Artiste>) : RecyclerView.Adapter<ItemArtistAdapter.ItemViewHolder>() {
+class ItemArtistAdapter(
+    private val context: Context,
+    private val dataset: List<Artiste>
+    ) : RecyclerView.Adapter<ItemArtistAdapter.ItemViewHolder>() {
 
 
     class ItemViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
-        val textView: TextView = view.findViewById(R.id.item_title)
+        val textView: TextView = view.findViewById(R.id.artist_name)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         // create a new view
         val adapterLayout = LayoutInflater.from(parent.context)
-            .inflate(R.layout.list_artist, parent, false)
+            .inflate(R.layout.artist_recycler_item, parent, false)
 
         return ItemViewHolder(adapterLayout)
     }

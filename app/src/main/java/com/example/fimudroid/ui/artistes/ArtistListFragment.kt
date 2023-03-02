@@ -6,21 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
 import com.example.fimudroid.adapter.ItemArtistAdapter
-import com.example.fimudroid.databinding.ActivityMainBinding
 import com.example.fimudroid.data.DataSource
 
 class ArtistListFragment : Fragment() {
-
-    private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var binding: ActivityMainBinding
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
-        val view = inflater.inflate(R.layout.artist_list_layout, container, false)
+                              savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.artist_recycler, container, false)
 
         // Initialize data.
         val myDataset = DataSource().loadArtists()
@@ -39,7 +33,5 @@ class ArtistListFragment : Fragment() {
 
         return view
     }
-    private fun <T> findViewById(recyclerView: Int): Any {
-        TODO("Not yet implemented")
-    }
+
 }

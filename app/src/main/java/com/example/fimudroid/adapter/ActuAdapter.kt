@@ -1,12 +1,12 @@
 package com.example.fimudroid.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
-import com.example.fimudroid.ui.news.NewsListFragment
 import com.example.fimudroid.models.Actualite
 
 /**
@@ -32,7 +32,7 @@ class ActuAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActuViewHolder {
         // create a new view
         val adapterLayout = LayoutInflater.from(parent.context)
-            .inflate(R.layout.actu_layout, parent, false)
+            .inflate(R.layout.news_recycler_item, parent, false)
 
         return ActuViewHolder(adapterLayout)
     }

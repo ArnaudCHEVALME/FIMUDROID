@@ -2,6 +2,7 @@ package com.example.fimudroid.data
 
 import com.example.fimudroid.models.*
 import com.example.fimudroid.models.Artiste
+import com.example.fimudroid.network.FimuApi
 
 class DataSource {
     fun LoadActu(): List<Actualite> {
@@ -16,9 +17,87 @@ class DataSource {
                     1,
                     "Important"
                 )
+            ),
+            Actualite(
+                1,
+                "j'aime manger des enfants",
+                "22/10/2022",
+                1,
+                "Ma passion!",
+                TypeActu(
+                    1,
+                    "Important"
+                )
+            ),
+            Actualite(
+                1,
+                "j'aime manger des enfants",
+                "22/10/2022",
+                1,
+                "Ma passion!",
+                TypeActu(
+                    1,
+                    "Important"
+                )
+            ),
+            Actualite(
+                1,
+                "j'aime manger des enfants",
+                "22/10/2022",
+                1,
+                "Ma passion!",
+                TypeActu(
+                    1,
+                    "Important"
+                )
+            ),
+            Actualite(
+                1,
+                "j'aime manger des enfants",
+                "22/10/2022",
+                1,
+                "Ma passion!",
+                TypeActu(
+                    1,
+                    "Important"
+                )
+            ),
+            Actualite(
+                1,
+                "j'aime manger des enfants",
+                "22/10/2022",
+                1,
+                "Ma passion!",
+                TypeActu(
+                    1,
+                    "Important"
+                )
+            ),
+            Actualite(
+                1,
+                "j'aime manger des enfants",
+                "22/10/2022",
+                1,
+                "Ma passion!",
+                TypeActu(
+                    1,
+                    "Important"
+                )
+            ),
+            Actualite(
+                1,
+                "j'aime manger des enfants",
+                "22/10/2022",
+                1,
+                "Ma passion!",
+                TypeActu(
+                    1,
+                    "Important"
+                )
             )
         )
     }
+
     fun loadArtists(): List<Artiste> {
         return listOf<Artiste>(
             Artiste(
@@ -64,14 +143,14 @@ class DataSource {
         )
     }
 
-    fun loadPays(): List<Pays>
-    {
-        return  listOf<Pays>(
+    fun loadPays(): List<Pays> {
+        return listOf<Pays>(
             Pays(1, "Shreklambourg"),
             Pays(2, "ArnaudCity"),
             Pays(3, "ChonkMael")
         )
     }
+
     fun loadLiens(): List<Lien> {
         return listOf<Lien>(
             Lien(loadCategories()[0], "www.intenet.com"),
