@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
+import com.example.fimudroid.adapter.ActuAdapter
 import com.example.fimudroid.data.DataSource
 import com.example.fimudroid.databinding.FragmentNewsBinding
+import com.example.fimudroid.models.Actualite
 
 /**
  * A simple [Fragment] subclass.
@@ -22,13 +24,15 @@ class NewsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.tv.text = DataSource().LoadActu()[0].contenu;
+
+        val myDataset:List<Actualite> = DataSource().LoadActu()
+        binding.actuRecycler.adapter = ActuAdapter(this, myDataset)
+        //binding.tv.text = DataSource().LoadActu()[0].contenu;
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-
     ): View? {
         _binding = FragmentNewsBinding.inflate(inflater, container, false)
         return binding.root
@@ -44,7 +48,6 @@ class NewsFragment : Fragment() {
          * @param param2 Parameter 2.
          * @return A new instance of fragment NewsFragment.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance() =
             NewsFragment().apply {

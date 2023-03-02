@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.NewsFragment">
 
-    <TextView
-        android:id="@+id/tv"
-        android:layout_width="214dp"
-        android:layout_height="270dp"
-        android:text="TextView" />
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:translationY="-150dp"
+        tools:src="@tools:sample/backgrounds/scenic" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/actu_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:translationY="350dp"
+        tools:listitem="@layout/actu_layout" />
+
 
 </FrameLayout>
