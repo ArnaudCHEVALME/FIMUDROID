@@ -1,8 +1,10 @@
 package com.example.fimudroid.models
 
+import com.squareup.moshi.Json
+
 data class Notification(
-    val date_envoi: String,
-    val heure_envoi: String,
-    val id: Int,
-    val message: String
+    @field:Json(name = "id") val id: Int,
+    @field:Json(name = "date_envoi") val date_envoi: String,
+    @field:Json(name = "heure_envoi") val heure_envoi: String,
+    @field:Json(name = "message") val message: String
 )

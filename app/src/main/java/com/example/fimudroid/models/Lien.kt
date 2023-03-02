@@ -1,6 +1,8 @@
 package com.example.fimudroid.models
 
+import com.squareup.moshi.Json
+
 data class Lien(
-    val lien_cat: LienCategorie,
-    val lien: String
+    @field:Json(name = "lien_cat") val lien_cat: LienCategorie,
+    @field:Json(name = "lien") val lien: String
 )
