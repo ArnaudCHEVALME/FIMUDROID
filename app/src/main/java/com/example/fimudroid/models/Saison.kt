@@ -1,7 +1,9 @@
 package com.example.fimudroid.models
 
+import com.squareup.moshi.Json
+
 data class Saison(
-    val annee: Int,
-    val couleur1: String,
-    val couleur2: String
+    @field:Json(name = "id") val annee: Int,
+    @field:Json(name = "couleur1") val couleur1: String,
+    @field:Json(name = "couleur1") val couleur2: String
 )

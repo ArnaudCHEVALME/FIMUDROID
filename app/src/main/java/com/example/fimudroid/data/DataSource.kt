@@ -2,6 +2,7 @@ package com.example.fimudroid.data
 
 import com.example.fimudroid.models.*
 import com.example.fimudroid.models.Artiste
+import com.example.fimudroid.network.FimuApi
 
 class DataSource {
     fun LoadActu(): List<Actualite> {
@@ -20,20 +21,21 @@ class DataSource {
         )
     }
 
+
     fun LoadArtists(): List<Artiste> {
         return listOf<Artiste>(
             Artiste(
                 1,
                 "bio",
                 Categorie(
-                    "HG",
                     1,
+                    "HG",
                     "Jul"
                 ), LoadGenre(),
                 "baka.com",
                 "baka.ytb",
                 "BakaName",
-                LoadPays(),
+                loadPays(),
                 "img.png",
                 LoadLiens()
             ),
@@ -41,14 +43,14 @@ class DataSource {
                 2,
                 "bio2",
                 Categorie(
-                    "HG",
                     1,
+                    "HG",
                     "Jul"
                 ), LoadGenre(),
                 "baka.com",
                 "baka.ytb",
                 "BakaName",
-                LoadPays(),
+                loadPays(),
                 "img.png",
                 LoadLiens()
             )
@@ -65,12 +67,8 @@ class DataSource {
         )
     }
 
-    fun LoadPays(): List<Pays> {
-        return listOf<Pays>(
-            Pays(1, "Shreklambourg"),
-            Pays(2, "ArnaudCity"),
-            Pays(3, "ChonkMael")
-        )
+    fun loadPays(): List<Pays>? {
+        return FimuApi.retrofitService.getPays().execute().body()
     }
 
     fun LoadLiens(): List<Lien> {
