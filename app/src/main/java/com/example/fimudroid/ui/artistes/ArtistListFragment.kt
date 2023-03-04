@@ -6,31 +6,39 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
 import com.example.fimudroid.adapter.ItemArtistAdapter
 import com.example.fimudroid.data.DataSource
+import kotlinx.coroutines.launch
 
 class ArtistListFragment : Fragment() {
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.artist_recycler, container, false)
 
-        // Initialize data.
-        val myDataset = DataSource().loadArtists()
 
-        Log.d("TAG", myDataset.toString())
+        val s = DataSource()
+        lifecycleScope.launch {
+            // Initialize data.
+            s.fetchData()
+            val myDataset = s.getArtistes()
+            Log.d("TAG", myDataset.toString())
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.artist_recycler_view)
+            val recyclerView = view.findViewById<RecyclerView>(R.id.artist_recycler_view)
 
-        Log.d("TAG", recyclerView.toString())
+            Log.d("TAG", recyclerView.toString())
 
-        recyclerView.adapter = ItemArtistAdapter(requireContext(), myDataset)
+            recyclerView.adapter = ItemArtistAdapter(requireContext(), myDataset)
 
-        // Use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        recyclerView.setHasFixedSize(true)
+            // Use this setting to improve performance if you know that changes
+            // in content do not change the layout size of the RecyclerView
+            recyclerView.setHasFixedSize(true)
 
+        }
         return view
     }
 

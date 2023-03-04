@@ -2,7 +2,7 @@ package com.example.fimudroid.models
 
 import com.squareup.moshi.Json
 
-data class TypeActu(
+data class TypeNews(
     @field:Json(name = "id") val id: Int,
     @field:Json(name = "libelle") val libelle: String
 )

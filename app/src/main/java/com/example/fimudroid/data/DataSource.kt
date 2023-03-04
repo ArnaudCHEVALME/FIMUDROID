@@ -5,164 +5,53 @@ import com.example.fimudroid.models.Artiste
 import com.example.fimudroid.network.FimuApi
 
 class DataSource {
-    fun LoadActu(): List<Actualite> {
-        return listOf<Actualite>(
-            Actualite(
-                1,
-                "j'aime manger des enfants",
-                "22/10/2022",
-                1,
-                "Ma passion!",
-                TypeActu(
-                    1,
-                    "Important"
-                )
-            ),
-            Actualite(
-                1,
-                "j'aime manger des enfants",
-                "22/10/2022",
-                1,
-                "Ma passion!",
-                TypeActu(
-                    1,
-                    "Important"
-                )
-            ),
-            Actualite(
-                1,
-                "j'aime manger des enfants",
-                "22/10/2022",
-                1,
-                "Ma passion!",
-                TypeActu(
-                    1,
-                    "Important"
-                )
-            ),
-            Actualite(
-                1,
-                "j'aime manger des enfants",
-                "22/10/2022",
-                1,
-                "Ma passion!",
-                TypeActu(
-                    1,
-                    "Important"
-                )
-            ),
-            Actualite(
-                1,
-                "j'aime manger des enfants",
-                "22/10/2022",
-                1,
-                "Ma passion!",
-                TypeActu(
-                    1,
-                    "Important"
-                )
-            ),
-            Actualite(
-                1,
-                "j'aime manger des enfants",
-                "22/10/2022",
-                1,
-                "Ma passion!",
-                TypeActu(
-                    1,
-                    "Important"
-                )
-            ),
-            Actualite(
-                1,
-                "j'aime manger des enfants",
-                "22/10/2022",
-                1,
-                "Ma passion!",
-                TypeActu(
-                    1,
-                    "Important"
-                )
-            ),
-            Actualite(
-                1,
-                "j'aime manger des enfants",
-                "22/10/2022",
-                1,
-                "Ma passion!",
-                TypeActu(
-                    1,
-                    "Important"
-                )
-            )
-        )
+
+    private var artistes: List<Artiste> = emptyList()
+    private var categories: List<Categorie> = emptyList()
+    private var pays: List<Pays> = emptyList()
+    private var genres: List<Genre> = emptyList()
+    private var news: List<News> = emptyList()
+    private var stands: List<Stand> = emptyList()
+    private var services : List<Service> = emptyList()
+    private var typeStand : List<TypeStand> = emptyList()
+
+    suspend fun fetchData(){
+        artistes = FimuApi.retrofitService.getArtistes()
+        categories = FimuApi.retrofitService.getCategories()
+        pays = FimuApi.retrofitService.getPays()
+        genres = FimuApi.retrofitService.getGenres()
+        news = FimuApi.retrofitService.getNews()
+        stands = FimuApi.retrofitService.getStands()
+        services = FimuApi.retrofitService.getServices()
+        typeStand = FimuApi.retrofitService.getTypesStand()
     }
 
-    fun loadArtists(): List<Artiste> {
-        return listOf<Artiste>(
-            Artiste(
-                1,
-                "bio",
-                Categorie(
-                    1,
-                    "HG",
-                    "Jul"
-                ), loadGenres(),
-                "baka.com",
-                "baka.ytb",
-                "BakaName",
-                loadPays(),
-                "img.png",
-                loadLiens()
-            ),
-            Artiste(
-                2,
-                "bio2",
-                Categorie(
-                    1,
-                    "HG",
-                    "Jul"
-                ), loadGenres(),
-                "baka.com",
-                "baka.ytb",
-                "BakaName",
-                loadPays(),
-                "img.png",
-                loadLiens()
-            )
-
-
-        )
+    fun getServices() : List<Service>{
+        return services
     }
 
-    fun loadGenres(): List<Genre> {
-        return listOf<Genre>(
-            Genre(1, "Omelette"),
-            Genre(2, "chat"),
-            Genre(3, "chien"),
-        )
+    fun getTypesStand() : List<TypeStand>{
+        return typeStand
     }
 
-    fun loadPays(): List<Pays> {
-        return listOf<Pays>(
-            Pays(1, "Shreklambourg"),
-            Pays(2, "ArnaudCity"),
-            Pays(3, "ChonkMael")
-        )
+    fun getArtistes() : List<Artiste>{
+        return artistes
     }
-
-    fun loadLiens(): List<Lien> {
-        return listOf<Lien>(
-            Lien(loadCategories()[0], "www.intenet.com"),
-            Lien(loadCategories()[1], "www.POPILE.com"),
-        )
+    fun getCategories() : List<Categorie>{
+        return categories
     }
-
-    fun loadCategories(): List<LienCategorie> {
-        return listOf<LienCategorie>(
-            LienCategorie(1, "lama", "logo"),
-            LienCategorie(2, "chèvre", "logo"),
-        )
+    fun getPays() : List<Pays>{
+        return pays
+    }
+    fun getNews() : List<News>{
+        return news
+    }
+    fun getStands() : List<Stand>{
+        return stands
+    }
+    fun getGenres() : List<Genre>{
+        return genres
     }
 
 }
+

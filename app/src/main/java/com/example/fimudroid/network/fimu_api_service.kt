@@ -23,9 +23,8 @@ val retrofit = Retrofit.Builder()
 
 interface FimuApiService {
 
-
     @GET("actualite")
-    suspend fun getNews(): List<Actualite>
+    suspend fun getNews(): List<News>
 
     @GET("categorie")
     suspend fun getCategories():List<Categorie>
@@ -38,6 +37,16 @@ interface FimuApiService {
 
     @GET("artiste")
     suspend fun getArtistes(): List<Artiste>
+
+    @GET("stand")
+    suspend fun getStands(): List<Stand>
+
+    @GET("typestand")
+    suspend fun getTypesStand(): List<TypeStand>
+
+    @GET("service")
+    suspend fun getServices(): List<Service>
+
 }
 
 object FimuApi {

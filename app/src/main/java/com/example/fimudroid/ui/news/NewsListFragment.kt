@@ -1,7 +1,6 @@
 package com.example.fimudroid.ui.news
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.example.fimudroid.adapter.ActuAdapter
 import com.example.fimudroid.data.DataSource
 import com.example.fimudroid.databinding.NewsRecyclerBinding
-import com.example.fimudroid.models.Actualite
+import com.example.fimudroid.models.News
 
 /**
  * A simple [Fragment] subclass.
@@ -22,12 +21,11 @@ class NewsListFragment : Fragment() {
     private val binding get() = _binding!!
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val myDataset:List<Actualite> = DataSource().LoadActu()
+        val myDataset: List<News> = DataSource().getNews()
         _binding = NewsRecyclerBinding.inflate(inflater, container, false)
         binding.newsRecycler.adapter = ActuAdapter(myDataset)
         return binding.root

@@ -7,14 +7,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
-import com.example.fimudroid.models.Actualite
+import com.example.fimudroid.models.News
 
 /**
  * Adapter for the [RecyclerView] in [MainActivity]. Displays [Affirmation] data object.
  */
 class ActuAdapter(
 //    private val context: NewsListFragment,
-    private val dataset: List<Actualite>
+    private val dataset: List<News>
 ) : RecyclerView.Adapter<ActuAdapter.ActuViewHolder>() {
 
     // Provide a reference to the views for each data item
