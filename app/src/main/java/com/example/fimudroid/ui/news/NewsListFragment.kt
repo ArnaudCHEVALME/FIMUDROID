@@ -9,6 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
+import com.example.fimudroid.R
+import com.example.fimudroid.adapter.NewsAdapter
+import com.example.fimudroid.database.models.News
 import com.example.fimudroid.R
 import com.example.fimudroid.adapter.ActuAdapter
 import com.example.fimudroid.data.DataSource
@@ -23,35 +29,28 @@ import java.net.URL
  * create an instance of this fragment.
  */
 class NewsListFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var _binding: NewsRecyclerBinding? = null
-    private val binding get() = _binding!!
-
-
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val myDataset:List<Actualite> = DataSource().LoadActu()
-        _binding = NewsRecyclerBinding.inflate(inflater, container, false)
-        binding.newsRecycler.adapter = ActuAdapter(myDataset)
-        return binding.root
-        //return inflater.inflate(R.layout.fragment_news, container, false)
-    }
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
+        val root = inflater.inflate(R.layout.news_recycler, container, false)
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment NewsFragment.
-         */
-        @JvmStatic
-        fun newInstance() =
-            NewsListFragment().apply {
-            }
+        val viewModel = ViewModelProvider(
+            this, ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
+        )[NewsViewModel::class.java]
+
+        val recyclerView: RecyclerView = root.findViewById(R.id.news_recycler)
+        recyclerView.adapter = NewsAdapter(emptyList())
+
+        viewModel.getAllNews().observe(viewLifecycleOwner) { news ->
+            Log.i("NewsData", news.toString())
+            // update UI with list of news
+            recyclerView.adapter = NewsAdapter(news)
+        }
+
+        viewModel.getAllNews()
+        Log.i("news",viewModel.getAllNews().toString())
+
+        root.findViewById<RecyclerView>(R.id.news_recycler).setHasFixedSize(true)
+        return root
     }
 }
