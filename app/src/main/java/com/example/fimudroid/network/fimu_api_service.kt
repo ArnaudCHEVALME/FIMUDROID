@@ -1,13 +1,11 @@
 package com.example.fimudroid.network
 
-import com.example.fimudroid.models.*
+import com.example.fimudroid.network.models.*
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
-import retrofit2.http.Path
 
 
 private const val BASE_URL = "http://10.0.2.2:3000"
@@ -47,10 +45,4 @@ interface FimuApiService {
     @GET("service")
     suspend fun getServices(): List<Service>
 
-}
-
-object FimuApi {
-    val retrofitService: FimuApiService by lazy {
-        retrofit.create(FimuApiService::class.java)
-    }
 }

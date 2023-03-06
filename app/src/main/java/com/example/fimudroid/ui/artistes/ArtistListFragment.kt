@@ -1,45 +1,37 @@
 package com.example.fimudroid.ui.artistes
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.util.EMPTY_STRING_ARRAY
 import com.example.fimudroid.R
-import com.example.fimudroid.adapter.ItemArtistAdapter
-import com.example.fimudroid.data.DataSource
-import kotlinx.coroutines.launch
+import com.example.fimudroid.adapter.ArtistAdapter
 
 class ArtistListFragment : Fragment() {
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.artist_recycler, container, false)
+        val root = inflater.inflate(R.layout.artist_recycler, container, false)
+        val recyclerView: RecyclerView = root.findViewById(R.id.artist_recycler_view)
+        recyclerView.adapter = ArtistAdapter(emptyList())
 
+        val viewModel = ViewModelProvider(
+            this, ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
+        )[ArtistViewModel::class.java]
 
-        val s = DataSource()
-        lifecycleScope.launch {
-            // Initialize data.
-            s.fetchData()
-            val myDataset = s.getArtistes()
-            Log.d("TAG", myDataset.toString())
-
-            val recyclerView = view.findViewById<RecyclerView>(R.id.artist_recycler_view)
-
-            Log.d("TAG", recyclerView.toString())
-
-            recyclerView.adapter = ItemArtistAdapter(requireContext(), myDataset)
-
-            // Use this setting to improve performance if you know that changes
-            // in content do not change the layout size of the RecyclerView
-            recyclerView.setHasFixedSize(true)
-
+        viewModel.getAllArtists().observe(viewLifecycleOwner) { artists ->
+            // update UI with list of artists
+            recyclerView.adapter = ArtistAdapter(artists)
         }
-        return view
+
+        viewModel.getAllArtists()
+
+        root.findViewById<RecyclerView>(R.id.artist_recycler_view).setHasFixedSize(true)
+        return root
     }
 
 }
