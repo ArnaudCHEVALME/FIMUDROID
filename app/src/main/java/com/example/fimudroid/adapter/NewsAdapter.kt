@@ -59,7 +59,7 @@ class NewsAdapter(
 //            //Changer l'icon de l'actu en fonction du type d'actu
 //            val resId = R.drawable.ic_notifications_black_24dp
 //            holder.icon.setImageResource(resId)
-//            holder.card.setCardBackgroundColor(Color.rgb(255,236,159))
+        holder.card.setCardBackgroundColor(Color.parseColor("#FFF5B1"))
 //        //            holder.truc.setBackgroundColor(getRessources().getColor(R.color.purple_700));
 //
 //        }

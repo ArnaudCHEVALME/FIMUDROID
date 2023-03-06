@@ -29,9 +29,8 @@ class FimuApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        val context: Context = applicationContext
-
-        val deleted = context.deleteDatabase("fimu-db")
+        val context: Context = applicationContext // TODO - Remove for release
+        val deleted = context.deleteDatabase("fimu-db") // TODO - Remove for release
 
 // Check if the database was deleted
         if (deleted) {
