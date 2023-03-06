@@ -10,6 +10,6 @@ data class News(
     val id: Int,
     val contenu: String?,
     val date_envoi: String?,
-    val id_typeactu: Int,
+    val id_type_news: Int,
     val titre: String?,
 )

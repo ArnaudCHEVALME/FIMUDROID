@@ -1,6 +1,7 @@
 package com.example.fimudroid
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import com.example.fimudroid.database.FimuDB
@@ -27,6 +28,19 @@ class FimuApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        val context: Context = applicationContext
+
+        val deleted = context.deleteDatabase("fimu-db")
+
+// Check if the database was deleted
+        if (deleted) {
+            Log.i("DB", "Database deleted")
+        } else {
+            Log.i("DB", "Failed to delete database")
+        }
+
+
 
         // Make API call to fetch data
         CoroutineScope(Dispatchers.IO).launch {
