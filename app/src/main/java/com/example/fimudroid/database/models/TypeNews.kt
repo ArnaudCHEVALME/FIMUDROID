@@ -6,6 +6,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "types_news")
 data class TypeNews(
     @PrimaryKey
-    val id: Int,
+    val id_news: Int,
     val libelle: String
 )

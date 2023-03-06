@@ -35,35 +35,35 @@ class ArtistAdapter(
         val artiste = dataset[position]
         holder.textView.text = artiste.nom
 
-        val categoryTextView = holder.itemView.findViewById<TextView>(R.id.category_text_view)
-        categoryTextView.text = artiste.category.libelle
-
-        // Convert the hex color to a Color object
-        val color = Color.parseColor(artiste.category.couleur)
-
-        categoryTextView.setBackgroundColor(color)
-
-        val genresChipGroup = holder.itemView.findViewById<ChipGroup>(R.id.genres_chip_group)
-        genresChipGroup.removeAllViews()
-
-        for (genre in artiste.genres) {
-            val chip = Chip(genresChipGroup.context)
-            chip.text = genre.libelle
-            chip.isCheckable = false
-            chip.isClickable = false
-            genresChipGroup.addView(chip)
-        }
-
-        val paysChipGroup = holder.itemView.findViewById<ChipGroup>(R.id.pays_chip_group)
-        paysChipGroup.removeAllViews()
-
-        for (pays in artiste.pays!!) {
-            val chip = Chip(paysChipGroup.context)
-            chip.text = pays.libelle
-            chip.isCheckable = false
-            chip.isClickable = false
-            paysChipGroup.addView(chip)
-        }
+//        val categoryTextView = holder.itemView.findViewById<TextView>(R.id.category_text_view)
+//        categoryTextView.text = artiste.category.libelle
+//
+//        // Convert the hex color to a Color object
+//        val color = Color.parseColor(artiste.category.couleur)
+//
+//        categoryTextView.setBackgroundColor(color)
+//
+//        val genresChipGroup = holder.itemView.findViewById<ChipGroup>(R.id.genres_chip_group)
+//        genresChipGroup.removeAllViews()
+//
+//        for (genre in artiste.genres) {
+//            val chip = Chip(genresChipGroup.context)
+//            chip.text = genre.libelle
+//            chip.isCheckable = false
+//            chip.isClickable = false
+//            genresChipGroup.addView(chip)
+//        }
+//
+//        val paysChipGroup = holder.itemView.findViewById<ChipGroup>(R.id.pays_chip_group)
+//        paysChipGroup.removeAllViews()
+//
+//        for (pays in artiste.pays!!) {
+//            val chip = Chip(paysChipGroup.context)
+//            chip.text = pays.libelle
+//            chip.isCheckable = false
+//            chip.isClickable = false
+//            paysChipGroup.addView(chip)
+//        }
     }
 
 }
