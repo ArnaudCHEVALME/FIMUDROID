@@ -1,15 +1,21 @@
 package com.example.fimudroid.ui.news
 
+import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
+import android.provider.ContactsContract.CommonDataKinds.Website.URL
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import com.example.fimudroid.R
 import com.example.fimudroid.adapter.ActuAdapter
 import com.example.fimudroid.data.DataSource
 import com.example.fimudroid.databinding.NewsRecyclerBinding
 import com.example.fimudroid.models.Actualite
+import java.net.URL
+
 
 /**
  * A simple [Fragment] subclass.

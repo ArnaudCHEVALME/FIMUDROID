@@ -1,10 +1,18 @@
 package com.example.fimudroid.adapter
 
+import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.IconCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
 import com.example.fimudroid.models.Actualite
@@ -13,7 +21,6 @@ import com.example.fimudroid.models.Actualite
  * Adapter for the [RecyclerView] in [MainActivity]. Displays [Affirmation] data object.
  */
 class ActuAdapter(
-//    private val context: NewsListFragment,
     private val dataset: List<Actualite>
 ) : RecyclerView.Adapter<ActuAdapter.ActuViewHolder>() {
 
@@ -24,6 +31,9 @@ class ActuAdapter(
     class ActuViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         val title: TextView = view.findViewById(R.id.actu_title)
         val core: TextView = view.findViewById(R.id.actu_core)
+        val icon: ImageView = view.findViewById(R.id.actu_icon)
+        val card: CardView = view.findViewById(R.id.card_news)
+        val date:TextView = view.findViewById(R.id.date_actu)
     }
 
     /**
@@ -33,7 +43,6 @@ class ActuAdapter(
         // create a new view
         val adapterLayout = LayoutInflater.from(parent.context)
             .inflate(R.layout.news_recycler_item, parent, false)
-
         return ActuViewHolder(adapterLayout)
     }
 
@@ -44,6 +53,23 @@ class ActuAdapter(
         val item = dataset[position]
         holder.title.text = item.titre
         holder.core.text = item.contenu
+        holder.date.text = item.date_envoi
+        if(item.typeactu.libelle == "Important"){
+            //Changer l'icon de l'actu en fonction du type d'actu
+            val resId = R.drawable.ic_notifications_black_24dp
+            holder.icon.setImageResource(resId)
+            holder.card.setCardBackgroundColor(Color.rgb(255,236,159))
+        //            holder.truc.setBackgroundColor(getRessources().getColor(R.color.purple_700));
+
+        }
+        else if (item.typeactu.libelle == "Info"){
+            val resId = androidx.databinding.library.baseAdapters.R.drawable.notification_icon_background
+            holder.icon.setImageResource(resId)
+            holder.card.setCardBackgroundColor(Color.rgb(159,208,255))
+        }
+        else{
+            holder.card.setCardBackgroundColor(Color.rgb(255,108,149))
+        }
     }
 
     /**
