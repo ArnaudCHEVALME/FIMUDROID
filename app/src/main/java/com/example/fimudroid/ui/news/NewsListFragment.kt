@@ -14,7 +14,6 @@ import com.example.fimudroid.R
 import com.example.fimudroid.adapter.ImageHeaderNewsAdapter
 import com.example.fimudroid.adapter.NewsAdapter
 
-
 /**
  * A simple [Fragment] subclass.
  * Use the [NewsListFragment.newInstance] factory method to
@@ -48,4 +47,5 @@ class NewsListFragment : Fragment() {
         root.findViewById<RecyclerView>(R.id.news_recycler).setHasFixedSize(true)
         return root
     }
+
 }

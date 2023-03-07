@@ -24,7 +24,6 @@ class NewsAdapter(
 //    private val context: NewsListFragment,
     private val dataset: List<News>
 ) : RecyclerView.Adapter<NewsAdapter.ActuViewHolder>() {
-
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder.
@@ -32,7 +31,9 @@ class NewsAdapter(
     class ActuViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         val title: TextView = view.findViewById(R.id.actu_title)
         val sidebar: View = view.findViewById(R.id.side_bare_news)
+        val core: TextView = view.findViewById(R.id.news_core)
     }
+
 
     /**
      * Create new views (invoked by the layout manager)
@@ -48,9 +49,10 @@ class NewsAdapter(
      * Replace the contents of a view (invoked by the layout manager)
      */
     override fun onBindViewHolder(holder: ActuViewHolder, position: Int) {
+        holder.itemView.setOnClickListener{ holder.title.text="clické" }
         val item = dataset[position]
         holder.title.text = item.titre
-
+        holder.core.text = item.contenu
         if (position % 3 == 0) {
             holder.sidebar.setBackgroundColor(Color.parseColor("#FFF5B1"))
         } else if (position % 3 == 1) {
