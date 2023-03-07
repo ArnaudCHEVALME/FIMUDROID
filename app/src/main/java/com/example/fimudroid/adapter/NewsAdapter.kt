@@ -31,10 +31,7 @@ class NewsAdapter(
     // Each data item is just an Affirmation object.
     class ActuViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         val title: TextView = view.findViewById(R.id.actu_title)
-        val core: TextView = view.findViewById(R.id.actu_core)
-        val icon: ImageView = view.findViewById(R.id.actu_icon)
-        val card: CardView = view.findViewById(R.id.card_news)
-        val date:TextView = view.findViewById(R.id.date_actu)
+        val sidebar: View = view.findViewById(R.id.side_bare_news)
     }
 
     /**
@@ -53,23 +50,27 @@ class NewsAdapter(
     override fun onBindViewHolder(holder: ActuViewHolder, position: Int) {
         val item = dataset[position]
         holder.title.text = item.titre
-        holder.core.text = item.contenu
-        holder.date.text = item.date_envoi
+
+        if (position % 3 == 0) {
+            holder.sidebar.setBackgroundColor(Color.parseColor("#FFF5B1"))
+        } else if (position % 3 == 1) {
+            holder.sidebar.setBackgroundColor(Color.rgb(159, 208, 255))
+        } else {
+            holder.sidebar.setBackgroundColor(Color.rgb(255, 108, 149))
+        }
 //        if(item.type_news.libelle == "Important"){
 //            //Changer l'icon de l'actu en fonction du type d'actu
 //            val resId = R.drawable.ic_notifications_black_24dp
 //            holder.icon.setImageResource(resId)
-        holder.card.setCardBackgroundColor(Color.parseColor("#FFF5B1"))
 //        //            holder.truc.setBackgroundColor(getRessources().getColor(R.color.purple_700));
 //
 //        }
 //        else if (item.type_news.libelle == "Info"){
 //            val resId = androidx.databinding.library.baseAdapters.R.drawable.notification_icon_background
 //            holder.icon.setImageResource(resId)
-//            holder.card.setCardBackgroundColor(Color.rgb(159,208,255))
 //        }
 //        else{
-//            holder.card.setCardBackgroundColor(Color.rgb(255,108,149))
+//            holder.card.setCardBackgroundColor()
 //        }
     }
 

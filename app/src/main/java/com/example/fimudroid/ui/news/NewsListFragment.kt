@@ -7,8 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
+import com.example.fimudroid.adapter.ImageHeaderNewsAdapter
 import com.example.fimudroid.adapter.NewsAdapter
 
 
@@ -28,12 +31,15 @@ class NewsListFragment : Fragment() {
         )[NewsViewModel::class.java]
 
         val recyclerView: RecyclerView = root.findViewById(R.id.news_recycler)
-        recyclerView.adapter = NewsAdapter(emptyList())
-
         viewModel.getAllNews().observe(viewLifecycleOwner) { news ->
             Log.i("NewsData", news.toString())
+
+            val newsHeaderAdapter = ImageHeaderNewsAdapter("pute.com")
+            val newsAdapter= NewsAdapter(news)
+
             // update UI with list of news
-            recyclerView.adapter = NewsAdapter(news)
+            recyclerView.adapter = ConcatAdapter(newsHeaderAdapter, newsAdapter)
+            recyclerView.addItemDecoration( DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL));
         }
 
         viewModel.getAllNews()
