@@ -18,4 +18,6 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_artiste_list">Artistes</string>
     <string name="title_news">News</string>
+    <string name="title_programmation">Programmation</string>
+    <string name="title_plan">Plan</string>
 </resources>

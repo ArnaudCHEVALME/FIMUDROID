@@ -24,7 +24,7 @@ class ImageHeaderNewsAdapter(
 
     // Bind the image resource to the image view
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        holder.header.setImageResource(R.drawable.ic_home_black_24dp)
+        holder.header.setImageResource(R.drawable.fimuapp)
     }
 
     // Return the number of images in the list

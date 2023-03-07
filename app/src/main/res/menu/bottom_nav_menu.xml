@@ -3,12 +3,22 @@
 
     <item
         android:id="@+id/navigation_news"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/news"
         android:title="@string/title_news" />
 
     <item
+        android:id="@+id/navigation_programmation"
+        android:icon="@drawable/programmation"
+        android:title="@string/title_programmation" />
+
+    <item
         android:id="@+id/navigation_artiste_list"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/artistes"
         android:title="@string/title_artiste_list" />
+
+    <item
+        android:id="@+id/navigation_plan"
+        android:icon="@drawable/map"
+        android:title="@string/title_plan" />
 
 </menu>
