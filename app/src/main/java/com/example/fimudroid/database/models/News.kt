@@ -8,10 +8,9 @@ import com.example.fimudroid.database.models.TypeNews
 @Entity(tableName = "news")
 data class News(
     @PrimaryKey
-    val id: Int,
+    val news_id: Int,
     val contenu: String?,
     val date_envoi: String?,
-
     val id_type_news: Int,
     val titre: String?,
 )

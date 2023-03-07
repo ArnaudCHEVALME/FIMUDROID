@@ -24,6 +24,9 @@ interface FimuApiService {
     @GET("actualite")
     suspend fun getNews(): List<News>
 
+    @GET("typeactu")
+    suspend fun getTypesNews(): List<TypeNews>
+
     @GET("categorie")
     suspend fun getCategories():List<Categorie>
 

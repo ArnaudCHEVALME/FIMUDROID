@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.fimudroid.database.daos.*
 import com.example.fimudroid.database.models.*
+import com.example.fimudroid.database.relations.NewsWithTypes
 
 @Database(
     entities = [

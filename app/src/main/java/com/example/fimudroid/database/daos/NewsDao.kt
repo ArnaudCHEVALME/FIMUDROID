@@ -1,16 +1,14 @@
 package com.example.fimudroid.database.daos
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.fimudroid.database.models.News
 
 // Define the DAOs
 @Dao
 interface NewsDao {
-    @Query("SELECT * FROM news")
+    @Transaction
+    @Query("SELECT * FROM news JOIN types_news ON news.id_type_news = news.id_type_news")
     fun getAll(): LiveData<List<News>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

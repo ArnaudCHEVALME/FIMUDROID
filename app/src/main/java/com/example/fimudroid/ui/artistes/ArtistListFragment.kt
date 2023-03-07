@@ -17,7 +17,6 @@ class ArtistListFragment : Fragment() {
     ): View? {
         val root = inflater.inflate(R.layout.artist_recycler, container, false)
         val recyclerView: RecyclerView = root.findViewById(R.id.artist_recycler_view)
-        recyclerView.adapter = ArtistAdapter(emptyList())
 
         val viewModel = ViewModelProvider(
             this, ViewModelProvider.AndroidViewModelFactory(requireActivity().application)

@@ -10,10 +10,12 @@ import com.example.fimudroid.network.retrofit
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import com.example.fimudroid.database.models.Artiste as ArtisteDB
-import com.example.fimudroid.database.models.News as NewsDB
 import com.example.fimudroid.network.models.Artiste as ArtisteNet
+import com.example.fimudroid.database.models.Artiste as ArtisteDB
 import com.example.fimudroid.network.models.News as NewsNet
+import com.example.fimudroid.database.models.News as NewsDB
+import com.example.fimudroid.network.models.TypeNews as TypeNewsNet
+import com.example.fimudroid.database.models.TypeNews as TypeNewsDB
 
 class FimuApp : Application() {
     // Initialize Retrofit service
@@ -51,17 +53,20 @@ class FimuApp : Application() {
             val stands = service.getStands()
             val services = service.getServices()
             val typeStand = service.getTypesStand()
-
-            Log.i("DATA", artistes.toString())
-
+            val typesNews = service.getTypesNews()
 
             // Convert network models to database models
             val artisteDBs = artistes.map { it.toArtistDB() }
             val newsDBs = news.map { it.toNewsDB() }
+            val typesNewsDBs = typesNews.map {it.toTypeNewsDB()}
 
             // Store data in Room database
             db.artisteDao().insertAll(artisteDBs)
+            db.typeNewsDao().inserAll(typesNewsDBs)
             db.newsDao().insertAll(newsDBs)
+
+            val news2 = db.newsDao().getAll()
+            Log.i("RELA : ", news2.toString())
         }
     }
 
@@ -74,6 +79,11 @@ class FimuApp : Application() {
     fun NewsNet.toNewsDB(): NewsDB {
         return NewsDB(
             id, contenu, date_envoi, id_typeactu, titre
+        )
+    }
+    fun TypeNewsNet.toTypeNewsDB(): TypeNewsDB {
+        return TypeNewsDB(
+            id, libelle
         )
     }
 }
