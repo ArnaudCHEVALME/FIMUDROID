@@ -8,7 +8,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 
 
-private const val BASE_URL = "http://10.0.2.2:3000"
+private const val BASE_URL = "http://192.168.86.17:3000"
 val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
     .build()
@@ -47,5 +47,6 @@ interface FimuApiService {
 
     @GET("service")
     suspend fun getServices(): List<Service>
+
 
 }

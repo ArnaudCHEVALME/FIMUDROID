@@ -16,6 +16,8 @@ import com.example.fimudroid.network.models.News as NewsNet
 import com.example.fimudroid.database.models.News as NewsDB
 import com.example.fimudroid.network.models.TypeNews as TypeNewsNet
 import com.example.fimudroid.database.models.TypeNews as TypeNewsDB
+import com.example.fimudroid.database.models.Stand as StandDB
+import com.example.fimudroid.network.models.Stand as StandNet
 
 class FimuApp : Application() {
     // Initialize Retrofit service
@@ -59,11 +61,13 @@ class FimuApp : Application() {
             val artisteDBs = artistes.map { it.toArtistDB() }
             val newsDBs = news.map { it.toNewsDB() }
             val typesNewsDBs = typesNews.map {it.toTypeNewsDB()}
+            val standsDBs = stands.map { it.toStandDB() }
 
             // Store data in Room database
             db.artisteDao().insertAll(artisteDBs)
             db.typeNewsDao().inserAll(typesNewsDBs)
             db.newsDao().insertAll(newsDBs)
+            db.standDao().inserAll(standsDBs)
 
             val news2 = db.newsDao().getAll()
             Log.i("RELA : ", news2.toString())
@@ -86,4 +90,11 @@ class FimuApp : Application() {
             id, libelle
         )
     }
+
+    fun StandNet.toStandDB(): StandDB{
+        return StandDB(
+            id, id_typestand, latitude, libelle, longitude
+        )
+    }
+
 }

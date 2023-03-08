@@ -9,8 +9,16 @@ import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.lifecycleScope
+import com.example.fimudroid.database.FimuDB
+import com.example.fimudroid.database.models.Stand
 import com.example.fimudroid.databinding.ActivityMainBinding
 import com.example.fimudroid.databinding.ActivityMapBinding
+import com.example.fimudroid.ui.stands.StandViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 import org.osmdroid.config.Configuration.*
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -28,8 +36,16 @@ class MapActivity : AppCompatActivity() {
     private lateinit var map : MapView
     private lateinit var binding: ActivityMapBinding
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val db :FimuDB = FimuDB.getInstance(this)
+
+        val standViewModel : StandViewModel = StandViewModel(this.application);
+
+        var standList : LiveData<List<Stand>> = standViewModel.getAllStands()
+
         setContentView(R.layout.activity_map)
 
         setContentView(R.layout.activity_main)
@@ -46,28 +62,38 @@ class MapActivity : AppCompatActivity() {
         val mapController = map.controller
         mapController.setZoom(18.5)
 
-        val startPoint = GeoPoint( 47.638410197922674,6.862777328835964);
+        val startPoint = GeoPoint( 47.638410197922674,6.862777328835964)
         mapController.setCenter(startPoint)
 
         //your items
         val items = ArrayList<OverlayItem>()
-        items.add(OverlayItem("Scène", "Kiosque", GeoPoint(47.63830808584398, 6.8630603018852705)))
-        items.add(OverlayItem("Bar", "La belle bête", GeoPoint(47.638410197922674,6.862777328835964)))
+        /*items.add(OverlayItem("Scène", "Kiosque", GeoPoint(47.63830808584398, 6.8630603018852705)))
+        items.add(OverlayItem("Bar", "La belle bête", GeoPoint(47.638410197922674,6.862777328835964)))*/
 
-        //the overlay
-        var overlay = ItemizedOverlayWithFocus<OverlayItem>(items, object:
-            ItemizedIconOverlay.OnItemGestureListener<OverlayItem> {
-            override fun onItemSingleTapUp(index:Int, item:OverlayItem):Boolean {
-                //do something
-                return true
+        standViewModel.getAllStands().observe(this){stands ->
+            for (stand: Stand in stands){
+                items.add(OverlayItem("Stand",stand.libelle,GeoPoint(stand.longitude.toDouble(),stand.latitude.toDouble())))
             }
-            override fun onItemLongPress(index:Int, item:OverlayItem):Boolean {
-                return false
-            }
-        }, this)
-        overlay.setFocusItemsOnTap(true);
 
-        map.overlays.add(overlay);
+            //the overlay
+            var overlay = ItemizedOverlayWithFocus<OverlayItem>(items, object:
+                ItemizedIconOverlay.OnItemGestureListener<OverlayItem> {
+                override fun onItemSingleTapUp(index:Int, item:OverlayItem):Boolean {
+                    //do something
+                    return true
+                }
+                override fun onItemLongPress(index:Int, item:OverlayItem):Boolean {
+                    return false
+                }
+            }, this)
+            overlay.setFocusItemsOnTap(true)
+
+            map.overlays.add(overlay)
+        }
+
+
+        standViewModel.getAllStands()
+
     }
 
     override fun onResume() {

@@ -39,7 +39,7 @@ class NewsListFragment : Fragment() {
 
             // update UI with list of news
             recyclerView.adapter = ConcatAdapter(newsHeaderAdapter, newsAdapter)
-            recyclerView.addItemDecoration( DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL));
+            recyclerView.addItemDecoration( DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
         }
 
         viewModel.getAllNews()
