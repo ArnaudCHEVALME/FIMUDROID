@@ -23,7 +23,15 @@
         android:id="@+id/navigation_artiste_list"
         android:name="com.example.fimudroid.ui.artistes.ArtistListFragment"
         android:label="@string/title_artiste_list"
-        tools:layout="@layout/artist_recycler" />
+        tools:layout="@layout/artist_recycler" >
+        <action
+            android:id="@+id/action_navigation_artiste_list_to_artisteDetailsFragment"
+            app:destination="@id/artisteDetailsFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
     <activity
         android:id="@+id/navigation_plan"
         android:name="com.example.fimudroid.MapActivity"
@@ -35,5 +43,10 @@
         android:label="NewsDetails"
         tools:layout="@layout/news_details_fragment">
     </fragment>
+    <fragment
+        android:id="@+id/artisteDetailsFragment"
+        android:name="com.example.fimudroid.ui.artistes.ArtisteDetailsFragment"
+        android:label="artiste_details"
+        tools:layout="@layout/artiste_details_fragment" />
 
 </navigation>

@@ -1,4 +1,4 @@
-package com.example.fimudroid.activities
+package com.example.fimudroid.ui.artistes
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,7 +14,7 @@ class ArtisteDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_artiste_details, container, false)
+        return inflater.inflate(R.layout.artiste_details_fragment, container, false)
     }
 
 

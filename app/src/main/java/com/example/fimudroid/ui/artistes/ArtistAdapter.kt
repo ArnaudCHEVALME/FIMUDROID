@@ -1,6 +1,5 @@
-package com.example.fimudroid.adapter
+package com.example.fimudroid.ui.artistes
 
-import android.graphics.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,10 +7,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
 import com.example.fimudroid.database.models.Artiste
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
+import com.example.fimudroid.ui.news.OnItemClickListener
 
 class ArtistAdapter(
+    private val listener: OnItemClickListener,
     private val dataset: List<Artiste>
 ) : RecyclerView.Adapter<ArtistAdapter.ItemViewHolder>() {
 
@@ -34,6 +33,13 @@ class ArtistAdapter(
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val artiste = dataset[position]
         holder.textView.text = artiste.nom
+        holder.itemView.setOnClickListener{println(artiste.id)}
+
+        holder.itemView.setOnClickListener{
+
+            listener.onItemClick(artiste.id)
+        }
+
 
 //        val categoryTextView = holder.itemView.findViewById<TextView>(R.id.category_text_view)
 //        categoryTextView.text = artiste.category.libelle

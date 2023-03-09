@@ -1,4 +1,4 @@
-package com.example.fimudroid.adapter
+package com.example.fimudroid.ui.news
 
 import android.view.LayoutInflater
 import android.view.View
