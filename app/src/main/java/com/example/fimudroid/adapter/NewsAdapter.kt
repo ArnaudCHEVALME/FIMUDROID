@@ -16,13 +16,15 @@ import androidx.core.graphics.drawable.IconCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
 import com.example.fimudroid.database.models.News
+import com.example.fimudroid.ui.news.OnItemClickListener
 
 /**
  * Adapter for the [RecyclerView] in [MainActivity]. Displays [Affirmation] data object.
  */
 class NewsAdapter(
 //    private val context: NewsListFragment,
-    private val dataset: List<News>
+    private val dataset: List<News>,
+    private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<NewsAdapter.ActuViewHolder>() {
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -49,17 +51,18 @@ class NewsAdapter(
      * Replace the contents of a view (invoked by the layout manager)
      */
     override fun onBindViewHolder(holder: ActuViewHolder, position: Int) {
-        holder.itemView.setOnClickListener{ holder.title.text="clické" }
         val item = dataset[position]
+        Log.i("DATA", dataset.toString())
         holder.title.text = item.titre
         holder.core.text = item.contenu
-        if (position % 3 == 0) {
-            holder.sidebar.setBackgroundColor(Color.parseColor("#FFF5B1"))
-        } else if (position % 3 == 1) {
-            holder.sidebar.setBackgroundColor(Color.rgb(159, 208, 255))
-        } else {
-            holder.sidebar.setBackgroundColor(Color.rgb(255, 108, 149))
+        holder.sidebar.setBackgroundColor(Color.parseColor("#FFF5B1"))
+
+
+        holder.itemView.setOnClickListener{
+            listener.onItemClick(item.news_id)
         }
+
+
 //        if(item.type_news.libelle == "Important"){
 //            //Changer l'icon de l'actu en fonction du type d'actu
 //            val resId = R.drawable.ic_notifications_black_24dp

@@ -9,12 +9,26 @@
         android:id="@+id/navigation_news"
         android:name="com.example.fimudroid.ui.news.NewsListFragment"
         android:label="@string/title_news"
-        tools:layout="@layout/news_recycler" />
+        tools:layout="@layout/news_recycler" >
+        <action
+            android:id="@+id/action_navigation_news_to_newsDetails"
+            app:destination="@id/newsDetails"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_artiste_list"
         android:name="com.example.fimudroid.ui.artistes.ArtistListFragment"
         android:label="@string/title_artiste_list"
         tools:layout="@layout/artist_recycler" />
+    <fragment
+        android:id="@+id/newsDetails"
+        android:name="com.example.fimudroid.ui.news.NewsDetails"
+        android:label="NewsDetails"
+        tools:layout="@layout/news_details_fragment">
+    </fragment>
 
 </navigation>

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
@@ -14,12 +15,16 @@ import com.example.fimudroid.R
 import com.example.fimudroid.adapter.ImageHeaderNewsAdapter
 import com.example.fimudroid.adapter.NewsAdapter
 
+interface OnItemClickListener {
+    fun onItemClick(itemId: Int)
+}
+
 /**
  * A simple [Fragment] subclass.
  * Use the [NewsListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class NewsListFragment : Fragment() {
+class NewsListFragment : Fragment(), OnItemClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -31,15 +36,17 @@ class NewsListFragment : Fragment() {
 
         val recyclerView: RecyclerView = root.findViewById(R.id.news_recycler)
         viewModel.getAllNews().observe(viewLifecycleOwner) { news ->
-            Log.i("NewsData", news.toString())
-
             val newsHeaderAdapter = ImageHeaderNewsAdapter("pute.com")
-            val newsAdapter= NewsAdapter(news)
+            val newsAdapter = NewsAdapter(news, this)
 
-            // update UI with list of news
             recyclerView.adapter = ConcatAdapter(newsHeaderAdapter, newsAdapter)
-            recyclerView.addItemDecoration( DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL));
+            recyclerView.addItemDecoration(
+                DividerItemDecoration(
+                    recyclerView.context, DividerItemDecoration.VERTICAL
+                )
+            )
         }
+
 
         viewModel.getAllNews()
         Log.i("news", viewModel.getAllNews().toString())
@@ -48,4 +55,10 @@ class NewsListFragment : Fragment() {
         return root
     }
 
+    override fun onItemClick(itemId: Int) {
+        Log.i("CLICK", itemId.toString())
+        var bundle = Bundle()
+        bundle.putInt("id_news", itemId)
+        requireView().findNavController().navigate(R.id.action_navigation_news_to_newsDetails, bundle)
+    }
 }

@@ -8,9 +8,12 @@ import com.example.fimudroid.database.models.News
 @Dao
 interface NewsDao {
     @Transaction
-    @Query("SELECT * FROM news JOIN types_news ON news.id_type_news = news.id_type_news")
+    @Query("SELECT * FROM news")
     fun getAll(): LiveData<List<News>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(news: List<News>)
+
+    @Query("SELECT * FROM news WHERE news_id = :id")
+    fun getById(id:Int): LiveData<News>
 }
