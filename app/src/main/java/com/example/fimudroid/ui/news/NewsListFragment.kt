@@ -12,9 +12,6 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
-import com.example.fimudroid.adapter.ImageHeaderNewsAdapter
-import com.example.fimudroid.adapter.NewsAdapter
-import com.example.fimudroid.network.models.News
 
 interface OnItemClickListener {
     fun onItemClick(itemId: Int)
