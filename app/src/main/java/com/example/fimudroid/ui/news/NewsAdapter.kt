@@ -1,22 +1,14 @@
-package com.example.fimudroid.adapter
+package com.example.fimudroid.ui.news
 
-import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.cardview.widget.CardView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.IconCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
 import com.example.fimudroid.database.models.News
-import com.example.fimudroid.ui.news.OnItemClickListener
 
 /**
  * Adapter for the [RecyclerView] in [MainActivity]. Displays [Affirmation] data object.

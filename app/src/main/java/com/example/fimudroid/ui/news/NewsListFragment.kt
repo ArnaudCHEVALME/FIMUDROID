@@ -56,10 +56,8 @@ class NewsListFragment : Fragment(), OnItemClickListener {
     }
 
     override fun onItemClick(itemId: Int) {
-//        Log.i("CLICK", itemId.toString())
         var bundle = Bundle()
         bundle.putInt("news_id", itemId)
-//        Log.i("CLICK", bundle.getInt("id_news").toString())
         requireView().findNavController().navigate(R.id.action_navigation_news_to_newsDetails, bundle)
     }
 }
