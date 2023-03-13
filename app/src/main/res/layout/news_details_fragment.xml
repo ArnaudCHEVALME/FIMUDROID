@@ -8,18 +8,6 @@
     tools:layout="@layout/news_details_fragment">
 
     <View
-        android:id="@+id/side_bare_news3"
-        android:layout_width="7dp"
-        android:layout_height="350dp"
-        android:background="@drawable/news_side_bar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.489"
-        app:layout_constraintStart_toEndOf="@+id/news_core"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.753" />
-
-    <View
         android:id="@+id/side_bare_news2"
         android:layout_width="7dp"
         android:layout_height="100dp"
@@ -71,7 +59,7 @@
         app:srcCompat="@drawable/ic_home_black_24dp" />
 
     <TextView
-        android:id="@+id/news_core"
+        android:id="@+id/actu_core"
         android:layout_width="300dp"
         android:layout_height="350dp"
         android:layout_marginTop="19dp"

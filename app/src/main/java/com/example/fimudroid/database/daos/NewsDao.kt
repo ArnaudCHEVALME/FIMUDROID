@@ -14,6 +14,7 @@ interface NewsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(news: List<News>)
 
+    @Transaction
     @Query("SELECT * FROM news WHERE news_id = :id")
-    fun getById(id:Int): LiveData<News>
+    fun getById(id: Int): List<News>
 }

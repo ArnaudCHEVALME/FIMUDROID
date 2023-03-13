@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
 import com.example.fimudroid.adapter.ImageHeaderNewsAdapter
 import com.example.fimudroid.adapter.NewsAdapter
+import com.example.fimudroid.network.models.News
 
 interface OnItemClickListener {
     fun onItemClick(itemId: Int)
@@ -29,7 +30,6 @@ class NewsListFragment : Fragment(), OnItemClickListener {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.news_recycler, container, false)
-
         val viewModel = ViewModelProvider(
             this, ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
         )[NewsViewModel::class.java]
@@ -56,9 +56,10 @@ class NewsListFragment : Fragment(), OnItemClickListener {
     }
 
     override fun onItemClick(itemId: Int) {
-        Log.i("CLICK", itemId.toString())
+//        Log.i("CLICK", itemId.toString())
         var bundle = Bundle()
-        bundle.putInt("id_news", itemId)
+        bundle.putInt("news_id", itemId)
+//        Log.i("CLICK", bundle.getInt("id_news").toString())
         requireView().findNavController().navigate(R.id.action_navigation_news_to_newsDetails, bundle)
     }
 }

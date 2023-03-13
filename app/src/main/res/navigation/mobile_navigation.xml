@@ -16,7 +16,14 @@
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out"
             app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
+            app:popExitAnim="@android:anim/fade_out" >
+            <argument
+                android:name="news_id"
+                android:defaultValue="1" />
+        </action>
+        <argument
+            android:name="news_id"
+            app:argType="integer" />
     </fragment>
 
     <fragment
@@ -34,6 +41,8 @@
         android:name="com.example.fimudroid.ui.news.NewsDetails"
         android:label="NewsDetails"
         tools:layout="@layout/news_details_fragment">
+        <argument android:name="news_id"
+            app:argType="integer" />
     </fragment>
 
 </navigation>
