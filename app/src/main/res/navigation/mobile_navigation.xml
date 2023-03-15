@@ -16,10 +16,15 @@
         android:name="com.example.fimudroid.ui.artistes.ArtistListFragment"
         android:label="@string/title_artiste_list"
         tools:layout="@layout/artist_recycler" />
-    <activity
+    <!--<activity
         android:id="@+id/navigation_plan"
         android:name="com.example.fimudroid.MapActivity"
         android:label="activity_map"
-        tools:layout="@layout/activity_map" />
+        tools:layout="@layout/activity_map" />-->
+    <fragment
+        android:id="@+id/navigation_plan"
+        android:name="com.example.fimudroid.MapFragment"
+        android:label="Plan"
+        tools:layout="@layout/fragment_map" />
 
 </navigation>
