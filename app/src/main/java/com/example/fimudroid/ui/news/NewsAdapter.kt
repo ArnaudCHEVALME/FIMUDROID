@@ -45,9 +45,20 @@ class NewsAdapter(
         Log.i("DATA", dataset.toString())
         holder.title.text = item.titre
         holder.core.text = (item.contenu?.subSequence(0, item.contenu.length/3).toString())+"..." ?: "no Text"
-        holder.date.text = item.date_envoi?.subSequence(0, 10) ?: "no Date"
         holder.sidebar.setBackgroundColor(Color.parseColor("#FFF5B1"))
+        holder.date.text = item.date_envoi?.subSequence(0, 10).toString() + ",\n" + item.date_envoi?.subSequence(11, 16).toString().replace(':', 'h') ?: "no Date"
 
+
+        if(item.id_typeactu == 1){
+//                bar.setBackgroundColor(Color.parseColor("#FFF5B1"))
+            holder.sidebar.setBackgroundColor(Color.parseColor("#93CAED"))
+        }
+        else if(item.id_typeactu == 2){
+            holder.sidebar.setBackgroundColor(Color.parseColor("#EEEE9B"))
+        }
+        else{
+            holder.sidebar.setBackgroundColor(Color.parseColor("#F47174"))
+        }
 
         holder.itemView.setOnClickListener{
             listener.onItemClick(item.id)
