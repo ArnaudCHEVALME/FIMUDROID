@@ -45,8 +45,7 @@ class NewsDetails(
             val news = viewModel.getById(news_id)
             title.text = news[0].titre
             core.text = news[0].contenu
-            date.text = news[0].date_envoi?.subSequence(0, 10) ?: "no Date"
-
+            date.text = news[0].date_envoi?.subSequence(0, 10).toString() +", "+ news[0].date_envoi?.subSequence(11, 16).toString()+"h" ?: "no Date"
         }
         return root
     }
