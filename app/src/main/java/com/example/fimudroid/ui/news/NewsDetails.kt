@@ -41,9 +41,10 @@ class NewsDetails(
         val date:TextView = root.findViewById(R.id.detail_news_date)
         val bar:View = root.findViewById(R.id.side_bare_news)
 
-        bar.setBackgroundColor(Color.parseColor("#FFF5B1"))
+        bar.setBackgroundColor(Color.parseColor("#93CAED"))
         title.text = "Chargement..."
         core.text = "Chargement..."
+        date.text = "Chargement..."
         lifecycleScope.launch(Dispatchers.IO){
             withContext(Dispatchers.Main) {
                 val news = api.getNewsById(news_id).data
