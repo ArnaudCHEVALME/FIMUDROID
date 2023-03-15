@@ -38,8 +38,9 @@
         android:id="@+id/actu_image"
         android:layout_width="74dp"
         android:layout_height="58dp"
-        android:layout_marginStart="18dp"
+        android:layout_marginStart="9dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="9dp"
         android:text="Core de l'actualité"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -66,6 +67,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         android:text="TextView"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
