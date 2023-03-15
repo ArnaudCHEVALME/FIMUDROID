@@ -15,6 +15,7 @@ import com.example.fimudroid.network.FimuApiService
 import com.example.fimudroid.network.retrofit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 /**
@@ -34,22 +35,46 @@ class NewsDetails(
         savedInstanceState: Bundle?
     ): View? {
 
+
         val news_id:Int = arguments?.getInt("news_id") ?: 0
-        Log.i("LES DATA PUTAIN MERDE CHAR TU VAS LES BOUFFER TES NEWS", news_id.toString())
         val root = inflater.inflate(R.layout.news_details_fragment, container, false)
         val title:TextView = root.findViewById(R.id.actu_title)
         val core:TextView = root.findViewById(R.id.actu_core)
         val date:TextView = root.findViewById(R.id.detail_news_date)
         val bar:View = root.findViewById(R.id.side_bare_news)
+
         bar.setBackgroundColor(Color.parseColor("#FFF5B1"))
         title.text = "Chargement..."
         core.text = "Chargement..."
         lifecycleScope.launch(Dispatchers.IO){
-            val news = api.getNewsById(news_id).data
-            title.text = news.titre
-            core.text = news.contenu
-            date.text = news.dateEnvoi?.subSequence(0, 10) ?: "no Date"
+            withContext(Dispatchers.Main) {
+                val news = api.getNewsById(news_id).data
+                title.text = news.titre
+                core.text = news.contenu
+                date.text = (news.dateEnvoi?.subSequence(0, 10)
+                    .toString() + "heure (futur)") ?: "no Date"
+
+                if(news.typeactu.id == 0){
+
+                    bar.setBackgroundColor(Color.parseColor("#F47174"))
+
+                    //Changer l'icon de l'actu en fonction du type d'actu
+//            val resId = R.drawable.ic_notifications_black_24dp
+//            holder.icon.setImageResource(resId)
+                }
+                else if (news.typeactu.id == 1){
+                    bar.setBackgroundColor(Color.parseColor("#EEEE9B"))
+//            val resId = androidx.databinding.library.baseAdapters.R.drawable.notification_icon_background
+//            holder.icon.setImageResource(resId)
+                }
+                else{
+                    bar.setBackgroundColor(Color.parseColor("#93CAED"))
+                }
+
+            }
         }
+
+//        Log.i("LES DATA PUTAIN MERDE CHAR TU VAS LES BOUFFER TES NEWS", news_id.toString())
         return root
     }
 

@@ -9,14 +9,12 @@
 
     <View
         android:id="@+id/side_bare_news"
-        android:layout_width="6dp"
-        android:layout_height="match_parent"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_width="9dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/news_side_bar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/actu_title"
-        app:layout_constraintHorizontal_bias="0.333"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
@@ -68,9 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/actu_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.03"
         app:layout_constraintStart_toStartOf="parent"
