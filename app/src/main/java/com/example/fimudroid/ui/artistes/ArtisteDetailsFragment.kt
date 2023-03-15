@@ -1,10 +1,13 @@
 package com.example.fimudroid.ui.artistes
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -44,6 +47,22 @@ class ArtisteDetailsFragment() : Fragment() {
             val horaire2: TextView = root.findViewById(R.id.secondeHorraire)
             groupe.text=currentArtiste[0].nom
             description.text=currentArtiste[0].biographie
+
+            val lien1: ImageButton = root.findViewById(R.id.lienButton1)
+            val url = lien1.contentDescription.toString()
+             lien1.setOnClickListener {
+                 val intent= Intent(Intent.ACTION_VIEW)
+                 intent.data = Uri.parse(url)
+                 startActivity(intent)
+             }
+             val lien2: ImageButton = root.findViewById(R.id.imageButton3)
+             val url2 = lien2.contentDescription.toString()
+             lien2.setOnClickListener {
+                 val intent2= Intent(Intent.ACTION_VIEW)
+                 intent2.data = Uri.parse(url2)
+                 startActivity(intent2)
+             }
+
         }
 
 
