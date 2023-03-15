@@ -1,4 +1,4 @@
-package com.example.fimudroid.adapter
+package com.example.fimudroid.ui.news
 
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +18,7 @@ class ImageHeaderNewsAdapter(
 
     // Inflate the XML layout and return a new ViewHolder for the image view
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.new_header_recycler, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.news_header_recycler, parent, false)
         return ImageViewHolder(view)
     }
 

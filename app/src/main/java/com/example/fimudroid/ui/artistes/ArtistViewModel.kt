@@ -12,4 +12,8 @@ class ArtistViewModel(application: Application) : AndroidViewModel(application) 
     fun getAllArtists(): LiveData<List<Artiste>> {
         return db.artisteDao().getAll()
     }
+
+    fun getById(id: Int): List<Artiste>{
+        return db.artisteDao().getById(id)
+    }
 }
