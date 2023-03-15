@@ -12,4 +12,8 @@ class NewsViewModel (application: Application) : AndroidViewModel(application)  
     fun getAllNews(): LiveData<List<News>> {
         return db.newsDao().getAll()
     }
+
+    fun getById(id:Int): List<News>{
+        return db.newsDao().getById(id)
+    }
 }

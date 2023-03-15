@@ -27,7 +27,6 @@ class NewsListFragment : Fragment(), OnItemClickListener {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.news_recycler, container, false)
-
         val viewModel = ViewModelProvider(
             this, ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
         )[NewsViewModel::class.java]
@@ -54,9 +53,8 @@ class NewsListFragment : Fragment(), OnItemClickListener {
     }
 
     override fun onItemClick(itemId: Int) {
-        Log.i("CLICK", itemId.toString())
         var bundle = Bundle()
-        bundle.putInt("id_news", itemId)
+        bundle.putInt("news_id", itemId)
         requireView().findNavController().navigate(R.id.action_navigation_news_to_newsDetails, bundle)
     }
 }

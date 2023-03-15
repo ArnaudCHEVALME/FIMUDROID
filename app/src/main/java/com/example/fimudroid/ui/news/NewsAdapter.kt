@@ -23,6 +23,7 @@ class NewsAdapter(
         val title: TextView = view.findViewById(R.id.actu_title)
         val sidebar: View = view.findViewById(R.id.side_bare_news)
         val core: TextView = view.findViewById(R.id.news_core)
+        val date: TextView = view.findViewById(R.id.news_date)
     }
 
 
@@ -43,7 +44,8 @@ class NewsAdapter(
         val item = dataset[position]
         Log.i("DATA", dataset.toString())
         holder.title.text = item.titre
-        holder.core.text = item.contenu
+        holder.core.text = (item.contenu?.subSequence(0, item.contenu.length/3).toString())+"..." ?: "no Text"
+        holder.date.text = item.date_envoi?.subSequence(0, 10) ?: "no Date"
         holder.sidebar.setBackgroundColor(Color.parseColor("#FFF5B1"))
 
 

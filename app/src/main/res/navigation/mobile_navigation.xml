@@ -13,10 +13,17 @@
         <action
             android:id="@+id/action_navigation_news_to_newsDetails"
             app:destination="@id/newsDetails"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right">
+            <argument
+                android:name="news_id"
+                android:defaultValue="1" />
+        </action>
+        <argument
+            android:name="news_id"
+            app:argType="integer" />
     </fragment>
 
     <fragment
@@ -26,11 +33,14 @@
         tools:layout="@layout/artist_recycler" >
         <action
             android:id="@+id/action_navigation_artiste_list_to_artisteDetailsFragment"
-            app:destination="@id/artisteDetailsFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
+            app:destination="@id/artisteDetailsFragment">
+            <argument
+                android:name="itemId"
+                android:defaultValue="0" />
+        </action>
+        <argument
+            android:name="itemId"
+            app:argType="integer" />
     </fragment>
     <activity
         android:id="@+id/navigation_plan"
@@ -42,11 +52,25 @@
         android:name="com.example.fimudroid.ui.news.NewsDetails"
         android:label="NewsDetails"
         tools:layout="@layout/news_details_fragment">
+        <argument android:name="news_id"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/artisteDetailsFragment"
         android:name="com.example.fimudroid.ui.artistes.ArtisteDetailsFragment"
         android:label="artiste_details"
-        tools:layout="@layout/artiste_details_fragment" />
+        tools:layout="@layout/artiste_details_fragment" >
+        <argument
+            android:name="itemId"
+            app:argType="integer" />
+    </fragment>
+    <argument
+        android:name="news_id"
+        android:defaultValue="0" />
+    <fragment
+        android:id="@+id/navigation_programmation"
+        android:name="com.example.fimudroid.ui.planning.PlanningFragment"
+        android:label="fragment_planning"
+        tools:layout="@layout/fragment_planning" />
 
 </navigation>

@@ -14,10 +14,10 @@ class ArtistAdapter(
     private val dataset: List<Artiste>
 ) : RecyclerView.Adapter<ArtistAdapter.ItemViewHolder>() {
 
-
     class ItemViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView = view.findViewById(R.id.artist_name_text_view)
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         // create a new view
