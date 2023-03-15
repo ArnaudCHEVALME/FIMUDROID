@@ -63,7 +63,7 @@ class MapFragment : Fragment() {
         map.setTileSource(TileSourceFactory.MAPNIK)
 
         val mapController = map.controller
-        mapController.setZoom(18.5)
+        mapController.setZoom(18.5) //18.5
 
         val startPoint = GeoPoint( 47.638410197922674,6.862777328835964)
         mapController.setCenter(startPoint)
@@ -74,7 +74,7 @@ class MapFragment : Fragment() {
         items.add(OverlayItem("Bar", "La belle bête", GeoPoint(47.638410197922674,6.862777328835964)))*/
 
         standViewModel.getAllStands().observe(viewLifecycleOwner){stands ->
-            for (stand: Stand in stands){
+            /*for (stand: Stand in stands){
                 items.add(OverlayItem("Stand",stand.libelle,GeoPoint(stand.longitude.toDouble(),stand.latitude.toDouble())))
             }
 
@@ -91,12 +91,27 @@ class MapFragment : Fragment() {
             }, requireContext())
             overlay.setFocusItemsOnTap(true)
 
-            map.overlays.add(overlay)
+            map.overlays.add(overlay)*/
 
-            /*for (stand: Stand in stands){
+            for (stand: Stand in stands){
                 var markerStand = Marker(map)
                 markerStand.setPosition(GeoPoint(stand.longitude.toDouble(),stand.latitude.toDouble()))
-            }*/
+                markerStand.setTitle(stand.libelle)
+                markerStand.setIcon(resources.getDrawable(R.drawable.stand))
+                map.overlays.add(markerStand)
+            }
+
+            var sceneTestMarker = Marker(map)
+            sceneTestMarker.setPosition(GeoPoint(47.63830808584398,6.8630603018852705))
+            sceneTestMarker.setTitle("Le Kiosque")
+            sceneTestMarker.setIcon(resources.getDrawable(R.drawable.microphone))
+            map.overlays.add(sceneTestMarker)
+
+            var standTestMarker = Marker(map)
+            standTestMarker.setPosition(GeoPoint(47.638410197922674,6.862777328835964))
+            standTestMarker.setTitle("La belle bête")
+            standTestMarker.setIcon(resources.getDrawable(R.drawable.stand))
+            map.overlays.add(standTestMarker)
 
 
         }

@@ -42,11 +42,7 @@
             android:name="itemId"
             app:argType="integer" />
     </fragment>
-    <activity
-        android:id="@+id/navigation_plan"
-        android:name="com.example.fimudroid.MapActivity"
-        android:label="activity_map"
-        tools:layout="@layout/activity_map" />
+
     <fragment
         android:id="@+id/newsDetails"
         android:name="com.example.fimudroid.ui.news.NewsDetails"
@@ -72,5 +68,10 @@
         android:name="com.example.fimudroid.ui.planning.PlanningFragment"
         android:label="fragment_planning"
         tools:layout="@layout/fragment_planning" />
+    <fragment
+        android:id="@+id/navigation_plan"
+        android:name="com.example.fimudroid.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" />
 
 </navigation>
