@@ -23,9 +23,9 @@
     <TextView
         android:id="@+id/actu_title"
         android:layout_width="300dp"
-        android:layout_height="100dp"
+        android:layout_height="145dp"
         android:text="Titre de l'acutalité"
-        android:textSize="35dp"
+        android:textSize="38sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,15 +39,13 @@
         android:layout_width="300dp"
         android:layout_height="100dp"
         android:layout_marginStart="18dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="35dp"
         android:text="Core de l'actualité"
         app:layout_constraintBottom_toTopOf="@+id/actu_core"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.397"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/actu_title"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_bias="0.892"
         app:srcCompat="@drawable/ic_home_black_24dp" />
 
     <TextView
@@ -62,5 +60,16 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/actu_title"
-        app:layout_constraintVertical_bias="0.598" />
+        app:layout_constraintVertical_bias="0.79" />
+
+    <TextView
+        android:id="@+id/detail_news_date"
+        android:layout_width="105dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="180dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.816"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
