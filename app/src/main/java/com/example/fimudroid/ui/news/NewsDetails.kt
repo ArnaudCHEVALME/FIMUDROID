@@ -49,7 +49,6 @@ class NewsDetails(
             title.text = news.titre
             core.text = news.contenu
             date.text = news.date_envoi?.subSequence(0, 10) ?: "no Date"
-
         }
         return root
     }
