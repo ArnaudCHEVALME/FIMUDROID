@@ -71,7 +71,7 @@
     <fragment
         android:id="@+id/navigation_plan"
         android:name="com.example.fimudroid.MapFragment"
-        android:label="fragment_map"
+        android:label="Plan"
         tools:layout="@layout/fragment_map" />
 
 </navigation>
