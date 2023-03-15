@@ -9,5 +9,6 @@ data class News(
     @field:Json(name = "contenu") val contenu: String?,
     @field:Json(name = "lienImage") val lienImage: String?,
     @field:Json(name = "dateEnvoi") val dateEnvoi: String?,
+    @field:Json(name = "heureEnvoi") val heureEnvoi: String,
     @field:Json(name = "typeactu") val typeactu: TypeNews
 )

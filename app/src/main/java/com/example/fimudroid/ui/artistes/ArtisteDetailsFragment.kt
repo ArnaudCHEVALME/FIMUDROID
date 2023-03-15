@@ -38,9 +38,24 @@ class ArtisteDetailsFragment() : Fragment() {
             withContext(Dispatchers.Main) {
                 val groupe: TextView = root.findViewById(R.id.nomGroupe)
                 val genreGroupe: TextView = root.findViewById(R.id.textView5)
+                var allGenre =""
+                for (genre in currentArtiste.genres!!){
+                    allGenre += genre.libelle.toString()
+                    allGenre += ", "
+                }
+                genreGroupe.text = allGenre
+
                 val paysOrigine: TextView = root.findViewById(R.id.textView6)
+                var result: String = ""
+                for (pays in currentArtiste.pays!!){
+                    result += pays.libelle.toString()
+                    result += ", "
+                }
+                paysOrigine.text = result
+
+
+
                 val description: TextView = root.findViewById(R.id.textView7)
-                // val favori
                 // val lienRéseau
                 val programme: TextView = root.findViewById(R.id.textView)
                 // val video

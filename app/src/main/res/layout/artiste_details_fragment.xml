@@ -6,175 +6,174 @@
     android:layout_height="wrap_content"
     tools:context=".ui.artistes.ArtisteDetailsFragment">
 
-    <TextView
-        android:id="@+id/nomGroupe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
-        android:text="nom_du_groupe"
-        android:textSize="34sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/textView5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="-52dp"
+            tools:layout_editor_absoluteY="104dp">
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="Genre"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView6"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.057"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nomGroupe" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="8dp"
-        android:text="le_pays_d_origine"
-        android:textAlignment="viewStart"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.082"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+                        <ImageView
+                            android:id="@+id/imageView"
+                            android:layout_width="405dp"
+                            android:layout_height="100dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="18dp"
+                            app:layout_constraintBottom_toTopOf="@+id/nomGroupe"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="ImageContrastCheck" />
 
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="388dp"
-        android:layout_height="155dp"
-        android:layout_marginTop="10dp"
-        android:text="descriptionGroupe"
-        android:textAlignment="viewStart"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.652"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+                        <TextView
+                            android:id="@+id/nomGroupe"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="nom_du_groupe"
+                            android:textSize="34sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@+id/textView5"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/imageView" />
 
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="163dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="54dp"
-        android:contentDescription="addfav"
-        android:src="@android:drawable/btn_star_big_on"
-        app:layout_constraintBottom_toTopOf="@+id/textView7"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/nomGroupe"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+                        <TextView
+                            android:id="@+id/textView5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="Genre"
+                            android:textSize="20sp"
+                            app:layout_constraintBottom_toTopOf="@+id/textView6"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.057"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/nomGroupe" />
 
-    <ImageButton
-        android:id="@+id/lienButton1"
-        android:layout_width="40dp"
-        android:layout_height="31dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="362dp"
-        android:contentDescription="https://www.instagram.com/fimubelfort/"
-        android:contextClickable="true"
-        android:src="@android:drawable/ic_dialog_alert"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7"
-        tools:ignore="TouchTargetSizeCheck" />
+                        <TextView
+                            android:id="@+id/textView6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="1dp"
+                            android:layout_marginTop="8dp"
+                            android:text="le_pays_d_origine"
+                            android:textAlignment="viewStart"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.082"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-    <ImageButton
-        android:id="@+id/imageButton3"
-        android:layout_width="36dp"
-        android:layout_height="31dp"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="308dp"
-        android:contentDescription="https://twitter.com/fimubelfort"
-        android:src="@android:drawable/ic_dialog_alert"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/lienButton1"
-        app:layout_constraintTop_toBottomOf="@+id/textView7"
-        tools:ignore="TouchTargetSizeCheck" />
+                        <TextView
+                            android:id="@+id/textView7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="12dp"
+                            android:text="descriptionGroupe"
+                            android:textAlignment="viewStart"
+                            android:textSize="20sp"
+                            app:layout_constraintBottom_toTopOf="@+id/lienButton1"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.304"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="121dp"
-        android:layout_marginTop="68dp"
-        android:layout_marginEnd="121dp"
-        android:text="programme"
-        android:textAlignment="viewStart"
-        android:textAllCaps="false"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7"
-        tools:text="Programmation" />
 
-    <VideoView
-        android:id="@+id/videoView3"
-        android:layout_width="242dp"
-        android:layout_height="146dp"
-        android:layout_marginStart="85dp"
-        android:layout_marginTop="22dp"
-        android:layout_marginEnd="85dp"
-        android:contextClickable="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/horrairePassage" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="405dp"
-        android:layout_height="34dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="18dp"
-        android:contentDescription="logo_du_groupe"
-        android:src="@android:drawable/ic_menu_mapmode"
-        app:layout_constraintBottom_toTopOf="@+id/nomGroupe"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+                        <ImageButton
+                            android:id="@+id/lienButton1"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="362dp"
+                            android:contentDescription="https://www.instagram.com/fimubelfort/"
+                            android:contextClickable="true"
+                            android:layout_marginTop="15dp"
+                            android:src="@drawable/insta1"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView7"
+                            tools:ignore="TouchTargetSizeCheck,ImageContrastCheck" />
 
-    <TextView
-        android:id="@+id/horrairePassage"
-        android:layout_width="76dp"
-        android:layout_height="74dp"
-        android:layout_marginStart="69dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="121dp"
-        android:layout_marginBottom="22dp"
-        android:text="horaire de passage"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/videoView3"
-        app:layout_constraintEnd_toStartOf="@+id/secondeHorraire"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        tools:text="horraire de passage" />
+                        <ImageButton
+                            android:id="@+id/imageButton3"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="15dp"
+                            android:contentDescription="https://twitter.com/fimubelfort"
+                            android:icon="@drawable/twitter2"
+                            app:layout_constraintTop_toBottomOf="@+id/textView7"
+                            app:layout_constraintLeft_toRightOf="@+id/lienButton1"
+                            tools:ignore="TouchTargetSizeCheck,ImageContrastCheck" />
 
-    <TextView
-        android:id="@+id/secondeHorraire"
-        android:layout_width="79dp"
-        android:layout_height="74dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="69dp"
-        android:layout_marginBottom="22dp"
-        android:text="_2_eme_horraire"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/videoView3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+                        <TextView
+                            android:id="@+id/textView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="121dp"
+                            android:layout_marginEnd="121dp"
+                            android:text="Programme"
+                            android:textAlignment="center"
+                            android:textAllCaps="false"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="1.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/lienButton1"
+                            tools:text="Programmation" />
+
+                        <TextView
+                            android:id="@+id/horrairePassage"
+                            android:layout_width="76dp"
+                            android:layout_height="74dp"
+                            android:layout_marginTop="14dp"
+
+                            android:layout_marginBottom="22dp"
+
+                            android:text="horaire de passage"
+                            android:textAlignment="center"
+                            android:textSize="20sp"
+                            app:layout_constraintBottom_toTopOf="@+id/videoView3"
+                            app:layout_constraintEnd_toStartOf="@+id/secondeHorraire"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView"
+                            tools:text="horraire de passage" />
+
+                        <TextView
+                            android:id="@+id/secondeHorraire"
+                            android:layout_width="79dp"
+                            android:layout_height="74dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="69dp"
+                            android:layout_marginBottom="22dp"
+                            android:text="_2_eme_horraire"
+                            android:textSize="20sp"
+                            app:layout_constraintBottom_toTopOf="@+id/videoView3"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+                        <VideoView
+                            android:id="@+id/videoView3"
+                            android:layout_width="242dp"
+                            android:layout_height="146dp"
+                            android:layout_marginStart="85dp"
+                            android:layout_marginTop="22dp"
+                            android:layout_marginEnd="85dp"
+                            android:contentDescription="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                            android:contextClickable="false"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="1.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/horrairePassage" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
