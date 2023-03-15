@@ -63,5 +63,10 @@
     <argument
         android:name="news_id"
         android:defaultValue="0" />
+    <fragment
+        android:id="@+id/navigation_programmation"
+        android:name="com.example.fimudroid.ui.planning.PlanningFragment"
+        android:label="fragment_planning"
+        tools:layout="@layout/fragment_planning" />
 
 </navigation>
