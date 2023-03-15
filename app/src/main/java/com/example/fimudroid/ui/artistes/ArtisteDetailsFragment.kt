@@ -56,33 +56,33 @@ class ArtisteDetailsFragment() : Fragment() {
                 paysOrigine.text = result
 
 
-                val videoView = root.findViewById<VideoView>(R.id.artisteVideo);
-                val uri = Uri.parse(currentArtiste.lien_video)
-                videoView.setVideoURI(uri)
+                // val videoView = root.findViewById<VideoView>(R.id.artisteVideo);
+                // val uri = Uri.parse(currentArtiste.lien_video)
+                // videoView.setVideoURI(uri)
 
-                val mediaController = MediaController(this@ArtisteDetailsFragment.requireContext())
-
-                // sets the anchor view
-                // anchor view for the videoView
+                // val mediaController = MediaController(this@ArtisteDetailsFragment.requireContext())
 
                 // sets the anchor view
                 // anchor view for the videoView
-                mediaController.setAnchorView(videoView)
+
+                // sets the anchor view
+                // anchor view for the videoView
+                // mediaController.setAnchorView(videoView)
 
                 // sets the media player to the videoView
 
                 // sets the media player to the videoView
-                mediaController.setMediaPlayer(videoView)
+                // mediaController.setMediaPlayer(videoView)
 
                 // sets the media controller to the videoView
 
                 // sets the media controller to the videoView
-                videoView.setMediaController(mediaController)
+                // videoView.setMediaController(mediaController)
 
                 // starts the video
 
                 // starts the video
-                videoView.start()
+                // videoView.start()
 
 
 
@@ -91,8 +91,14 @@ class ArtisteDetailsFragment() : Fragment() {
                 val programme: TextView = root.findViewById(R.id.textView)
                 // val video
                 // val logoGroupe
-                val horaire1: TextView = root.findViewById(R.id.horrairePassage)
-                val horaire2: TextView = root.findViewById(R.id.secondeHorraire)
+                val horaires: TextView = root.findViewById(R.id.horrairePassage)
+                var horaireArtiste =""
+                for (horaire in currentArtiste.concerts){
+                    horaireArtiste += horaire.date_debut +" à "+ horaire.heure_debut + "\n"
+                }
+                horaires.text = horaireArtiste
+
+
                 groupe.text = currentArtiste.nom
                 description.text = currentArtiste.biographie
                 R.drawable.fimuapp
