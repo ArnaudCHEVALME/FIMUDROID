@@ -14,7 +14,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
                         <ImageView
                             android:id="@+id/imageView"
@@ -57,7 +57,6 @@
                             android:id="@+id/textView6"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="1dp"
                             android:layout_marginTop="8dp"
                             android:text="le_pays_d_origine"
                             android:textAlignment="viewStart"
@@ -128,35 +127,22 @@
                             app:layout_constraintTop_toBottomOf="@+id/lienButton1"
                             tools:text="Programmation" />
 
+
                         <TextView
                             android:id="@+id/horrairePassage"
-                            android:layout_width="76dp"
-                            android:layout_height="74dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="14dp"
-
                             android:layout_marginBottom="22dp"
-
+                            android:layout_marginLeft="1dp"
                             android:text="horaire de passage"
                             android:textAlignment="center"
                             android:textSize="20sp"
                             app:layout_constraintBottom_toTopOf="@+id/artisteVideo"
-                            app:layout_constraintEnd_toStartOf="@+id/secondeHorraire"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView"
                             tools:text="horraire de passage" />
-
-                        <TextView
-                            android:id="@+id/secondeHorraire"
-                            android:layout_width="79dp"
-                            android:layout_height="74dp"
-                            android:layout_marginTop="15dp"
-                            android:layout_marginEnd="69dp"
-                            android:layout_marginBottom="22dp"
-                            android:text="_2_eme_horraire"
-                            android:textSize="20sp"
-                            app:layout_constraintBottom_toTopOf="@+id/artisteVideo"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
                         <VideoView
                             android:id="@+id/artisteVideo"
@@ -165,6 +151,7 @@
                             android:layout_marginStart="85dp"
                             android:layout_marginTop="22dp"
                             android:layout_marginEnd="85dp"
+                            android:layout_marginBottom="15dp"
                             android:contentDescription="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
                             android:contextClickable="false"
                             app:layout_constraintEnd_toEndOf="parent"
