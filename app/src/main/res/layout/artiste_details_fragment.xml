@@ -92,7 +92,6 @@
                             android:contentDescription="https://www.instagram.com/fimubelfort/"
                             android:contextClickable="true"
                             android:layout_marginTop="15dp"
-                            android:src="@drawable/insta1"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView7"
@@ -105,7 +104,6 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="15dp"
                             android:contentDescription="https://twitter.com/fimubelfort"
-                            android:icon="@drawable/twitter2"
                             app:layout_constraintTop_toBottomOf="@+id/textView7"
                             app:layout_constraintLeft_toRightOf="@+id/lienButton1"
                             tools:ignore="TouchTargetSizeCheck,ImageContrastCheck" />
@@ -138,26 +136,23 @@
                             android:text="horaire de passage"
                             android:textAlignment="center"
                             android:textSize="20sp"
-                            app:layout_constraintBottom_toTopOf="@+id/artisteVideo"
+                            app:layout_constraintBottom_toTopOf="@+id/VideoGroupe"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView"
                             tools:text="horraire de passage" />
 
-                        <VideoView
-                            android:id="@+id/artisteVideo"
-                            android:layout_width="242dp"
-                            android:layout_height="146dp"
-                            android:layout_marginStart="85dp"
-                            android:layout_marginTop="22dp"
-                            android:layout_marginEnd="85dp"
-                            android:layout_marginBottom="15dp"
+                        <ImageButton
+                            android:id="@+id/VideoGroupe"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
                             android:contentDescription="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-                            android:contextClickable="false"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="1.0"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/horrairePassage" />
+                            app:layout_constraintTop_toBottomOf="@+id/horrairePassage"
+                            tools:ignore="TouchTargetSizeCheck" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

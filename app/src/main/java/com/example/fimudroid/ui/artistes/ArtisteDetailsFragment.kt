@@ -88,8 +88,6 @@ class ArtisteDetailsFragment() : Fragment() {
 
                 val description: TextView = root.findViewById(R.id.textView7)
                 // val lienRéseau
-                val programme: TextView = root.findViewById(R.id.textView)
-                // val video
                 // val logoGroupe
                 val horaires: TextView = root.findViewById(R.id.horrairePassage)
                 var horaireArtiste =""
@@ -110,6 +108,8 @@ class ArtisteDetailsFragment() : Fragment() {
                     intent.data = Uri.parse(url)
                     startActivity(intent)
                 }
+                lien1.setImageResource(R.drawable.logoinsta)
+
                 val lien2: ImageButton = root.findViewById(R.id.imageButton3)
                 val url2 = lien2.contentDescription.toString()
                 lien2.setOnClickListener {
@@ -117,6 +117,18 @@ class ArtisteDetailsFragment() : Fragment() {
                     intent2.data = Uri.parse(url2)
                     startActivity(intent2)
                 }
+                // lien2.setImageResource(R.drawable.twitter2)
+
+
+                val videoGroupe: ImageButton = root.findViewById(R.id.VideoGroupe)
+                val lienVideo = videoGroupe.contentDescription.toString()
+                videoGroupe.setOnClickListener {
+                    val intent3 = Intent(Intent.ACTION_VIEW)
+                    intent3.data = Uri.parse(lienVideo)
+                    startActivity(intent3)
+                }
+                videoGroupe.setImageResource(R.drawable.logoyoutube)
+
             }
         }
 
