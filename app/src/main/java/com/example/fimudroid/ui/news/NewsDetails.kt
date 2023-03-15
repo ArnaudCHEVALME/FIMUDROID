@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 /**
  * A simple [Fragment] subclass.
- * Use the [NewsDetails.newInstance] factory method to
+ * Use+ the [NewsDetails.newInstance] factory method to
  * create an instance of this fragment.
  */
 class NewsDetails(

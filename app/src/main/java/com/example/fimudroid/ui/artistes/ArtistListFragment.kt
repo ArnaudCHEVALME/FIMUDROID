@@ -43,23 +43,16 @@ class ArtistListFragment : Fragment(), OnItemClickListener{
             )
         }
 
-
-
-
-
-
-
-
-
         viewModel.getAllArtists()
 
         root.findViewById<RecyclerView>(R.id.artist_recycler_view).setHasFixedSize(true)
         return root
     }
+
     override fun onItemClick(itemId: Int) {
         Log.i("CLICK", itemId.toString())
         var bundle = Bundle()
-        bundle.putInt("id_news", itemId)
+        bundle.putInt("id_art", itemId)
         requireView().findNavController().navigate(R.id.action_navigation_artiste_list_to_artisteDetailsFragment, bundle)
     }
 }

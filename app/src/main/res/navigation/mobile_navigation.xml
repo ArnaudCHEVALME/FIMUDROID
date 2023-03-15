@@ -33,11 +33,14 @@
         tools:layout="@layout/artist_recycler" >
         <action
             android:id="@+id/action_navigation_artiste_list_to_artisteDetailsFragment"
-            app:destination="@id/artisteDetailsFragment"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
+            app:destination="@id/artisteDetailsFragment">
+            <argument
+                android:name="itemId"
+                android:defaultValue="0" />
+        </action>
+        <argument
+            android:name="itemId"
+            app:argType="integer" />
     </fragment>
     <activity
         android:id="@+id/navigation_plan"
@@ -56,6 +59,13 @@
         android:id="@+id/artisteDetailsFragment"
         android:name="com.example.fimudroid.ui.artistes.ArtisteDetailsFragment"
         android:label="artiste_details"
-        tools:layout="@layout/artiste_details_fragment" />
+        tools:layout="@layout/artiste_details_fragment" >
+        <argument
+            android:name="itemId"
+            app:argType="integer" />
+    </fragment>
+    <argument
+        android:name="news_id"
+        android:defaultValue="0" />
 
 </navigation>
