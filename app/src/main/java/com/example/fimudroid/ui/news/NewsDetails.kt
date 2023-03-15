@@ -51,21 +51,21 @@ class NewsDetails(
                 core.text = news.contenu
                 date.text = (news.dateEnvoi?.subSequence(0, 10).toString()+", "+news.heureEnvoi) ?: "no Date"
 
-                if(news.typeactu.id == 0){
+                if(news.typeactu.id == 1){
 
-                    bar.setBackgroundColor(Color.parseColor("#F47174"))
+                    bar.setBackgroundColor(Color.parseColor("#93CAED"))
 
                     //Changer l'icon de l'actu en fonction du type d'actu
 //            val resId = R.drawable.ic_notifications_black_24dp
 //            holder.icon.setImageResource(resId)
                 }
-                else if (news.typeactu.id == 1){
+                else if (news.typeactu.id == 2){
                     bar.setBackgroundColor(Color.parseColor("#EEEE9B"))
 //            val resId = androidx.databinding.library.baseAdapters.R.drawable.notification_icon_background
 //            holder.icon.setImageResource(resId)
                 }
                 else{
-                    bar.setBackgroundColor(Color.parseColor("#93CAED"))
+                    bar.setBackgroundColor(Color.parseColor("#F47174"))
                 }
 
             }
