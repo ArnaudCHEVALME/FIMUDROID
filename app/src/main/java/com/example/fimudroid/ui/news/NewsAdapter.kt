@@ -55,21 +55,21 @@ class NewsAdapter(
         }
 
 
-        if(actu.typeactu.id == 0){
+        if(actu.typeactu.id == 1){
 
-            holder.sidebar.setBackgroundColor(Color.parseColor("#F47174"))
+            holder.sidebar.setBackgroundColor(Color.parseColor("#93CAED"))
 
             //Changer l'icon de l'actu en fonction du type d'actu
 //            val resId = R.drawable.ic_notifications_black_24dp
 //            holder.icon.setImageResource(resId)
         }
-        else if (actu.typeactu.id == 1){
+        else if (actu.typeactu.id == 2){
             holder.sidebar.setBackgroundColor(Color.parseColor("#EEEE9B"))
 //            val resId = androidx.databinding.library.baseAdapters.R.drawable.notification_icon_background
 //            holder.icon.setImageResource(resId)
         }
         else{
-            holder.sidebar.setBackgroundColor(Color.parseColor("#93CAED"))
+            holder.sidebar.setBackgroundColor(Color.parseColor("#F47174"))
         }
     }
 
