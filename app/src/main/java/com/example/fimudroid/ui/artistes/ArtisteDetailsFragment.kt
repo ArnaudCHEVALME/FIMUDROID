@@ -40,21 +40,15 @@ class ArtisteDetailsFragment() : Fragment() {
             withContext(Dispatchers.Main) {
                 val groupe: TextView = root.findViewById(R.id.nomGroupe)
                 val genreGroupe: TextView = root.findViewById(R.id.textView5)
-                var allGenre =""
-                for (genre in currentArtiste.genres!!){
+                var allGenre = ""
+                for (genre in currentArtiste.genres!!) {
                     allGenre += genre.libelle.toString()
                     allGenre += ", "
                 }
                 genreGroupe.text = allGenre
 
-                val paysOrigine: TextView = root.findViewById(R.id.textView6)
-                var result: String = ""
-                for (pays in currentArtiste.pays!!){
-                    result += pays.libelle.toString()
-                    result += ", "
-                }
-                paysOrigine.text = result
 
+//                val videoView = root.findViewById<VideoView>(R.id.artisteVideo)
 
                 // val videoView = root.findViewById<VideoView>(R.id.artisteVideo);
                 // val uri = Uri.parse(currentArtiste.lien_video)

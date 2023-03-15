@@ -1,17 +1,14 @@
 package com.example.fimudroid.ui.artistes
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
 import com.example.fimudroid.network.models.Artiste
-import com.example.fimudroid.ui.news.OnItemClickListener
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 
 class ArtistAdapter(
     private val dataset: List<Artiste>,
@@ -55,44 +52,29 @@ class ArtistAdapter(
 
         holder.imageView.setImageResource(drawableResource)
 
-
-
-        holder.itemView.setOnClickListener{println(artiste.id)}
-
         holder.itemView.setOnClickListener{
-
             listener.onItemClick(artiste.id)
         }
 
+        holder.textView.text = artiste.nom
 
-        val categoryTextView = holder.itemView.findViewById<TextView>(R.id.category_text_view)
+        val categoryTextView = holder.itemView.findViewById<TextView>(R.id.categorie_text_view)
         categoryTextView.text = artiste.categorie.libelle
 
-        // Convert the hex color to a Color object
-        val color = Color.parseColor(artiste.categorie.couleur)
-
-        categoryTextView.setBackgroundColor(color)
-
-        val genresChipGroup = holder.itemView.findViewById<ChipGroup>(R.id.genres_chip_group)
-        genresChipGroup.removeAllViews()
+        val genreView = holder.itemView.findViewById<LinearLayout>(R.id.genre_view)
 
         for (genre in artiste.genres) {
-            val chip = Chip(genresChipGroup.context)
-            chip.text = genre.libelle
-            chip.isCheckable = false
-            chip.isClickable = false
-            genresChipGroup.addView(chip)
+            val txt = TextView(genreView.context)
+            txt.text = genre.libelle
+            genreView.addView(txt)
         }
 
-        val paysChipGroup = holder.itemView.findViewById<ChipGroup>(R.id.pays_chip_group)
-        paysChipGroup.removeAllViews()
+        val paysView = holder.itemView.findViewById<LinearLayout>(R.id.pays_view)
 
         for (pays in artiste.pays!!) {
-            val chip = Chip(paysChipGroup.context)
-            chip.text = pays.libelle
-            chip.isCheckable = false
-            chip.isClickable = false
-            paysChipGroup.addView(chip)
+            val txt = TextView(paysView.context)
+            txt.text = pays.libelle
+            paysView.addView(txt)
         }
     }
 
