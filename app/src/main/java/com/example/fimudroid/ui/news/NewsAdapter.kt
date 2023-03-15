@@ -8,11 +8,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
-import com.example.fimudroid.database.models.News
+import com.example.fimudroid.network.models.News
 
-/**
- * Adapter for the [RecyclerView] in [MainActivity]. Displays [Affirmation] data object.
- */
 class NewsAdapter(
 //    private val context: NewsListFragment,
     private val dataset: List<News>,
@@ -53,7 +50,7 @@ class NewsAdapter(
 
 
         holder.itemView.setOnClickListener{
-            listener.onItemClick(item.news_id)
+            listener.onItemClick(item.id)
         }
 
 

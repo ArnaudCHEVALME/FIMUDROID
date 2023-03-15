@@ -1,17 +1,20 @@
 package com.example.fimudroid.ui.artistes
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
-import com.example.fimudroid.database.models.Artiste
+import com.example.fimudroid.network.models.Artiste
 import com.example.fimudroid.ui.news.OnItemClickListener
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 
 class ArtistAdapter(
-    private val listener: OnItemClickListener,
-    private val dataset: List<Artiste>
+    private val dataset: List<Artiste>,
+    private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<ArtistAdapter.ItemViewHolder>() {
 
     class ItemViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
@@ -41,35 +44,35 @@ class ArtistAdapter(
         }
 
 
-//        val categoryTextView = holder.itemView.findViewById<TextView>(R.id.category_text_view)
-//        categoryTextView.text = artiste.category.libelle
-//
-//        // Convert the hex color to a Color object
-//        val color = Color.parseColor(artiste.category.couleur)
-//
-//        categoryTextView.setBackgroundColor(color)
-//
-//        val genresChipGroup = holder.itemView.findViewById<ChipGroup>(R.id.genres_chip_group)
-//        genresChipGroup.removeAllViews()
-//
-//        for (genre in artiste.genres) {
-//            val chip = Chip(genresChipGroup.context)
-//            chip.text = genre.libelle
-//            chip.isCheckable = false
-//            chip.isClickable = false
-//            genresChipGroup.addView(chip)
-//        }
-//
-//        val paysChipGroup = holder.itemView.findViewById<ChipGroup>(R.id.pays_chip_group)
-//        paysChipGroup.removeAllViews()
-//
-//        for (pays in artiste.pays!!) {
-//            val chip = Chip(paysChipGroup.context)
-//            chip.text = pays.libelle
-//            chip.isCheckable = false
-//            chip.isClickable = false
-//            paysChipGroup.addView(chip)
-//        }
+        val categoryTextView = holder.itemView.findViewById<TextView>(R.id.category_text_view)
+        categoryTextView.text = artiste.category.libelle
+
+        // Convert the hex color to a Color object
+        val color = Color.parseColor(artiste.category.couleur)
+
+        categoryTextView.setBackgroundColor(color)
+
+        val genresChipGroup = holder.itemView.findViewById<ChipGroup>(R.id.genres_chip_group)
+        genresChipGroup.removeAllViews()
+
+        for (genre in artiste.genres) {
+            val chip = Chip(genresChipGroup.context)
+            chip.text = genre.libelle
+            chip.isCheckable = false
+            chip.isClickable = false
+            genresChipGroup.addView(chip)
+        }
+
+        val paysChipGroup = holder.itemView.findViewById<ChipGroup>(R.id.pays_chip_group)
+        paysChipGroup.removeAllViews()
+
+        for (pays in artiste.pays!!) {
+            val chip = Chip(paysChipGroup.context)
+            chip.text = pays.libelle
+            chip.isCheckable = false
+            chip.isClickable = false
+            paysChipGroup.addView(chip)
+        }
     }
 
 }

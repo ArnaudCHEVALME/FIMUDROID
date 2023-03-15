@@ -1,16 +1,12 @@
 package com.example.fimudroid.database.models
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
-import com.example.fimudroid.database.models.TypeNews
+import androidx.room.*
 
-@Entity(tableName = "news")
+@Entity
 data class News(
-    @PrimaryKey
-    val news_id: Int,
+    @PrimaryKey val id: Int,
     val contenu: String?,
     val date_envoi: String?,
-    val id_type_news: Int,
     val titre: String?,
+    @Embedded val type_news : TypeNews
 )

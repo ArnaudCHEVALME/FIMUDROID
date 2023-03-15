@@ -1,11 +1,14 @@
 package com.example.fimudroid.network
 
+import androidx.databinding.Observable
+import androidx.lifecycle.LiveData
 import com.example.fimudroid.network.models.*
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 
 private const val BASE_URL = "http://192.168.86.17:3000"
@@ -24,11 +27,14 @@ interface FimuApiService {
     @GET("actualite")
     suspend fun getNews(): List<News>
 
+    @GET("actualite/{id}")
+    suspend fun getNewsById(@Path("id") id: Int): News
+
     @GET("typeactu")
     suspend fun getTypesNews(): List<TypeNews>
 
     @GET("categorie")
-    suspend fun getCategories():List<Categorie>
+    suspend fun getCategories(): List<Categorie>
 
     @GET("genre")
     suspend fun getGenres() : List<Genre>
@@ -38,6 +44,9 @@ interface FimuApiService {
 
     @GET("artiste")
     suspend fun getArtistes(): List<Artiste>
+
+    @GET("artiste/{id}")
+    suspend fun getArtisteById(@Path("id") id: Int): Artiste
 
     @GET("stand")
     suspend fun getStands(): List<Stand>
