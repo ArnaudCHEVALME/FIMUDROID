@@ -74,4 +74,17 @@
         android:label="fragment_map"
         tools:layout="@layout/fragment_map" />
 
+    <fragment
+        android:id="@+id/navigation_faq"
+        android:name="com.example.fimudroid.ui.FAQs.FAQListFragment"
+        android:label="fragment_faq"
+        tools:layout="@layout/faq_recycler" >
+        <action
+            android:id="@+id/action_navigation_faq_to_faqDetailsFragment"
+            app:destination="@id/navigation_faq"/>
+            <argument
+                android:name="itemId"
+                android:defaultValue="0" />
+    </fragment>
+
 </navigation>

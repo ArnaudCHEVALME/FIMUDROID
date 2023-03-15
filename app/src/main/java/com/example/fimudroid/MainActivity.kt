@@ -1,11 +1,16 @@
 package com.example.fimudroid
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.fimudroid.databinding.ActivityMainBinding
@@ -25,11 +30,12 @@ class MainActivity : AppCompatActivity() {
     private val api: FimuApiService by lazy {
         retrofit.create(FimuApiService::class.java)
     }
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        checkApiStatus()
+        //checkApiStatus()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -38,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
 
+        navController = navHostFragment.navController
 
         val navView: BottomNavigationView = binding.navView
 
@@ -51,11 +58,23 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+
+        navView.setOnItemSelectedListener { item ->
+            val currentDestination = navController.currentDestination
+            if (currentDestination?.id == R.id.navigation_faq) {
+                navController.popBackStack()
+                invalidateOptionsMenu() // Refresh the menu options
+            }
+            // debug log
+            NavigationUI.onNavDestinationSelected(item, navController)
+        }
     }
 
     private fun checkApiStatus() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
+
                 val status = api.checkAPIStatus()
                 if (status.error == 0) {
                     // API is up, do nothing
@@ -88,5 +107,27 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main)
         return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        val menuInflater: MenuInflater = menuInflater
+        if (navController.currentDestination?.id == R.id.navigation_faq) {
+            return true
+        } else {
+            menuInflater.inflate(R.menu.info_menu, menu)
+        }
+        return true
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.navigation_faq -> {
+                navController.navigate(R.id.navigation_faq)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }
