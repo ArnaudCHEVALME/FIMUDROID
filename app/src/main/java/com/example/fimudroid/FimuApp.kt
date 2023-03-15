@@ -59,16 +59,18 @@ class FimuApp : Application() {
 
             // Convert network models to database models
             val artisteDBs = artistes.map { it.toArtistDB() }
-            val newsDBs = news.map { it.toNewsDB() }
             val typesNewsDBs = typesNews.map {it.toTypeNewsDB()}
+//            val newsDBs = news.map { it.toNewsDB() }
             val standsDBs = stands.map { it.toStandDB() }
 
             // Store data in Room database
             db.artisteDao().insertAll(artisteDBs)
             db.typeNewsDao().inserAll(typesNewsDBs)
-            db.newsDao().insertAll(newsDBs)
+//            db.newsDao().insertAll(newsDBs)
             db.standDao().inserAll(standsDBs)
 
+
+            // TEST
             val news2 = db.newsDao().getAll()
             Log.i("RELA : ", news2.toString())
         }
@@ -80,11 +82,12 @@ class FimuApp : Application() {
         )
     }
 
-    fun NewsNet.toNewsDB(): NewsDB {
-        return NewsDB(
-            id, contenu, date_envoi, id_typeactu, titre
-        )
-    }
+//    fun NewsNet.toNewsDB(): NewsDB {
+//        return NewsDB(
+//            id, contenu, date_envoi, titre, type_news = id_typeactu
+//        )
+//    }
+
     fun TypeNewsNet.toTypeNewsDB(): TypeNewsDB {
         return TypeNewsDB(
             id, libelle
