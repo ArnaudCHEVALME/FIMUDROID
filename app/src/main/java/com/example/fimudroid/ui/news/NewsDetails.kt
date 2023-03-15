@@ -2,13 +2,11 @@ package com.example.fimudroid.ui.news
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.fimudroid.R
 import com.example.fimudroid.network.FimuApiService
@@ -51,8 +49,7 @@ class NewsDetails(
                 val news = api.getNewsById(news_id).data
                 title.text = news.titre
                 core.text = news.contenu
-                date.text = (news.dateEnvoi?.subSequence(0, 10)
-                    .toString() + "heure (futur)") ?: "no Date"
+                date.text = (news.dateEnvoi?.subSequence(0, 10).toString()+", "+news.heureEnvoi) ?: "no Date"
 
                 if(news.typeactu.id == 0){
 
