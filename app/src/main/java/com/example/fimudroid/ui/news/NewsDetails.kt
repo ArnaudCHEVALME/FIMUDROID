@@ -45,11 +45,10 @@ class NewsDetails(
         title.text = "Chargement..."
         core.text = "Chargement..."
         lifecycleScope.launch(Dispatchers.IO){
-            val news = api.getNewsById(news_id)
+            val news = api.getNewsById(news_id).data
             title.text = news.titre
             core.text = news.contenu
-            date.text = news.date_envoi?.subSequence(0, 10) ?: "no Date"
-
+            date.text = news.dateEnvoi?.subSequence(0, 10) ?: "no Date"
         }
         return root
     }

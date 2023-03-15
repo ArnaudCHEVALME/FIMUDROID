@@ -52,7 +52,7 @@ class MapFragment : Fragment() {
 
         lifecycleScope.launch {
             val stands: List<Stand> = withContext(Dispatchers.IO) {
-                api.getStands()
+                api.getStands().data
             }
 
             Configuration.getInstance().load(requireContext(), PreferenceManager.getDefaultSharedPreferences(requireContext()))
