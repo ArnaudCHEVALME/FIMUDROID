@@ -49,6 +49,7 @@ class ArtisteDetailsFragment() : Fragment() {
                 val horaire2: TextView = root.findViewById(R.id.secondeHorraire)
                 groupe.text = currentArtiste.nom
                 description.text = currentArtiste.biographie
+                R.drawable.fimuapp
 
                 val lien1: ImageButton = root.findViewById(R.id.lienButton1)
                 val url = lien1.contentDescription.toString()

@@ -38,7 +38,7 @@ class FAQAdapter (
         holder.questionText.text = question.questionText
         holder.answerText.text = question.answerText
 
-        holder.questionText.setOnClickListener {
+        fun collapseAll() {
             if (holder.answerLayout.visibility == View.GONE) {
                 // Expand the answer layout
                 holder.answerLayout.visibility = View.VISIBLE
@@ -48,6 +48,13 @@ class FAQAdapter (
                 holder.answerLayout.visibility = View.GONE
                 holder.arrowButton.rotation = 0f
             }
+
+        }
+        holder.questionText.setOnClickListener {
+            collapseAll()
+        }
+        holder.arrowButton.setOnClickListener {
+            collapseAll()
         }
     }
 
