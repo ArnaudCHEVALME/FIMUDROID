@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -40,6 +41,7 @@ class NewsDetails(
         val core:TextView = root.findViewById(R.id.actu_core)
         val date:TextView = root.findViewById(R.id.detail_news_date)
         val bar:View = root.findViewById(R.id.side_bare_news)
+        val header: ImageView = root.findViewById(R.id.actu_image)
 
         bar.setBackgroundColor(Color.parseColor("#93CAED"))
         title.text = "Chargement..."
@@ -51,6 +53,24 @@ class NewsDetails(
                 title.text = news.titre
                 core.text = news.contenu
                 date.text = (news.dateEnvoi?.subSequence(0, 10).toString()+", "+news.heureEnvoi) ?: "no Date"
+
+
+                val drawableResource = when (news.id) {
+                    1 -> R.drawable.ma_joye
+                    2 -> R.drawable.ma_pales
+                    3 -> R.drawable.ma_grayssoker
+                    4 -> R.drawable.ma_nastyjoe
+                    5 -> R.drawable.ma_poligone
+                    6 -> R.drawable.ma_romainmuller
+                    7 -> R.drawable.ma_tomrochet
+                    8 -> R.drawable.ma_oceya
+                    9 -> R.drawable.ma_encore
+                    10 -> R.drawable.ma_encore
+                    else -> R.drawable.ma_cloud // Placeholder image when there is no matching drawable resource
+                }
+
+                header.setImageResource(drawableResource)
+
 
                 if(news.typeactu.id == 1){
 

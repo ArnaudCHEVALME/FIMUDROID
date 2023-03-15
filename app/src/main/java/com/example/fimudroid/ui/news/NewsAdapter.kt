@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
@@ -24,6 +25,7 @@ class NewsAdapter(
         val sidebar: View = view.findViewById(R.id.side_bare_news)
         val core: TextView = view.findViewById(R.id.news_core)
         val date: TextView = view.findViewById(R.id.news_date)
+        val image: ImageView = view.findViewById(R.id.actu_image)
     }
 
 
@@ -48,6 +50,23 @@ class NewsAdapter(
             ((actu.contenu?.subSequence(0, actu.contenu.length / 3).toString()) + "...")
                 ?: "no Text"
         holder.date.text = actu.dateEnvoi?.subSequence(0, 10) ?: "no Date"
+
+
+        val drawableResource = when (actu.id) {
+            1 -> R.drawable.ma_joye
+            2 -> R.drawable.ma_pales
+            3 -> R.drawable.ma_grayssoker
+            4 -> R.drawable.ma_nastyjoe
+            5 -> R.drawable.ma_poligone
+            6 -> R.drawable.ma_romainmuller
+            7 -> R.drawable.ma_tomrochet
+            8 -> R.drawable.ma_oceya
+            9 -> R.drawable.ma_encore
+            10 -> R.drawable.ma_encore
+            else -> R.drawable.ma_cloud // Placeholder image when there is no matching drawable resource
+        }
+
+        holder.image.setImageResource(drawableResource)
 
 
         holder.itemView.setOnClickListener{
