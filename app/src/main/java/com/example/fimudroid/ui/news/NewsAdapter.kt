@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
-import com.example.fimudroid.database.models.News
+import com.example.fimudroid.network.models.News
 
 class NewsAdapter(
 //    private val context: NewsListFragment,

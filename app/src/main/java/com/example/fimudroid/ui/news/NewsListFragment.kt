@@ -6,12 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
+import com.example.fimudroid.network.FimuApiService
+import com.example.fimudroid.network.models.News
+import com.example.fimudroid.network.retrofit
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 interface OnItemClickListener {
     fun onItemClick(itemId: Int)
@@ -23,38 +29,45 @@ interface OnItemClickListener {
  * create an instance of this fragment.
  */
 class NewsListFragment : Fragment(), OnItemClickListener {
+
+    private val api: FimuApiService by lazy {
+        retrofit.create(FimuApiService::class.java)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.news_recycler, container, false)
-        val viewModel = ViewModelProvider(
-            this, ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
-        )[NewsViewModel::class.java]
+//        val viewModel = ViewModelProvider(
+//            this, ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
+//        )[NewsViewModel::class.java]
 
         val recyclerView: RecyclerView = root.findViewById(R.id.news_recycler)
-        viewModel.getAllNews().observe(viewLifecycleOwner) { news ->
-            val newsHeaderAdapter = ImageHeaderNewsAdapter("pute.com")
-            val newsAdapter = NewsAdapter(news, this)
 
+        lifecycleScope.launch {
+            val news: List<News> = withContext(Dispatchers.IO) {
+                api.getNews();
+            }
+            Log.i("news", news.toString())
+
+            val newsHeaderAdapter = ImageHeaderNewsAdapter("pute.com")
+            val newsAdapter = NewsAdapter(news, this@NewsListFragment)
             recyclerView.adapter = ConcatAdapter(newsHeaderAdapter, newsAdapter)
             recyclerView.addItemDecoration(
                 DividerItemDecoration(
                     recyclerView.context, DividerItemDecoration.VERTICAL
                 )
             )
+            root.findViewById<RecyclerView>(R.id.news_recycler).setHasFixedSize(true)
         }
 
-
-        viewModel.getAllNews()
-        Log.i("news", viewModel.getAllNews().toString())
-
-        root.findViewById<RecyclerView>(R.id.news_recycler).setHasFixedSize(true)
         return root
     }
 
     override fun onItemClick(itemId: Int) {
         var bundle = Bundle()
         bundle.putInt("news_id", itemId)
-        requireView().findNavController().navigate(R.id.action_navigation_news_to_newsDetails, bundle)
+        requireView().findNavController()
+            .navigate(R.id.action_navigation_news_to_newsDetails, bundle)
     }
 }

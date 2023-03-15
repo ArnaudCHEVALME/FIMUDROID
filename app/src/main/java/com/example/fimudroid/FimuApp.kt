@@ -58,16 +58,16 @@ class FimuApp : Application() {
             val typesNews = service.getTypesNews()
 
             // Convert network models to database models
-            val artisteDBs = artistes.map { it.toArtistDB() }
-            val typesNewsDBs = typesNews.map {it.toTypeNewsDB()}
+//            val artisteDBs = artistes.map { it.toArtistDB() }
+//            val typesNewsDBs = typesNews.map {it.toTypeNewsDB()}
 //            val newsDBs = news.map { it.toNewsDB() }
-            val standsDBs = stands.map { it.toStandDB() }
+//            val standsDBs = stands.map { it.toStandDB() }
 
             // Store data in Room database
-            db.artisteDao().insertAll(artisteDBs)
-            db.typeNewsDao().inserAll(typesNewsDBs)
+//            db.artisteDao().insertAll(artisteDBs)
+//            db.typeNewsDao().inserAll(typesNewsDBs)
 //            db.newsDao().insertAll(newsDBs)
-            db.standDao().inserAll(standsDBs)
+//            db.standDao().inserAll(standsDBs)
 
 
             // TEST
