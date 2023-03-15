@@ -8,15 +8,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
-import com.example.fimudroid.database.FimuDB
-import com.example.fimudroid.database.models.Stand
+import androidx.lifecycle.lifecycleScope
+import com.example.fimudroid.network.models.Stand
+import com.example.fimudroid.network.FimuApiService
+import com.example.fimudroid.network.models.Artiste
+import com.example.fimudroid.network.retrofit
 import com.example.fimudroid.ui.stands.StandViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.ItemizedIconOverlay
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus
+import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.OverlayItem
 
 
@@ -30,6 +37,9 @@ class MapFragment : Fragment() {
     private val REQUEST_PERMISSIONS_REQUEST_CODE = 1
     private lateinit var map : MapView
 
+    private val api: FimuApiService by lazy {
+        retrofit.create(FimuApiService::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,35 +50,23 @@ class MapFragment : Fragment() {
 
         map = MapView(inflater.context)
 
-        val db :FimuDB = FimuDB.getInstance(requireContext())
+        lifecycleScope.launch {
+            val stands: List<Stand> = withContext(Dispatchers.IO) {
+                api.getStands().data
+            }
 
-        val standViewModel : StandViewModel = ViewModelProvider(
-            this, ViewModelProvider.AndroidViewModelFactory(requireActivity().application)
-        )[StandViewModel::class.java]
+            Configuration.getInstance().load(requireContext(), PreferenceManager.getDefaultSharedPreferences(requireContext()))
+            map.setTileSource(TileSourceFactory.MAPNIK)
 
-        var standList : LiveData<List<Stand>> = standViewModel.getAllStands()
+            val mapController = map.controller
+            mapController.setZoom(18.5)
 
-/*
-        binding = ActivityMapBinding.inflate(layoutInflater)
-        setContentView(binding.root)*/
+            val startPoint = GeoPoint( 47.638410197922674,6.862777328835964)
+            mapController.setCenter(startPoint)
 
-        Configuration.getInstance().load(requireContext(), PreferenceManager.getDefaultSharedPreferences(requireContext()))
+            //your items
+            /*val items = ArrayList<OverlayItem>()
 
-
-        map.setTileSource(TileSourceFactory.MAPNIK)
-
-        val mapController = map.controller
-        mapController.setZoom(18.5)
-
-        val startPoint = GeoPoint( 47.638410197922674,6.862777328835964)
-        mapController.setCenter(startPoint)
-
-        //your items
-        val items = ArrayList<OverlayItem>()
-        /*items.add(OverlayItem("Scène", "Kiosque", GeoPoint(47.63830808584398, 6.8630603018852705)))
-        items.add(OverlayItem("Bar", "La belle bête", GeoPoint(47.638410197922674,6.862777328835964)))*/
-
-        standViewModel.getAllStands().observe(viewLifecycleOwner){stands ->
             for (stand: Stand in stands){
                 items.add(OverlayItem("Stand",stand.libelle,GeoPoint(stand.longitude.toDouble(),stand.latitude.toDouble())))
             }
@@ -86,19 +84,27 @@ class MapFragment : Fragment() {
             }, requireContext())
             overlay.setFocusItemsOnTap(true)
 
-            map.overlays.add(overlay)
-
-            /*for (stand: Stand in stands){
+            map.overlays.add(overlay)*/
+            for (stand: Stand in stands){
                 var markerStand = Marker(map)
                 markerStand.setPosition(GeoPoint(stand.longitude.toDouble(),stand.latitude.toDouble()))
-            }*/
+                markerStand.setTitle(stand.libelle)
+                markerStand.setIcon(resources.getDrawable(R.drawable.stand))
+                map.overlays.add(markerStand)
+            }
 
+            var sceneTestMarker = Marker(map)
+            sceneTestMarker.setPosition(GeoPoint(47.63830808584398,6.8630603018852705))
+            sceneTestMarker.setTitle("Le Kiosque")
+            sceneTestMarker.setIcon(resources.getDrawable(R.drawable.microphone))
+            map.overlays.add(sceneTestMarker)
 
+            var standTestMarker = Marker(map)
+            standTestMarker.setPosition(GeoPoint(47.638410197922674,6.862777328835964))
+            standTestMarker.setTitle("La belle bête")
+            standTestMarker.setIcon(resources.getDrawable(R.drawable.stand))
+            map.overlays.add(standTestMarker)
         }
-
-
-        standViewModel.getAllStands()
-
 
         return map
     }

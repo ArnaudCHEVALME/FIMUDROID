@@ -15,10 +15,10 @@ class NewsAdapter(
     private val dataset: List<News>,
     private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<NewsAdapter.ActuViewHolder>() {
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder.
-    // Each data item is just an Affirmation object.
+    // Provide a reference to the views for each data actu
+    // Complex data items may need more than one view per actu, and
+    // you provide access to all the views for a data actu in a view holder.
+    // Each data actu is just an Affirmation object.
     class ActuViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         val title: TextView = view.findViewById(R.id.actu_title)
         val sidebar: View = view.findViewById(R.id.side_bare_news)
@@ -41,44 +41,36 @@ class NewsAdapter(
      * Replace the contents of a view (invoked by the layout manager)
      */
     override fun onBindViewHolder(holder: ActuViewHolder, position: Int) {
-        val item = dataset[position]
+        val actu = dataset[position]
         Log.i("DATA", dataset.toString())
-        holder.title.text = item.titre
-        holder.core.text = (item.contenu?.subSequence(0, item.contenu.length/3).toString())+"..." ?: "no Text"
-        holder.sidebar.setBackgroundColor(Color.parseColor("#FFF5B1"))
-        holder.date.text = item.date_envoi?.subSequence(0, 10).toString() + ",\n" + item.date_envoi?.subSequence(11, 16).toString().replace(':', 'h') ?: "no Date"
+        holder.title.text = actu.titre
+        holder.core.text =
+            ((actu.contenu?.subSequence(0, actu.contenu.length / 3).toString()) + "...")
+                ?: "no Text"
+        holder.date.text = actu.dateEnvoi?.subSequence(0, 10) ?: "no Date"
 
-
-        if(item.id_typeactu == 1){
-//                bar.setBackgroundColor(Color.parseColor("#FFF5B1"))
-            holder.sidebar.setBackgroundColor(Color.parseColor("#93CAED"))
-        }
-        else if(item.id_typeactu == 2){
-            holder.sidebar.setBackgroundColor(Color.parseColor("#EEEE9B"))
-        }
-        else{
-            holder.sidebar.setBackgroundColor(Color.parseColor("#F47174"))
-        }
 
         holder.itemView.setOnClickListener{
-            listener.onItemClick(item.id)
+            listener.onItemClick(actu.id)
         }
 
 
-//        if(item.type_news.libelle == "Important"){
-//            //Changer l'icon de l'actu en fonction du type d'actu
+        if(actu.typeactu.id == 0){
+
+            holder.sidebar.setBackgroundColor(Color.parseColor("#F47174"))
+
+            //Changer l'icon de l'actu en fonction du type d'actu
 //            val resId = R.drawable.ic_notifications_black_24dp
 //            holder.icon.setImageResource(resId)
-//        //            holder.truc.setBackgroundColor(getRessources().getColor(R.color.purple_700));
-//
-//        }
-//        else if (item.type_news.libelle == "Info"){
+        }
+        else if (actu.typeactu.id == 1){
+            holder.sidebar.setBackgroundColor(Color.parseColor("#EEEE9B"))
 //            val resId = androidx.databinding.library.baseAdapters.R.drawable.notification_icon_background
 //            holder.icon.setImageResource(resId)
-//        }
-//        else{
-//            holder.card.setCardBackgroundColor()
-//        }
+        }
+        else{
+            holder.sidebar.setBackgroundColor(Color.parseColor("#93CAED"))
+        }
     }
 
     /**
