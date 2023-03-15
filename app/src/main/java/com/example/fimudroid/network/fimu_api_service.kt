@@ -1,8 +1,7 @@
 package com.example.fimudroid.network
 
-import androidx.databinding.Observable
-import androidx.lifecycle.LiveData
 import com.example.fimudroid.network.models.*
+import com.example.fimudroid.network.reponses.*
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
@@ -11,7 +10,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 
-private const val BASE_URL = "http://10.0.2.2:3000"
+private const val BASE_URL = "http://149.202.43.137:3000"
 val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
     .build()
@@ -25,37 +24,37 @@ val retrofit = Retrofit.Builder()
 interface FimuApiService {
 
     @GET("actualite")
-    suspend fun getNews(): List<News>
+    suspend fun getNews(): NewsListResponse
 
     @GET("actualite/{id}")
-    suspend fun getNewsById(@Path("id") id: Int): News
+    suspend fun getNewsById(@Path("id") id: Int): NewsResponse
 
     @GET("typeactu")
-    suspend fun getTypesNews(): List<TypeNews>
+    suspend fun getTypesNews(): TypeNewsListResponse
 
     @GET("categorie")
-    suspend fun getCategories(): List<Categorie>
+    suspend fun getCategories(): CategorieListResponse
 
     @GET("genre")
-    suspend fun getGenres() : List<Genre>
+    suspend fun getGenres() : GenreListResponse
 
     @GET("pays")
-    suspend fun getPays(): List<Pays>
+    suspend fun getPays(): PaysListResponse
 
     @GET("artiste")
-    suspend fun getArtistes(): List<Artiste>
+    suspend fun getArtistes(): ArtisteListResponse
 
     @GET("artiste/{id}")
-    suspend fun getArtisteById(@Path("id") id: Int): Artiste
+    suspend fun getArtisteById(@Path("id") id: Int): ArtisteResponse
 
     @GET("stand")
-    suspend fun getStands(): List<Stand>
+    suspend fun getStands(): StandListResponse
 
     @GET("typestand")
-    suspend fun getTypesStand(): List<TypeStand>
+    suspend fun getTypesStand(): TypeStandListResponse
 
     @GET("service")
-    suspend fun getServices(): List<Service>
+    suspend fun getServices(): ServiceListResponse
 
     @GET("status")
     suspend fun checkAPIStatus() : APIStatus

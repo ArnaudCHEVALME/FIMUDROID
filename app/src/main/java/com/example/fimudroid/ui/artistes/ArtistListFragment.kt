@@ -43,7 +43,7 @@ class ArtistListFragment : Fragment(), OnItemClickListener{
 
         lifecycleScope.launch {
             val artistes: List<Artiste> = withContext(Dispatchers.IO) {
-                api.getArtistes();
+                api.getArtistes().data
             }
 
             Log.i("news", artistes.toString())

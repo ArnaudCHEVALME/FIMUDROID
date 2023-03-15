@@ -45,10 +45,10 @@ class ArtistAdapter(
 
 
         val categoryTextView = holder.itemView.findViewById<TextView>(R.id.category_text_view)
-        categoryTextView.text = artiste.category.libelle
+        categoryTextView.text = artiste.categorie.libelle
 
         // Convert the hex color to a Color object
-        val color = Color.parseColor(artiste.category.couleur)
+        val color = Color.parseColor(artiste.categorie.couleur)
 
         categoryTextView.setBackgroundColor(color)
 

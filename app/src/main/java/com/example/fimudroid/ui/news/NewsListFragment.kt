@@ -46,7 +46,7 @@ class NewsListFragment : Fragment(), OnItemClickListener {
 
         lifecycleScope.launch {
             val news: List<News> = withContext(Dispatchers.IO) {
-                api.getNews();
+                api.getNews().data
             }
             Log.i("news", news.toString())
 

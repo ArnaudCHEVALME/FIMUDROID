@@ -71,6 +71,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun onCreateView(){
+        checkApiStatus()
+    }
+
     private fun checkApiStatus() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
