@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.MediaController
 import android.widget.TextView
+import android.widget.VideoView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.fimudroid.R
@@ -52,6 +54,35 @@ class ArtisteDetailsFragment() : Fragment() {
                     result += ", "
                 }
                 paysOrigine.text = result
+
+
+                val videoView = root.findViewById<VideoView>(R.id.artisteVideo);
+                val uri = Uri.parse(currentArtiste.lien_video)
+                videoView.setVideoURI(uri)
+
+                val mediaController = MediaController(this@ArtisteDetailsFragment.requireContext())
+
+                // sets the anchor view
+                // anchor view for the videoView
+
+                // sets the anchor view
+                // anchor view for the videoView
+                mediaController.setAnchorView(videoView)
+
+                // sets the media player to the videoView
+
+                // sets the media player to the videoView
+                mediaController.setMediaPlayer(videoView)
+
+                // sets the media controller to the videoView
+
+                // sets the media controller to the videoView
+                videoView.setMediaController(mediaController)
+
+                // starts the video
+
+                // starts the video
+                videoView.start()
 
 
 
