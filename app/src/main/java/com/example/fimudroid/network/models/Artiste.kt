@@ -13,6 +13,6 @@ data class Artiste(
     @field:Json(name = "nom") val nom: String,
     @field:Json(name = "pays") val pays: List<Pays>?,
     @field:Json(name = "photo") val photo: String?,
-    @field:Json(name = "liens") val liens: List<Lien>?,
+    @field:Json(name = "reseauxSociauxes") val reseauxSociauxes: List<ReseauSocial>?,
     @field:Json(name = "concerts") val concerts: List<Concert>
 )

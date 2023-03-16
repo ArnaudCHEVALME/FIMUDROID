@@ -21,42 +21,55 @@
 
     <TextView
         android:id="@+id/artist_name_text_view"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="25dp"
         android:text="Nom artiste"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageButton"
-        app:layout_constraintTop_toTopOf="@+id/imageButton" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/categorie_text_view"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:text="TextView"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="A lot of text here so that it overflow"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/artist_name_text_view"
         app:layout_constraintStart_toStartOf="@+id/artist_name_text_view"
         app:layout_constraintTop_toBottomOf="@+id/artist_name_text_view" />
 
-    <LinearLayout
-        android:id="@+id/genre_view"
+    <TextView
+        android:id="@+id/genresTextView"
         android:layout_width="0dp"
-        android:layout_height="20dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="TextView"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/categorie_text_view"
         app:layout_constraintStart_toStartOf="@+id/categorie_text_view"
-        app:layout_constraintTop_toBottomOf="@+id/categorie_text_view"></LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/categorie_text_view" />
 
-    <LinearLayout
-        android:id="@+id/pays_view"
+    <TextView
+        android:id="@+id/paysTextView"
         android:layout_width="0dp"
-        android:layout_height="20dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/genre_view"
-        app:layout_constraintTop_toBottomOf="@+id/genre_view"></LinearLayout>
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="TextView"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/genresTextView"
+        app:layout_constraintStart_toStartOf="@+id/genresTextView"
+        app:layout_constraintTop_toBottomOf="@+id/genresTextView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

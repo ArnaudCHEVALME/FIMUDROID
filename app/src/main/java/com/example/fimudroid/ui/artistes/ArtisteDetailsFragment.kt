@@ -8,9 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.MediaController
+import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.VideoView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.fimudroid.R
@@ -19,9 +18,10 @@ import com.example.fimudroid.network.retrofit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.reflect.Field
 
 
-class ArtisteDetailsFragment() : Fragment() {
+class ArtisteDetailsFragment : Fragment() {
 
     private val api: FimuApiService by lazy {
         retrofit.create(FimuApiService::class.java)
@@ -39,82 +39,58 @@ class ArtisteDetailsFragment() : Fragment() {
             val currentArtiste = api.getArtisteById(artiste_id).data
 
             withContext(Dispatchers.Main) {
-                val groupe: TextView = root.findViewById(R.id.nomGroupe)
-                val genreGroupe: TextView = root.findViewById(R.id.textView5)
-
-                var allGenre = ""
-                for (genre in currentArtiste.genres!!) {
-                    allGenre += genre.libelle.toString()
-                    allGenre += ", "
-                }
-                genreGroupe.text = allGenre
-
-
-//                val videoView = root.findViewById<VideoView>(R.id.artisteVideo)
-
-                // val videoView = root.findViewById<VideoView>(R.id.artisteVideo);
-                // val uri = Uri.parse(currentArtiste.lien_video)
-                // videoView.setVideoURI(uri)
-
-                // val mediaController = MediaController(this@ArtisteDetailsFragment.requireContext())
-
-                // sets the anchor view
-                // anchor view for the videoView
-
-                // sets the anchor view
-                // anchor view for the videoView
-                // mediaController.setAnchorView(videoView)
-
-                // sets the media player to the videoView
-
-                // sets the media player to the videoView
-                // mediaController.setMediaPlayer(videoView)
-
-                // sets the media controller to the videoView
-
-                // sets the media controller to the videoView
-                // videoView.setMediaController(mediaController)
-
-                // starts the video
-
-                // starts the video
-                // videoView.start()
-
-
-
-                val description: TextView = root.findViewById(R.id.textView7)
-                // val lienRéseau
-                val logoGroupe: ImageView = root.findViewById(R.id.imageView)
+                val nomGroupeView: TextView = root.findViewById(R.id.nomGroupe)
+                val genreView: TextView = root.findViewById(R.id.textView5)
+                val description: TextView = root.findViewById(R.id.descriptionView)
+                val photoGroupeView: ImageView = root.findViewById(R.id.imageView)
                 val horaires: TextView = root.findViewById(R.id.horrairePassage)
+                val paysView: TextView = root.findViewById(R.id.paysDetailTextView)
+
+                genreView.text = currentArtiste.genres.joinToString(", ") { it.libelle }
+
+                paysView.text = currentArtiste.pays?.joinToString(", ") { it.libelle }
+
+                // val lienRéseau
                 var horaireArtiste =""
-                for (horaire in currentArtiste.concerts){
-                    horaireArtiste += horaire.date_debut +" à "+ horaire.heure_debut + "\n"
+                for (concert in currentArtiste.concerts){
+                    horaireArtiste += concert.date_debut +" à "+ concert.heure_debut + " : " + concert.scene.libelle+ "\n"
                 }
                 horaires.text = horaireArtiste
 
-
-                groupe.text = currentArtiste.nom
+                nomGroupeView.text = currentArtiste.nom
                 description.text = currentArtiste.biographie
-                R.drawable.fimuapp
 
-                val lien1: ImageButton = root.findViewById(R.id.lienButton1)
-                val url = lien1.contentDescription.toString()
-                lien1.setOnClickListener {
-                    val intent = Intent(Intent.ACTION_VIEW)
-                    intent.data = Uri.parse(url)
-                    startActivity(intent)
+                // set links
+                val linksViewGroup = root.findViewById<LinearLayout>(R.id.link_layout)
+
+                val layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                layoutParams.setMargins(20,20,20,20)
+
+                for (link in currentArtiste.reseauxSociauxes!!){
+                    val btn = ImageView(linksViewGroup.context)
+//                    btn.layoutParams = layoutParams
+
+                    val r = when (link.logo) {
+                        "mdi-facebook" -> R.drawable.mdi_facebook
+                        "mdi-instagram" -> R.drawable.mdi_instagram
+                        "mdi-pinterest" -> R.drawable.mdi_pinterest
+                        "mdi-snapchat" -> R.drawable.mdi_snapchat
+                        "mdi-spotify" -> R.drawable.mdi_spotify
+                        "mdi-tiktok" -> R.drawable.mdi_tiktok
+                        "mdi-twitter" -> R.drawable.mdi_twitter
+                        "mdi-youtube" -> R.drawable.mdi_youtube
+                        else -> R.drawable.question_mark
+                    }
+
+                    btn.setImageResource(r)
+                    btn.scaleType = ImageView.ScaleType.CENTER_INSIDE
+                    btn.adjustViewBounds = true
+//                    btn.cropToPadding = true
+                    linksViewGroup.addView(btn)
                 }
-                lien1.setImageResource(R.drawable.logoinsta)
-
-                val lien2: ImageButton = root.findViewById(R.id.imageButton3)
-                val url2 = lien2.contentDescription.toString()
-                lien2.setOnClickListener {
-                    val intent2 = Intent(Intent.ACTION_VIEW)
-                    intent2.data = Uri.parse(url2)
-                    startActivity(intent2)
-                }
-                lien2.setImageResource(R.drawable.logotwitter)
-
 
                 val videoGroupe: ImageButton = root.findViewById(R.id.VideoGroupe)
                 val lienVideo = videoGroupe.contentDescription.toString()
@@ -123,7 +99,7 @@ class ArtisteDetailsFragment() : Fragment() {
                     intent3.data = Uri.parse(lienVideo)
                     startActivity(intent3)
                 }
-                videoGroupe.setImageResource(R.drawable.logoyoutube)
+                videoGroupe.setImageResource(R.drawable.mdi_youtube)
 
                 val drawableResource = when (currentArtiste.id) {
                     1 -> R.drawable.ma_joye
@@ -138,7 +114,7 @@ class ArtisteDetailsFragment() : Fragment() {
                     10 -> R.drawable.ma_encore
                     else -> R.drawable.ma_cloud // Placeholder image when there is no matching drawable resource
                 }
-                logoGroupe.setImageResource(drawableResource)
+                photoGroupeView.setImageResource(drawableResource)
 
             }
         }
@@ -146,4 +122,16 @@ class ArtisteDetailsFragment() : Fragment() {
         return root
     }
 
+}
+
+fun getId(resourceName: String, c: Class<*>): Int {
+    try {
+        val idField: Field = c.getDeclaredField(resourceName)
+        return idField.getInt(idField)
+    } catch (e: Exception) {
+        throw RuntimeException(
+            "No resource ID found for: "
+                    + resourceName + " / " + c, e
+        )
+    }
 }

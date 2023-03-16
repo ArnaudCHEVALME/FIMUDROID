@@ -3,8 +3,8 @@ package com.example.fimudroid.ui.artistes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
@@ -52,7 +52,7 @@ class ArtistAdapter(
 
         holder.imageView.setImageResource(drawableResource)
 
-        holder.itemView.setOnClickListener{
+        holder.itemView.setOnClickListener {
             listener.onItemClick(artiste.id)
         }
 
@@ -61,21 +61,11 @@ class ArtistAdapter(
         val categoryTextView = holder.itemView.findViewById<TextView>(R.id.categorie_text_view)
         categoryTextView.text = artiste.categorie.libelle
 
-        val genreView = holder.itemView.findViewById<LinearLayout>(R.id.genre_view)
+        val genreView = holder.itemView.findViewById<TextView>(R.id.genresTextView)
+        genreView.text = artiste.genres.joinToString(", ") { it.libelle }
 
-        for (genre in artiste.genres) {
-            val txt = TextView(genreView.context)
-            txt.text = genre.libelle
-            genreView.addView(txt)
-        }
-
-        val paysView = holder.itemView.findViewById<LinearLayout>(R.id.pays_view)
-
-        for (pays in artiste.pays!!) {
-            val txt = TextView(paysView.context)
-            txt.text = pays.libelle
-            paysView.addView(txt)
-        }
+        val paysView = holder.itemView.findViewById<TextView>(R.id.paysTextView)
+        paysView.text = artiste.pays?.joinToString(", ") { it.libelle }
     }
 
 }

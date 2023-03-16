@@ -85,14 +85,14 @@ class MapFragment : Fragment() {
             map.overlays.add(overlay)*/
             for (stand: Stand in stands){
                 var markerStand = Marker(map)
-                markerStand.setPosition(GeoPoint(stand.latitude.toDouble()+0.0005,stand.longitude.toDouble()))
+                markerStand.position = GeoPoint(stand.latitude.toDouble()+0.0005,stand.longitude.toDouble())
                 var titre = stand.libelle+"\n========="
                 for(service: Service in stand.services){
                     titre +="\n- "+service.libelle
                 }
-                markerStand.setTitle(titre)
+                markerStand.title = titre
                 //Log.i("MAP",stand.libelle)
-                markerStand.setIcon(resources.getDrawable(R.drawable.stand))
+                markerStand.icon = resources.getDrawable(R.drawable.stand)
 
                 //markerStand.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
 
@@ -112,10 +112,11 @@ class MapFragment : Fragment() {
             map.overlays.add(sceneTestMarker)
 */
             var standTestMarker = Marker(map)
-            standTestMarker.setPosition(GeoPoint(47.638410197922674,6.862777328835964))
-            standTestMarker.setTitle("La belle bête")
-            standTestMarker.setIcon(resources.getDrawable(R.drawable.stand))
-            standTestMarker.isDraggable()
+            standTestMarker.position = GeoPoint(47.638410197922674,6.862777328835964)
+            standTestMarker.title = "La belle bête"
+
+            standTestMarker.icon = resources.getDrawable(R.drawable.stand)
+            standTestMarker.isDraggable
 
 
             //standTestMarker.setInfoWindow(infoWindow)
@@ -132,10 +133,10 @@ class MapFragment : Fragment() {
 
             for (scene : Scene in scenes){
                 var sceneMarker : Marker = Marker(map)
-                sceneMarker.setPosition(GeoPoint(scene.latitude.toDouble(),scene.longitude.toDouble()))
+                sceneMarker.position = GeoPoint(scene.latitude.toDouble(),scene.longitude.toDouble())
                 var titre = scene.libelle+"\n=========\n"+scene.typescene.libelle
-                sceneMarker.setTitle(titre)
-                sceneMarker.setIcon(resources.getDrawable(R.drawable.microphone))
+                sceneMarker.title = titre
+                sceneMarker.icon = resources.getDrawable(R.drawable.microphone)
                 sceneMarker.setPanToView(true)
                 map.overlays.add(sceneMarker)
             }
@@ -144,12 +145,6 @@ class MapFragment : Fragment() {
         }
 
         return root
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
     }
 
     override fun onPause() {

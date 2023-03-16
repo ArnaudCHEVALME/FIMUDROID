@@ -10,67 +10,63 @@
         android:id="@+id/side_bare_news"
         android:layout_width="7dp"
         android:layout_height="0dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
         android:background="@drawable/news_side_bar"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/actu_title"
-        app:layout_constraintHorizontal_bias="0.484"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/actu_title"
-        android:layout_width="273dp"
-        android:layout_height="60dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:text="Titre de l'acutalité"
         android:textSize="22sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.289"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.168" />
+        app:layout_constraintEnd_toStartOf="@+id/actu_image"
+        app:layout_constraintStart_toEndOf="@+id/side_bare_news"
+        app:layout_constraintTop_toTopOf="@+id/side_bare_news" />
 
     <ImageView
         android:id="@+id/actu_image"
         android:layout_width="80dp"
         android:layout_height="60dp"
-        android:layout_marginStart="9dp"
-        android:layout_marginEnd="9dp"
+        android:layout_marginEnd="15dp"
         android:text="Core de l'actualité"
         app:layout_constraintBottom_toTopOf="@+id/news_core"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.166"
-        app:layout_constraintStart_toEndOf="@+id/actu_title"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.65"
         app:srcCompat="@drawable/ic_home_black_24dp" />
 
     <TextView
         android:id="@+id/news_core"
-        android:layout_width="273dp"
-        android:layout_height="45dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="5dp"
+        android:ellipsize="end"
+        android:maxLines="3"
         android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.289"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/actu_title"
-        app:layout_constraintVertical_bias="0.318" />
+        app:layout_constraintBottom_toBottomOf="@+id/side_bare_news"
+        app:layout_constraintEnd_toEndOf="@+id/actu_title"
+        app:layout_constraintStart_toStartOf="@+id/actu_title"
+        app:layout_constraintTop_toBottomOf="@+id/actu_title" />
 
     <TextView
         android:id="@+id/news_date"
         android:layout_width="80dp"
         android:layout_height="35dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
         android:text="TextView"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/actu_image" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

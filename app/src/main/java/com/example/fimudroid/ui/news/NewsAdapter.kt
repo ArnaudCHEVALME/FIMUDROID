@@ -46,9 +46,7 @@ class NewsAdapter(
         val actu = dataset[position]
         Log.i("DATA", dataset.toString())
         holder.title.text = actu.titre
-        holder.core.text =
-            ((actu.contenu?.subSequence(0, actu.contenu.length / 3).toString()) + "...")
-                ?: "no Text"
+        holder.core.text = actu.contenu?: "no Text"
         holder.date.text = actu.dateEnvoi?.subSequence(0, 10) ?: "no Date"
 
 

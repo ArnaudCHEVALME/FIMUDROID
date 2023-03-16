@@ -22,8 +22,7 @@ import kotlinx.coroutines.withContext
  * Use+ the [NewsDetails.newInstance] factory method to
  * create an instance of this fragment.
  */
-class NewsDetails(
-    ) : Fragment() {
+class NewsDetails : Fragment() {
 
     private val api: FimuApiService by lazy {
         retrofit.create(FimuApiService::class.java)
@@ -52,7 +51,7 @@ class NewsDetails(
                 val news = api.getNewsById(news_id).data
                 title.text = news.titre
                 core.text = news.contenu
-                date.text = (news.dateEnvoi?.subSequence(0, 10).toString()+", "+news.heureEnvoi) ?: "no Date"
+                date.text = (news.dateEnvoi?.subSequence(0, 10).toString()+", "+news.heureEnvoi)
 
 
                 val drawableResource = when (news.id) {
@@ -96,6 +95,5 @@ class NewsDetails(
         return root
     }
 
-    companion object {
-    }
+    companion object
 }
