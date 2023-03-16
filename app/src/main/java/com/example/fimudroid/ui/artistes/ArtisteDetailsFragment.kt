@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.MediaController
 import android.widget.TextView
 import android.widget.VideoView
@@ -40,21 +41,15 @@ class ArtisteDetailsFragment() : Fragment() {
             withContext(Dispatchers.Main) {
                 val groupe: TextView = root.findViewById(R.id.nomGroupe)
                 val genreGroupe: TextView = root.findViewById(R.id.textView5)
-                var allGenre =""
-                for (genre in currentArtiste.genres!!){
+                var allGenre = ""
+                for (genre in currentArtiste.genres!!) {
                     allGenre += genre.libelle.toString()
                     allGenre += ", "
                 }
                 genreGroupe.text = allGenre
 
-                val paysOrigine: TextView = root.findViewById(R.id.textView6)
-                var result: String = ""
-                for (pays in currentArtiste.pays!!){
-                    result += pays.libelle.toString()
-                    result += ", "
-                }
-                paysOrigine.text = result
 
+//                val videoView = root.findViewById<VideoView>(R.id.artisteVideo)
 
                 // val videoView = root.findViewById<VideoView>(R.id.artisteVideo);
                 // val uri = Uri.parse(currentArtiste.lien_video)
@@ -88,7 +83,7 @@ class ArtisteDetailsFragment() : Fragment() {
 
                 val description: TextView = root.findViewById(R.id.textView7)
                 // val lienRéseau
-                // val logoGroupe
+                val logoGroupe: ImageView = root.findViewById(R.id.imageView)
                 val horaires: TextView = root.findViewById(R.id.horrairePassage)
                 var horaireArtiste =""
                 for (horaire in currentArtiste.concerts){
@@ -117,7 +112,7 @@ class ArtisteDetailsFragment() : Fragment() {
                     intent2.data = Uri.parse(url2)
                     startActivity(intent2)
                 }
-                // lien2.setImageResource(R.drawable.twitter2)
+                lien2.setImageResource(R.drawable.logotwitter)
 
 
                 val videoGroupe: ImageButton = root.findViewById(R.id.VideoGroupe)
@@ -128,6 +123,21 @@ class ArtisteDetailsFragment() : Fragment() {
                     startActivity(intent3)
                 }
                 videoGroupe.setImageResource(R.drawable.logoyoutube)
+
+                val drawableResource = when (currentArtiste.id) {
+                    1 -> R.drawable.ma_joye
+                    2 -> R.drawable.ma_pales
+                    3 -> R.drawable.ma_grayssoker
+                    4 -> R.drawable.ma_nastyjoe
+                    5 -> R.drawable.ma_poligone
+                    6 -> R.drawable.ma_romainmuller
+                    7 -> R.drawable.ma_tomrochet
+                    8 -> R.drawable.ma_oceya
+                    9 -> R.drawable.ma_encore
+                    10 -> R.drawable.ma_encore
+                    else -> R.drawable.ma_cloud // Placeholder image when there is no matching drawable resource
+                }
+                logoGroupe.setImageResource(drawableResource)
 
             }
         }
