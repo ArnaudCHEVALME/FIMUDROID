@@ -60,8 +60,6 @@ class MapFragment : Fragment() {
                 api.getStands().data
             }
 
-
-
             //your items
             /*val items = ArrayList<OverlayItem>()
 
@@ -100,30 +98,7 @@ class MapFragment : Fragment() {
 
 
                 map.overlays.add(markerStand)
-
-
-                //markerStand.setOnMarkerClickListener()
             }
-
-            /*var sceneTestMarker = Marker(map)
-            sceneTestMarker.setPosition(GeoPoint(47.63830808584398,6.8630603018852705))
-            sceneTestMarker.setTitle("Le Kiosque")
-            sceneTestMarker.setIcon(resources.getDrawable(R.drawable.microphone))
-            map.overlays.add(sceneTestMarker)
-*/
-            var standTestMarker = Marker(map)
-            standTestMarker.position = GeoPoint(47.638410197922674,6.862777328835964)
-            standTestMarker.title = "La belle bête"
-
-            standTestMarker.icon = resources.getDrawable(R.drawable.stand)
-            standTestMarker.isDraggable
-
-
-            //standTestMarker.setInfoWindow(infoWindow)
-
-            map.overlays.add(standTestMarker)
-
-
         }
 
         lifecycleScope.launch {
@@ -140,10 +115,7 @@ class MapFragment : Fragment() {
                 sceneMarker.setPanToView(true)
                 map.overlays.add(sceneMarker)
             }
-
-
         }
-
         return root
     }
 
