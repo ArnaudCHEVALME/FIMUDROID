@@ -23,6 +23,9 @@ val retrofit = Retrofit.Builder()
 
 interface FimuApiService {
 
+    @GET("scene")
+    suspend fun getScenes(): SceneListResponse
+
     @GET("actualite")
     suspend fun getNews(): NewsListResponse
 
