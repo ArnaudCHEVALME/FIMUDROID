@@ -41,6 +41,7 @@ class ArtisteDetailsFragment() : Fragment() {
             withContext(Dispatchers.Main) {
                 val groupe: TextView = root.findViewById(R.id.nomGroupe)
                 val genreGroupe: TextView = root.findViewById(R.id.textView5)
+
                 var allGenre = ""
                 for (genre in currentArtiste.genres!!) {
                     allGenre += genre.libelle.toString()
