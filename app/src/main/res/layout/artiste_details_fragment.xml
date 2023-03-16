@@ -18,10 +18,10 @@
 
                         <ImageView
                             android:id="@+id/imageView"
-                            android:layout_width="405dp"
-                            android:layout_height="100dp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
-                            android:layout_marginBottom="18dp"
+                            android:layout_marginBottom="5dp"
                             app:layout_constraintBottom_toTopOf="@+id/nomGroupe"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
