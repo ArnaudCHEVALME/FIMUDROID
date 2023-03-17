@@ -10,7 +10,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 
-private const val BASE_URL = "http://192.168.148.235:3000"
+private const val BASE_URL = "http://192.168.253.199:8080"
 val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
     .build()

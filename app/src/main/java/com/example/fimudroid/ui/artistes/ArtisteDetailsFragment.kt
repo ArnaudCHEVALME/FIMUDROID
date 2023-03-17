@@ -88,18 +88,14 @@ class ArtisteDetailsFragment : Fragment() {
                     btn.setImageResource(r)
                     btn.scaleType = ImageView.ScaleType.CENTER_INSIDE
                     btn.adjustViewBounds = true
-//                    btn.cropToPadding = true
+                    btn.setOnClickListener {
+                        val intent3 = Intent(Intent.ACTION_VIEW)
+                        intent3.data = Uri.parse(link.possede.lien)
+                        startActivity(intent3)
+                    }
+//                    btn.cropToPadding = true   v
                     linksViewGroup.addView(btn)
                 }
-
-                val videoGroupe: ImageButton = root.findViewById(R.id.VideoGroupe)
-                val lienVideo = videoGroupe.contentDescription.toString()
-                videoGroupe.setOnClickListener {
-                    val intent3 = Intent(Intent.ACTION_VIEW)
-                    intent3.data = Uri.parse(lienVideo)
-                    startActivity(intent3)
-                }
-                videoGroupe.setImageResource(R.drawable.mdi_youtube)
 
                 val drawableResource = when (currentArtiste.id) {
                     1 -> R.drawable.ma_joye
