@@ -26,6 +26,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.BoundingBox
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
@@ -43,10 +44,6 @@ class MapFragment : Fragment() {
         retrofit.create(FimuApiService::class.java)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -63,11 +60,15 @@ class MapFragment : Fragment() {
         Configuration.getInstance().load(requireContext(), PreferenceManager.getDefaultSharedPreferences(requireContext()))
         map.setTileSource(TileSourceFactory.MAPNIK)
 
-        map.getZoomController().setVisibility(CustomZoomButtonsController.Visibility.NEVER)
+        map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
 
         map.minZoomLevel = 16.5
 
-        map.setMultiTouchControls(true);
+        map.maxZoomLevel = 21.5
+
+        map.setScrollableAreaLimitDouble(BoundingBox(47.64836242902998, 6.8783751401231985,47.63332151596629, 6.852366367341309))
+
+        map.setMultiTouchControls(true)
 
         val mapController = map.controller
         mapController.setZoom(18.5)
@@ -117,18 +118,18 @@ class MapFragment : Fragment() {
                 markerStand.setPanToView(true)
 
                 //markerStand.setInfoWindow(CustomInfoWindow(map,markerStand,stand))
-                markerStand.setOnMarkerClickListener(object: Marker.OnMarkerClickListener {
+                markerStand.setOnMarkerClickListener(object: OnMarkerClickListener {
                     override fun onMarkerClick(marker: Marker?, mapView: MapView?): Boolean {
-                        view?.findViewById<CardView>(R.id.cards_map)?.setVisibility(View.VISIBLE)
+                        view?.findViewById<CardView>(R.id.cards_map)?.visibility = View.VISIBLE
 
                         val closeButton = view?.findViewById<ImageButton>(R.id.stand_close_button)
                         closeButton?.setOnClickListener{
-                            view?.findViewById<CardView>(R.id.cards_map)?.setVisibility(View.INVISIBLE)
+                            view?.findViewById<CardView>(R.id.cards_map)?.visibility = View.INVISIBLE
                         }
                         return true
                     }
 
-                });
+                })
 
 
 
