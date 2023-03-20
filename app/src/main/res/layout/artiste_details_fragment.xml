@@ -31,9 +31,10 @@
             android:id="@+id/nomGroupe"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="10dp"
-            android:gravity="center"
+            android:layout_marginBottom="7dp"
             android:text="nom_du_groupe"
             android:textSize="34sp"
             android:textStyle="bold"
@@ -46,48 +47,41 @@
             android:id="@+id/textView5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="15dp"
             android:layout_marginBottom="8dp"
             android:text="Genre"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/paysDetailTextView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.057"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/nomGroupe"
+            app:layout_constraintStart_toStartOf="@+id/nomGroupe"
             app:layout_constraintTop_toBottomOf="@+id/nomGroupe" />
 
         <TextView
             android:id="@+id/paysDetailTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="8dp"
             android:text="le_pays_d_origine"
             android:textAlignment="viewStart"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.082"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/descriptionView"
+            app:layout_constraintEnd_toEndOf="@+id/textView5"
+            app:layout_constraintStart_toStartOf="@+id/textView5"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
         <TextView
             android:id="@+id/descriptionView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
             android:layout_marginBottom="1dp"
             android:justificationMode="inter_word"
             android:text="descriptionGroupe"
             android:textAlignment="viewStart"
-            android:textSize="20sp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/link_layout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.304"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/paysDetailTextView" />
+            app:layout_constraintEnd_toEndOf="@+id/paysDetailTextView"
+            app:layout_constraintStart_toStartOf="@+id/paysDetailTextView" />
 
 
         <TextView
@@ -97,17 +91,15 @@
             android:layout_marginStart="121dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="121dp"
-            android:text="Programme"
+            android:text="@string/programmation"
             android:textAlignment="center"
             android:textAllCaps="false"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/link_layout"
-            tools:text="Programmation" />
-
+            tools:text="PROGRAMMATION" />
 
         <TextView
             android:id="@+id/horrairePassage"
@@ -133,7 +125,6 @@
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
             android:adjustViewBounds="true"
-            android:contentDescription="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
             android:cropToPadding="true"
             android:scaleType="fitCenter"
             android:src="@drawable/mdi_youtube"

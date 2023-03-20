@@ -114,7 +114,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         val menuInflater: MenuInflater = menuInflater
         if (navController.currentDestination?.id == R.id.navigation_faq) {
             return true

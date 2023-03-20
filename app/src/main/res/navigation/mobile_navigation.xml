@@ -54,7 +54,7 @@
     <fragment
         android:id="@+id/artisteDetailsFragment"
         android:name="com.example.fimudroid.ui.artistes.ArtisteDetailsFragment"
-        android:label="artiste_details"
+        android:label="@string/title_artiste_list"
         tools:layout="@layout/artiste_details_fragment" >
         <argument
             android:name="itemId"

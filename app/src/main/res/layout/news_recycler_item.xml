@@ -8,9 +8,9 @@
 
     <View
         android:id="@+id/side_bare_news"
-        android:layout_width="7dp"
+        android:layout_width="3dp"
         android:layout_height="0dp"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
         android:background="@drawable/news_side_bar"
@@ -23,10 +23,10 @@
         android:id="@+id/actu_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="10dp"
         android:layout_marginEnd="15dp"
         android:text="Titre de l'acutalité"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/actu_image"
         app:layout_constraintStart_toEndOf="@+id/side_bare_news"
@@ -35,7 +35,8 @@
     <ImageView
         android:id="@+id/actu_image"
         android:layout_width="80dp"
-        android:layout_height="60dp"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
         android:layout_marginEnd="15dp"
         android:text="Core de l'actualité"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,10 +59,11 @@
     <TextView
         android:id="@+id/news_date"
         android:layout_width="80dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="15dp"
+        android:layout_height="15dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="15dp"
         android:text="TextView"
+        android:gravity="center"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/actu_image" />
