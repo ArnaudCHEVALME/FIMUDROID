@@ -1,19 +1,13 @@
 package com.example.fimudroid
 
-import android.graphics.Point
-import android.icu.lang.UCharacter.GraphemeClusterBreak.V
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
-import android.widget.Toast
 import androidx.cardview.widget.CardView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.location.LocationManagerCompat.getCurrentLocation
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.fimudroid.network.FimuApiService
@@ -21,6 +15,8 @@ import com.example.fimudroid.network.models.Scene
 import com.example.fimudroid.network.models.Service
 import com.example.fimudroid.network.models.Stand
 import com.example.fimudroid.network.retrofit
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -29,10 +25,7 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
-import org.osmdroid.views.Projection
 import org.osmdroid.views.overlay.Marker
-import org.osmdroid.views.overlay.Marker.OnMarkerClickListener
-import org.osmdroid.views.overlay.infowindow.InfoWindow
 
 class MapFragment : Fragment() {
 
@@ -43,19 +36,12 @@ class MapFragment : Fragment() {
         retrofit.create(FimuApiService::class.java)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-
-
-
 
         var root = inflater.inflate(R.layout.fragment_map,container,false)
         map = root.findViewById(R.id.mapView)
@@ -80,27 +66,6 @@ class MapFragment : Fragment() {
                 api.getStands().data
             }
 
-            //your items
-            /*val items = ArrayList<OverlayItem>()
-
-            for (stand: Stand in stands){
-                items.add(OverlayItem("Stand",stand.libelle,GeoPoint(stand.longitude.toDouble(),stand.latitude.toDouble())))
-            }
-
-            //the overlay
-            var overlay = ItemizedOverlayWithFocus<OverlayItem>(items, object:
-                ItemizedIconOverlay.OnItemGestureListener<OverlayItem> {
-                override fun onItemSingleTapUp(index:Int, item:OverlayItem):Boolean {
-                    //do something
-                    return true
-                }
-                override fun onItemLongPress(index:Int, item:OverlayItem):Boolean {
-                    return false
-                }
-            }, requireContext())
-            overlay.setFocusItemsOnTap(true)
-
-            map.overlays.add(overlay)*/
             for (stand: Stand in stands){
                 var markerStand = Marker(map)
                 markerStand.position = GeoPoint(stand.latitude.toDouble()+0.0005,stand.longitude.toDouble())
@@ -119,19 +84,43 @@ class MapFragment : Fragment() {
                 //markerStand.setInfoWindow(CustomInfoWindow(map,markerStand,stand))
                 markerStand.setOnMarkerClickListener(object: Marker.OnMarkerClickListener {
                     override fun onMarkerClick(marker: Marker?, mapView: MapView?): Boolean {
-                        view?.findViewById<CardView>(R.id.cards_map)?.setVisibility(View.VISIBLE)
 
+                        view?.findViewById<CardView>(R.id.cards_map)?.visibility = View.VISIBLE
+                        val findButton = view?.findViewById<ImageButton>(R.id.stand_find_button)
                         val closeButton = view?.findViewById<ImageButton>(R.id.stand_close_button)
+                        val standLocation = GeoPoint(stand.latitude.toDouble(),stand.longitude.toDouble())
+                        val standTitre = view?.findViewById<TextView>(R.id.stand_titre)
+                        val standServicesGroup = view?.findViewById<ChipGroup>(R.id.stand_chipGroup)
+
+                        mapController.animateTo(standLocation)
                         closeButton?.setOnClickListener{
-                            view?.findViewById<CardView>(R.id.cards_map)?.setVisibility(View.INVISIBLE)
+                            view?.findViewById<CardView>(R.id.cards_map)?.visibility = View.INVISIBLE
+                            standTitre?.text = ""
+                            standServicesGroup?.removeAllViews()
                         }
+
+                        findButton?.setOnClickListener{
+                            mapController.animateTo(standLocation)
+                        }
+
+                        standTitre?.text =  stand.libelle
+
+                        for(service : Service in stand.services){
+                            var serviceChip : Chip = Chip(requireContext())
+                            serviceChip.text = service.libelle
+                            standServicesGroup?.addView(serviceChip)
+                        }
+
+                        for(i in 0..40){
+                            var serviceChip : Chip = Chip(requireContext())
+                            serviceChip.text = "Connard " + i
+                            standServicesGroup?.addView(serviceChip)
+                        }
+
                         return true
                     }
 
-                });
-
-
-
+                })
                 map.overlays.add(markerStand)
             }
         }
