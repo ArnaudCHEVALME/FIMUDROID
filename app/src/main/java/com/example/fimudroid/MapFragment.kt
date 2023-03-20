@@ -1,14 +1,19 @@
 package com.example.fimudroid
 
-import android.content.Context.LAYOUT_INFLATER_SERVICE
+import android.graphics.Point
+import android.icu.lang.UCharacter.GraphemeClusterBreak.V
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
+import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
+import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.location.LocationManagerCompat.getCurrentLocation
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.fimudroid.network.FimuApiService
@@ -22,11 +27,12 @@ import kotlinx.coroutines.withContext
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
+import org.osmdroid.views.Projection
 import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.Marker.OnMarkerClickListener
 import org.osmdroid.views.overlay.infowindow.InfoWindow
-import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow
-import org.w3c.dom.Text
 
 class MapFragment : Fragment() {
 
@@ -37,17 +43,31 @@ class MapFragment : Fragment() {
         retrofit.create(FimuApiService::class.java)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
+
+
+
+
         var root = inflater.inflate(R.layout.fragment_map,container,false)
         map = root.findViewById(R.id.mapView)
 
         Configuration.getInstance().load(requireContext(), PreferenceManager.getDefaultSharedPreferences(requireContext()))
         map.setTileSource(TileSourceFactory.MAPNIK)
+
+        map.getZoomController().setVisibility(CustomZoomButtonsController.Visibility.NEVER)
+
+        map.minZoomLevel = 16.5
+
+        map.setMultiTouchControls(true);
 
         val mapController = map.controller
         mapController.setZoom(18.5)
@@ -96,6 +116,21 @@ class MapFragment : Fragment() {
 
                 markerStand.setPanToView(true)
 
+                //markerStand.setInfoWindow(CustomInfoWindow(map,markerStand,stand))
+                markerStand.setOnMarkerClickListener(object: Marker.OnMarkerClickListener {
+                    override fun onMarkerClick(marker: Marker?, mapView: MapView?): Boolean {
+                        view?.findViewById<CardView>(R.id.cards_map)?.setVisibility(View.VISIBLE)
+
+                        val closeButton = view?.findViewById<ImageButton>(R.id.stand_close_button)
+                        closeButton?.setOnClickListener{
+                            view?.findViewById<CardView>(R.id.cards_map)?.setVisibility(View.INVISIBLE)
+                        }
+                        return true
+                    }
+
+                });
+
+
 
                 map.overlays.add(markerStand)
             }
@@ -133,3 +168,40 @@ class MapFragment : Fragment() {
         super.onResume()
     }
 }
+
+/*class CustomInfoWindow(mapView: MapView, marker: Marker, stand: Stand): InfoWindow(R.layout.bubble_stand, mapView){
+
+    var marker: Marker
+    var stand: Stand
+    init {
+       this.marker = marker
+        this.stand = stand
+    }
+    override fun onOpen(item: Any?) {
+        view.findViewById<TextView>(R.id.bubble_title).setText(stand.libelle)
+        view.findViewById<TextView>(R.id.buble_service).setText(stand.services[0].libelle)
+        val position: GeoPoint = marker.position
+        // Convert the position to screen coordinates
+        val projection: Projection = mapView.projection
+        val screenPosition: Point = projection.toPixels(position, null)
+        // Offset the position to center the InfoWindow above the marker
+        val screenHeight: Int = mapView.height
+        // Offset the position to show the InfoWindow at the bottom of the screen
+        screenPosition.offset(0, screenHeight - mView.height - screenPosition.y)
+        // Set the position of the InfoWindow
+        mView.layoutParams = MapView.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            position,
+            MapView.LayoutParams.BOTTOM_CENTER, 0, 0
+        )
+
+    }
+
+    override fun onClose() {
+        marker.closeInfoWindow()
+        super.close()
+
+    }
+
+}*/
