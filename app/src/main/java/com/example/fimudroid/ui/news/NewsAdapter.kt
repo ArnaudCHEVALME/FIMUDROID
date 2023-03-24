@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
 import com.example.fimudroid.network.models.News
+import com.example.fimudroid.util.OnItemClickListener
 
 class NewsAdapter(
 //    private val context: NewsListFragment,

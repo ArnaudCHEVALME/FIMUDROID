@@ -15,13 +15,10 @@ import com.example.fimudroid.R
 import com.example.fimudroid.network.FimuApiService
 import com.example.fimudroid.network.models.News
 import com.example.fimudroid.network.retrofit
+import com.example.fimudroid.util.OnItemClickListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-
-interface OnItemClickListener {
-    fun onItemClick(itemId: Int)
-}
 
 /**
  * A simple [Fragment] subclass.

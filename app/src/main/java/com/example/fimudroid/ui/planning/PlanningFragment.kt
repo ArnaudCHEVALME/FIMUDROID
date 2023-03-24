@@ -1,11 +1,20 @@
 package com.example.fimudroid.ui.planning
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
+import com.example.fimudroid.network.FimuApiService
+import com.example.fimudroid.network.models.Concert
+import com.example.fimudroid.network.retrofit
+import com.example.fimudroid.util.OnItemClickListener
+import kotlinx.coroutines.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -17,44 +26,38 @@ private const val ARG_PARAM2 = "param2"
  * Use the [PlanningFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class PlanningFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+class PlanningFragment : Fragment(), OnItemClickListener {
+    private val api: FimuApiService by lazy {
+        retrofit.create(FimuApiService::class.java)
     }
+
+    private var concerts: List<Concert> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_planning, container, false)
+        val root = inflater.inflate(R.layout.fragment_planning, container, false)
+
+        val recycler: RecyclerView = root.findViewById(R.id.planning_recycler)
+
+        lifecycleScope.launch {
+            val concerts = withContext(Dispatchers.IO) {
+                api.getConcerts().data
+            }
+            recycler.adapter = ConcertAdapter(concerts, this@PlanningFragment)
+        }
+        return root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment PlanningFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            PlanningFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onItemClick(itemId: Int) {
+        val bundle = Bundle()
+        lifecycleScope.launch {
+            val concert = api.getConcertById(itemId).data
+            bundle.putInt("id_art", concert.artisteId)
+            requireView().findNavController()
+                .navigate(R.id.action_programmation_to_artisteDetails, bundle)
+        }
     }
 }

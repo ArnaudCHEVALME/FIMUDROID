@@ -14,14 +14,11 @@ import com.example.fimudroid.R
 import com.example.fimudroid.network.FimuApiService
 import com.example.fimudroid.network.models.Artiste
 import com.example.fimudroid.network.retrofit
+import com.example.fimudroid.util.OnItemClickListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
-interface OnItemClickListener {
-    fun onItemClick(itemId: Int)
-}
 
 class ArtistListFragment : Fragment(), OnItemClickListener {
 
@@ -57,7 +54,7 @@ class ArtistListFragment : Fragment(), OnItemClickListener {
     }
 
     override fun onItemClick(itemId: Int) {
-        var bundle = Bundle()
+        val bundle = Bundle()
         bundle.putInt("id_art", itemId)
         requireView().findNavController()
             .navigate(R.id.action_navigation_artiste_list_to_artisteDetailsFragment, bundle)

@@ -12,5 +12,6 @@ data class Concert(
     @field:Json(name = "nbPersonnes") val nbPersonnes: Int,
     @field:Json(name = "artisteId") val artisteId: Int,
     @field:Json(name = "sceneId") val sceneId: Int,
-    @field:Json(name = "scene") val scene: Scene
+    @field:Json(name = "scene") val scene: Scene,
+    @field:Json(name = "artiste") val artiste: Artiste?,
 )

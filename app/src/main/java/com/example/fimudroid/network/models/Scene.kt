@@ -10,5 +10,5 @@ data class Scene(
     @field:Json(name = "latitude") val latitude: String,
     @field:Json(name = "longitude") val longitude: String,
     @field:Json(name = "libelle") val libelle: String,
-    @field:Json(name = "typescene") val typescene: TypeScene
+    @field:Json(name = "typescene") val typescene: TypeScene?
 )
