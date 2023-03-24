@@ -1,13 +1,18 @@
 package com.example.fimudroid
 
+import android.content.Context
+import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.fimudroid.network.FimuApiService
@@ -17,6 +22,7 @@ import com.example.fimudroid.network.models.Stand
 import com.example.fimudroid.network.retrofit
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -27,6 +33,8 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import java.security.Provider
+
 
 class MapFragment : Fragment() {
 
@@ -56,7 +64,9 @@ class MapFragment : Fragment() {
 
         map.maxZoomLevel = 21.5
 
-        map.setScrollableAreaLimitDouble(BoundingBox(47.64836242902998, 6.8783751401231985,47.63332151596629, 6.852366367341309))
+        val fimuBoundingBox : BoundingBox = BoundingBox(47.64836242902998, 6.8783751401231985,47.63332151596629, 6.852366367341309) // vrai
+        //val fimuBoundingBox : BoundingBox = BoundingBox(48.64836242902998, 6.8783751401231985,47.63332151596629, 5.852366367341309) // test
+        map.setScrollableAreaLimitDouble(fimuBoundingBox)
 
         map.setMultiTouchControls(true)
 
@@ -64,7 +74,67 @@ class MapFragment : Fragment() {
         mapController.setZoom(18.5)
 
         val startPoint = GeoPoint( 47.638410197922674,6.862777328835964)
-        mapController.setCenter(startPoint)
+
+/*
+        val mLocationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(context), map)
+        mLocationOverlay.enableMyLocation()
+        map.getOverlays().add(mLocationOverlay)
+        //Log.i("Map",mLocationOverlay.myLocation.toDoubleString())*/
+
+/*        val lm: LocationManager
+        val gp: GeoPoint
+        val provider:String
+
+        lm = context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if(lm.getAllProviders().contains(LocationManager.GPS_PROVIDER) && lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            provider = LocationManager.GPS_PROVIDER;
+        }
+        val lastKnownLoc: Location? = lm.getLastKnownLocation(provider)*/
+
+        val lm: LocationManager = context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val providers: List<String> = lm.getProviders(true) // get enabled providers
+        var provider: String? = null
+
+        if (providers.contains(LocationManager.GPS_PROVIDER)) {
+            provider = LocationManager.GPS_PROVIDER
+        } else if (providers.contains(LocationManager.NETWORK_PROVIDER)) {
+            provider = LocationManager.NETWORK_PROVIDER
+        }
+
+        if (provider == null) {
+            throw IllegalStateException("No enabled location provider found")
+        }
+
+        val lastKnownLoc: Location? = lm?.getLastKnownLocation(provider)
+        val gp: GeoPoint
+
+        if (lastKnownLoc != null) {
+            gp = GeoPoint(
+                (lastKnownLoc.getLatitude()),
+                (lastKnownLoc.getLongitude())
+            )
+        }else{
+            gp = GeoPoint(0,0)
+        }
+
+        val locateFloatingButton = root.findViewById<FloatingActionButton>(R.id.floatingButtonLocate)
+        if( fimuBoundingBox.contains(gp.latitude,gp.longitude)){
+            mapController.setCenter(gp)
+            var posMarker : Marker = Marker(map)
+            posMarker.icon = resources.getDrawable(R.drawable.map_marker)
+            posMarker.position = gp
+            posMarker.setInfoWindow(null)
+            map.overlays.add(posMarker)
+            locateFloatingButton?.show()
+            locateFloatingButton?.visibility = View.VISIBLE
+            locateFloatingButton.setOnClickListener{
+                mapController.animateTo(gp)
+            }
+        }else{
+            locateFloatingButton?.hide()
+            locateFloatingButton?.visibility = View.GONE
+            mapController.setCenter(startPoint)
+        }
 
         lifecycleScope.launch {
             val stands: List<Stand> = withContext(Dispatchers.IO) {
@@ -82,15 +152,11 @@ class MapFragment : Fragment() {
                 //Log.i("MAP",stand.libelle)
                 markerStand.icon = resources.getDrawable(R.drawable.stand)
 
-                //markerStand.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-
                 markerStand.setPanToView(true)
 
                 //markerStand.setInfoWindow(CustomInfoWindow(map,markerStand,stand))
-                markerStand.setOnMarkerClickListener(object: OnMarkerClickListener {
+                markerStand.setOnMarkerClickListener(object: Marker.OnMarkerClickListener {
                     override fun onMarkerClick(marker: Marker?, mapView: MapView?): Boolean {
-                        view?.findViewById<CardView>(R.id.cards_map)?.visibility = View.VISIBLE
-
                         view?.findViewById<CardView>(R.id.cards_map)?.visibility = View.VISIBLE
                         val findButton = view?.findViewById<ImageButton>(R.id.stand_find_button)
                         val closeButton = view?.findViewById<ImageButton>(R.id.stand_close_button)
@@ -118,11 +184,11 @@ class MapFragment : Fragment() {
                             standServicesGroup?.addView(serviceChip)
                         }
 
-                        for(i in 0..40){
+                        /*for(i in 0..40){
                             var serviceChip : Chip = Chip(requireContext())
                             serviceChip.text = "Connard " + i
                             standServicesGroup?.addView(serviceChip)
-                        }
+                        }*/
 
                         return true
                     }
