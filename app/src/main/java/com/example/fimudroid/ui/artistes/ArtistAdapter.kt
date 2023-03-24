@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
 import com.example.fimudroid.network.models.Artiste
+import com.example.fimudroid.util.OnItemClickListener
 
 class ArtistAdapter(
     private val dataset: List<Artiste>,
@@ -62,7 +63,7 @@ class ArtistAdapter(
         categoryTextView.text = artiste.categorie.libelle
 
         val genreView = holder.itemView.findViewById<TextView>(R.id.genresTextView)
-        genreView.text = artiste.genres.joinToString(", ") { it.libelle }
+        genreView.text = artiste.genres?.joinToString(", ") { it.libelle }
 
         val paysView = holder.itemView.findViewById<TextView>(R.id.paysTextView)
         paysView.text = artiste.pays?.joinToString(", ") { it.libelle }

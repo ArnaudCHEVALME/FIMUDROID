@@ -152,37 +152,41 @@ class MapFragment : Fragment() {
                 //Log.i("MAP",stand.libelle)
                 markerStand.icon = resources.getDrawable(R.drawable.stand)
 
+                //markerStand.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+
                 markerStand.setPanToView(true)
 
                 //markerStand.setInfoWindow(CustomInfoWindow(map,markerStand,stand))
-                markerStand.setOnMarkerClickListener(object: Marker.OnMarkerClickListener {
-                    override fun onMarkerClick(marker: Marker?, mapView: MapView?): Boolean {
-                        view?.findViewById<CardView>(R.id.cards_map)?.visibility = View.VISIBLE
-                        val findButton = view?.findViewById<ImageButton>(R.id.stand_find_button)
-                        val closeButton = view?.findViewById<ImageButton>(R.id.stand_close_button)
-                        val standLocation = GeoPoint(stand.latitude.toDouble(),stand.longitude.toDouble())
-                        val standTitre = view?.findViewById<TextView>(R.id.stand_titre)
-                        val standServicesGroup = view?.findViewById<ChipGroup>(R.id.stand_chipGroup)
+                markerStand.setOnMarkerClickListener { marker, mapView ->
+                    view?.findViewById<CardView>(R.id.cards_map)?.visibility = View.VISIBLE
 
+                    view?.findViewById<CardView>(R.id.cards_map)?.visibility = View.VISIBLE
+                    val findButton = view?.findViewById<ImageButton>(R.id.stand_find_button)
+                    val closeButton = view?.findViewById<ImageButton>(R.id.stand_close_button)
+                    val standLocation =
+                        GeoPoint(stand.latitude.toDouble(), stand.longitude.toDouble())
+                    val standTitre = view?.findViewById<TextView>(R.id.stand_titre)
+                    val standServicesGroup = view?.findViewById<ChipGroup>(R.id.stand_chipGroup)
+
+                    mapController.animateTo(standLocation)
+                    closeButton?.setOnClickListener {
+                        view?.findViewById<CardView>(R.id.cards_map)?.visibility = View.INVISIBLE
+                        view?.findViewById<CardView>(R.id.cards_map)?.visibility = View.INVISIBLE
+                        standTitre?.text = ""
+                        standServicesGroup?.removeAllViews()
+                    }
+
+                    findButton?.setOnClickListener {
                         mapController.animateTo(standLocation)
-                        closeButton?.setOnClickListener{
-                            view?.findViewById<CardView>(R.id.cards_map)?.visibility = View.INVISIBLE
-                            view?.findViewById<CardView>(R.id.cards_map)?.visibility = View.INVISIBLE
-                            standTitre?.text = ""
-                            standServicesGroup?.removeAllViews()
-                        }
+                    }
 
-                        findButton?.setOnClickListener{
-                            mapController.animateTo(standLocation)
-                        }
+                    standTitre?.text = stand.libelle
 
-                        standTitre?.text =  stand.libelle
-
-                        for(service : Service in stand.services){
-                            var serviceChip : Chip = Chip(requireContext())
-                            serviceChip.text = service.libelle
-                            standServicesGroup?.addView(serviceChip)
-                        }
+                    for (service: Service in stand.services) {
+                        var serviceChip: Chip = Chip(requireContext())
+                        serviceChip.text = service.libelle
+                        standServicesGroup?.addView(serviceChip)
+                    }
 
                         /*for(i in 0..40){
                             var serviceChip : Chip = Chip(requireContext())
@@ -190,10 +194,8 @@ class MapFragment : Fragment() {
                             standServicesGroup?.addView(serviceChip)
                         }*/
 
-                        return true
-                    }
-
-                })
+                    true
+                }
                 map.overlays.add(markerStand)
             }
         }
@@ -206,7 +208,7 @@ class MapFragment : Fragment() {
             for (scene : Scene in scenes){
                 var sceneMarker : Marker = Marker(map)
                 sceneMarker.position = GeoPoint(scene.latitude.toDouble(),scene.longitude.toDouble())
-                var titre = scene.libelle+"\n=========\n"+scene.typescene.libelle
+                var titre = scene.libelle+"\n=========\n"+scene.typescene?.libelle
                 sceneMarker.title = titre
                 sceneMarker.icon = resources.getDrawable(R.drawable.microphone)
                 sceneMarker.setPanToView(true)

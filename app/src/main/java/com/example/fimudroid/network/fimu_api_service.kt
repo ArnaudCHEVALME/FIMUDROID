@@ -10,7 +10,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 
 
-private const val BASE_URL = "http://192.168.86.17:3000"
+private const val BASE_URL = "http://10.0.2.2:3000"
 val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
     .build()
@@ -61,4 +61,10 @@ interface FimuApiService {
 
     @GET("status")
     suspend fun checkAPIStatus() : APIStatus
+
+    @GET("concert")
+    suspend fun getConcerts() : ConcertsListResponse
+
+    @GET("concert/{id}")
+    suspend fun getConcertById(@Path("id") id: Int) : ConcertResponse
 }

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -48,24 +47,24 @@ class ArtisteDetailsFragment : Fragment() {
                 val horaires: TextView = root.findViewById(R.id.horrairePassage)
                 val paysView: TextView = root.findViewById(R.id.paysDetailTextView)
 
-                genreView.text = currentArtiste.genres.joinToString(", ") { it.libelle }
+                genreView.text = currentArtiste.genres?.joinToString(", ") { it.libelle }
 
                 paysView.text = currentArtiste.pays?.joinToString(", ") { it.libelle }
 
-                // val lienRéseau
                 val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                 val outputFormat = SimpleDateFormat("dd MMMM", Locale.getDefault())
 
 
                 val horaireArtiste = StringBuilder()
 
-                for (concert in currentArtiste.concerts) {
+                for (concert in currentArtiste.concerts!!) {
                     val dateString = concert.date_debut
                     // dd - MM
                     val date = inputFormat.parse(concert.date_debut)
                     val formattedDate = outputFormat.format(date).uppercase()
 
-                    val heureDebut = concert.heure_debut.substringBeforeLast(":") // remove seconds
+                    val heureDebut =
+                        concert.heure_debut.substringBeforeLast(":") // remove seconds
                     val heureFin = concert.heure_fin.substringBeforeLast(":") // remove seconds
 
                     horaireArtiste.append("$formattedDate\n$heureDebut - $heureFin\n${concert.scene.libelle}\n\n")
@@ -83,9 +82,9 @@ class ArtisteDetailsFragment : Fragment() {
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
                 )
-                layoutParams.setMargins(20,20,20,20)
+                layoutParams.setMargins(20, 20, 20, 20)
 
-                for (link in currentArtiste.reseauxSociauxes!!){
+                for (link in currentArtiste.reseauxSociauxes!!) {
                     val btn = ImageView(linksViewGroup.context)
 //                    btn.layoutParams = layoutParams
 
@@ -130,10 +129,8 @@ class ArtisteDetailsFragment : Fragment() {
 
             }
         }
-
         return root
     }
-
 }
 
 fun getId(resourceName: String, c: Class<*>): Int {
