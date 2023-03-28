@@ -1,17 +1,18 @@
 package com.example.fimudroid.ui.planning
 
+import PlanningViewModel
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
 import com.example.fimudroid.network.FimuApiService
-import com.example.fimudroid.network.models.Concert
 import com.example.fimudroid.network.retrofit
 import com.example.fimudroid.util.OnItemClickListener
 import kotlinx.coroutines.*
@@ -26,38 +27,32 @@ private const val ARG_PARAM2 = "param2"
  * Use the [PlanningFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class PlanningFragment : Fragment(), OnItemClickListener {
-    private val api: FimuApiService by lazy {
-        retrofit.create(FimuApiService::class.java)
-    }
-
-    private var concerts: List<Concert> = emptyList()
+class PlanningFragment : Fragment() {
+    private val viewModel: PlanningViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel.loadConcerts()
         // Inflate the layout for this fragment
         val root = inflater.inflate(R.layout.fragment_planning, container, false)
 
         val recycler: RecyclerView = root.findViewById(R.id.planning_recycler)
 
         lifecycleScope.launch {
-            val concerts = withContext(Dispatchers.IO) {
-                api.getConcerts().data
+
+            val concertsByScene = if (viewModel.concertsByDateByScene.isEmpty()) {
+                emptyMap()
+            } else {
+                viewModel.concertsByDateByScene.values.first()
             }
-            recycler.adapter = ConcertAdapter(concerts, this@PlanningFragment)
+
+            Log.i("ViewModel", viewModel.concertsByDateByScene.toString())
+
+            // Set up the adapter with the concerts data
+            recycler.adapter = PlanningAdapter(concertsByScene) // TODO - REMOVE (key depending on button) !!!
         }
         return root
-    }
-
-    override fun onItemClick(itemId: Int) {
-        val bundle = Bundle()
-        lifecycleScope.launch {
-            val concert = api.getConcertById(itemId).data
-            bundle.putInt("id_art", concert.artisteId)
-            requireView().findNavController()
-                .navigate(R.id.action_programmation_to_artisteDetails, bundle)
-        }
     }
 }

@@ -45,7 +45,6 @@ class NewsAdapter(
      */
     override fun onBindViewHolder(holder: ActuViewHolder, position: Int) {
         val actu = dataset[position]
-        Log.i("DATA", dataset.toString())
         holder.title.text = actu.titre
         holder.core.text = actu.contenu?: "no Text"
         holder.date.text = actu.dateEnvoi?.subSequence(0, 10) ?: "no Date"

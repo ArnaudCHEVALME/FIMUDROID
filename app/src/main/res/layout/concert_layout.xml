@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rectangle"
     android:layout_width="250dp"
-    android:layout_height="100dp"
-    android:background="@drawable/simple_rect">
+    android:layout_height="match_parent"
+    android:background="@drawable/simple_rect"
+    android:backgroundTint="#3B199A">
 
 
     <TextView
-        android:id="@+id/artiste_name_view"
+        android:id="@+id/artiste_name_concert_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
         android:ellipsize="end"
+        android:gravity="center"
         android:maxLines="1"
         android:text="Nom artiste très long qui tient pas sur une ligne"
+        android:textAlignment="center"
         android:textColor="#AEAEAE"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/pays_view"
+        app:layout_constraintBottom_toTopOf="@+id/pays_artiste_concert_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,7 +31,7 @@
         app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
-        android:id="@+id/pays_view"
+        android:id="@+id/pays_artiste_concert_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
@@ -43,6 +46,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/artiste_name_view" />
+        app:layout_constraintTop_toBottomOf="@+id/artiste_name_concert_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
