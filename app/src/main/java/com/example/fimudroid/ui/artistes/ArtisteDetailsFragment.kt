@@ -35,9 +35,10 @@ class ArtisteDetailsFragment : Fragment() {
 
         // Inflate the layout for this fragment7
         val root = inflater.inflate(R.layout.artiste_details_fragment, container, false)
-        val artiste_id: Int = arguments?.getInt("id_art") ?: -1
+        val artisteId: Int = arguments?.getInt("id_art") ?: -1
+
         lifecycleScope.launch(Dispatchers.IO) {
-            val currentArtiste = api.getArtisteById(artiste_id).data
+            val currentArtiste = api.getArtisteById(artisteId).data
 
             withContext(Dispatchers.Main) {
                 val nomGroupeView: TextView = root.findViewById(R.id.nomGroupe)
@@ -51,7 +52,7 @@ class ArtisteDetailsFragment : Fragment() {
 
                 paysView.text = currentArtiste.pays?.joinToString(", ") { it.libelle }
 
-                val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val inputFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
                 val outputFormat = SimpleDateFormat("dd MMMM", Locale.getDefault())
 
 
@@ -61,7 +62,7 @@ class ArtisteDetailsFragment : Fragment() {
                     val dateString = concert.date_debut
                     // dd - MM
                     val date = inputFormat.parse(concert.date_debut)
-                    val formattedDate = outputFormat.format(date).uppercase()
+                    val formattedDate = date?.let { outputFormat.format(it).uppercase() }
 
                     val heureDebut =
                         concert.heure_debut.substringBeforeLast(":") // remove seconds
@@ -70,7 +71,6 @@ class ArtisteDetailsFragment : Fragment() {
                     horaireArtiste.append("$formattedDate\n$heureDebut - $heureFin\n${concert.scene.libelle}\n\n")
                 }
                 horaires.text = horaireArtiste.toString().trimEnd()
-
 
                 nomGroupeView.text = currentArtiste.nom
                 description.text = currentArtiste.biographie
@@ -108,7 +108,7 @@ class ArtisteDetailsFragment : Fragment() {
                         intent3.data = Uri.parse(link.possede.lien)
                         startActivity(intent3)
                     }
-//                    btn.cropToPadding = true   v
+//                    btn.cropToPadding = true
                     linksViewGroup.addView(btn)
                 }
 

@@ -52,7 +52,7 @@ class MapFragment : Fragment() {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        var root = inflater.inflate(R.layout.fragment_map,container,false)
+        val root = inflater.inflate(R.layout.fragment_map,container,false)
         map = root.findViewById(R.id.mapView)
 
         Configuration.getInstance().load(requireContext(), PreferenceManager.getDefaultSharedPreferences(requireContext()))
@@ -142,7 +142,7 @@ class MapFragment : Fragment() {
             }
 
             for (stand: Stand in stands){
-                var markerStand = Marker(map)
+                val markerStand = Marker(map)
                 markerStand.position = GeoPoint(stand.latitude.toDouble()+0.0005,stand.longitude.toDouble())
                 var titre = stand.libelle+"\n========="
                 for(service: Service in stand.services){
@@ -183,16 +183,17 @@ class MapFragment : Fragment() {
                     standTitre?.text = stand.libelle
 
                     for (service: Service in stand.services) {
-                        var serviceChip: Chip = Chip(requireContext())
+                        val serviceChip: Chip = Chip(requireContext())
                         serviceChip.text = service.libelle
                         standServicesGroup?.addView(serviceChip)
                     }
 
-                        /*for(i in 0..40){
-                            var serviceChip : Chip = Chip(requireContext())
-                            serviceChip.text = "Connard " + i
-                            standServicesGroup?.addView(serviceChip)
-                        }*/
+                    for (i in 0..40) {
+                        val serviceChip: Chip = Chip(requireContext())
+                        val txt = "Connard $i"
+                        serviceChip.text = txt
+                        standServicesGroup?.addView(serviceChip)
+                    }
 
                     true
                 }
@@ -206,9 +207,9 @@ class MapFragment : Fragment() {
             }
 
             for (scene : Scene in scenes){
-                var sceneMarker : Marker = Marker(map)
+                val sceneMarker : Marker = Marker(map)
                 sceneMarker.position = GeoPoint(scene.latitude.toDouble(),scene.longitude.toDouble())
-                var titre = scene.libelle+"\n=========\n"+scene.typescene?.libelle
+                val titre = scene.libelle+"\n=========\n"+scene.typescene?.libelle
                 sceneMarker.title = titre
                 sceneMarker.icon = resources.getDrawable(R.drawable.microphone)
                 sceneMarker.setPanToView(true)
@@ -219,16 +220,12 @@ class MapFragment : Fragment() {
     }
 
     override fun onPause() {
-        if (map != null){
-            map.onPause()
-        }
+        map.onPause()
         super.onPause()
     }
 
     override fun onResume() {
-        if (map != null){
-            map.onResume()
-        }
+        map.onResume()
         super.onResume()
     }
 }
