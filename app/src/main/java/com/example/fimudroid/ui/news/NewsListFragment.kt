@@ -45,7 +45,6 @@ class NewsListFragment : Fragment(), OnItemClickListener {
             val news: List<News> = withContext(Dispatchers.IO) {
                 api.getNews().data
             }
-            Log.i("news", news.toString())
 
             val newsHeaderAdapter = ImageHeaderNewsAdapter("pute.com")
             val newsAdapter = NewsAdapter(news, this@NewsListFragment)
