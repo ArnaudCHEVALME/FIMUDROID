@@ -5,14 +5,6 @@
     android:id="@+id/info_stand"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="36dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginEnd="36dp"
-    app:layout_constraintBottom_toBottomOf="@+id/card_info"
-    app:layout_constraintEnd_toStartOf="@+id/info_close_button"
-    app:layout_constraintStart_toEndOf="@+id/info_find_button"
-    app:layout_constraintTop_toBottomOf="@+id/info_titre"
-
 >
 
     <TextView

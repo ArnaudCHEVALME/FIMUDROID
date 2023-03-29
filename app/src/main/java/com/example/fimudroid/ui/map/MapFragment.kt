@@ -12,10 +12,12 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.fimudroid.R
 import com.example.fimudroid.network.FimuApiService
+import com.example.fimudroid.network.models.Concert
 import com.example.fimudroid.network.models.Scene
 import com.example.fimudroid.network.models.Service
 import com.example.fimudroid.network.models.Stand
@@ -26,13 +28,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.osmdroid.api.IMapController
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.BoundingBox
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
+import org.osmdroid.views.MapController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import java.lang.reflect.Type
+import java.util.Objects
 
 
 class MapFragment : Fragment() {
@@ -148,33 +154,12 @@ class MapFragment : Fragment() {
                     titre +="\n- "+service.libelle
                 }
                 markerStand.title = titre
-                //Log.i("MAP",stand.libelle)
                 markerStand.icon = resources.getDrawable(R.drawable.stand)
-
-                //markerStand.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-
                 markerStand.setPanToView(true)
 
                 //markerStand.setInfoWindow(CustomInfoWindow(map,markerStand,stand))
                 markerStand.setOnMarkerClickListener { marker, mapView ->
-                    view?.findViewById<CardView>(R.id.cards_map)?.visibility = View.VISIBLE
-
-                    val info_view = StandInfoView(requireContext(),stand)
-                    view?.findViewById<ConstraintLayout>(R.id.card_info)?.addView(info_view)
-
-                    val findButton = view?.findViewById<ImageButton>(R.id.info_find_button)
-                    val closeButton = view?.findViewById<ImageButton>(R.id.info_close_button)
-                    val standLocation =
-                        GeoPoint(stand.latitude.toDouble(), stand.longitude.toDouble())
-
-                    mapController.animateTo(standLocation)
-                    closeButton?.setOnClickListener {
-                        view?.findViewById<CardView>(R.id.cards_map)?.visibility = View.INVISIBLE
-                    }
-
-                    findButton?.setOnClickListener {
-                        mapController.animateTo(standLocation)
-                    }
+                    afficheInfoView(stand, mapController)
                     true
                 }
                 map.overlays.add(markerStand)
@@ -193,6 +178,12 @@ class MapFragment : Fragment() {
                 sceneMarker.title = titre
                 sceneMarker.icon = resources.getDrawable(R.drawable.microphone)
                 sceneMarker.setPanToView(true)
+
+                sceneMarker.setOnMarkerClickListener{marker,mapView ->
+                    afficheInfoView(scene,mapController)
+                    true
+                }
+
                 map.overlays.add(sceneMarker)
             }
         }
@@ -207,6 +198,97 @@ class MapFragment : Fragment() {
     override fun onResume() {
         map.onResume()
         super.onResume()
+    }
+
+    fun afficheInfoView(lieu: Any, mapController: IMapController){
+        val card = view?.findViewById<CardView>(R.id.cards_map)
+        card?.visibility = View.VISIBLE
+
+        val info_stand = view?.findViewById<ConstraintLayout>(R.id.stand_constraint)
+        val info_scene = view?.findViewById<ConstraintLayout>(R.id.scene_constraint)
+
+
+        //val info_view = StandInfoView(requireContext(),stand)
+
+        val titre = view?.findViewById<TextView>(R.id.info_titre)
+        val findButton = view?.findViewById<ImageButton>(R.id.info_find_button)
+        val closeButton = view?.findViewById<ImageButton>(R.id.info_close_button)
+
+        if (lieu is Stand){
+            info_scene?.visibility = View.GONE
+            info_stand?.visibility = View.VISIBLE
+
+            val stand : Stand = lieu
+            val standLocation =
+                GeoPoint(stand.latitude.toDouble(), stand.longitude.toDouble())
+            val standServicesGroup = view?.findViewById<ChipGroup>(R.id.stand_chipGroup)
+
+            titre?.text = stand.libelle
+            for (service: Service in stand.services) {
+                val serviceChip: Chip = Chip(context)
+                serviceChip.text = service.libelle
+                standServicesGroup?.addView(serviceChip)
+            }
+
+            mapController.animateTo(standLocation)
+            closeButton?.setOnClickListener {
+                view?.findViewById<CardView>(R.id.cards_map)?.visibility = View.INVISIBLE
+                standServicesGroup?.removeAllViews()
+            }
+
+            findButton?.setOnClickListener {
+                mapController.animateTo(standLocation)
+            }
+        }else{
+            info_scene?.visibility = View.VISIBLE
+            info_stand?.visibility = View.GONE
+
+            val scene : Scene = lieu as Scene
+            val sceneLocation =
+                GeoPoint(scene.latitude.toDouble(), scene.longitude.toDouble())
+            val concertTextView = view?.findViewById<TextView>(R.id.scene_concert)
+            val artisteTextView = view?.findViewById<TextView>(R.id.scene_artiste)
+            val genreTextView = view?.findViewById<TextView>(R.id.scene_genre)
+
+
+            titre?.text = "Scène de "+scene.libelle
+
+            var nextConcert : Concert
+            lifecycleScope.launch {
+                val concerts: List<Concert> = withContext(Dispatchers.IO){
+                    api.getConcerts().data
+                }
+                for (concert: Concert in concerts){
+                    if (concert.sceneId == scene.id){
+                        nextConcert = concert
+
+                        concertTextView?.text = nextConcert.heure_debut+" - "+nextConcert.heure_fin
+                        artisteTextView?.text = nextConcert.artiste?.nom
+                        genreTextView?.text = nextConcert.artiste?.genres?.get(0)?.libelle
+                        break
+                    }
+                }
+
+
+            }
+
+
+
+            mapController.animateTo(sceneLocation)
+            closeButton?.setOnClickListener {
+                view?.findViewById<CardView>(R.id.cards_map)?.visibility = View.INVISIBLE
+            }
+
+            findButton?.setOnClickListener {
+                mapController.animateTo(sceneLocation)
+            }
+        }
+
+
+
+
+
+
     }
 }
 
