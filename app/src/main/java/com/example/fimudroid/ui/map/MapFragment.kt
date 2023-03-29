@@ -262,7 +262,7 @@ class MapFragment : Fragment() {
                     if (concert.sceneId == scene.id){
                         nextConcert = concert
 
-                        concertTextView?.text = nextConcert.heure_debut+" - "+nextConcert.heure_fin
+                        concertTextView?.text = nextConcert.heure_debut.dropLast(3)+" - "+nextConcert.heure_fin.dropLast(3)
                         artisteTextView?.text = nextConcert.artiste?.nom
                         genreTextView?.text = nextConcert.artiste?.genres?.get(0)?.libelle
                         break
