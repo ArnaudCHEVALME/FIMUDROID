@@ -81,7 +81,7 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_plan"
-        android:name="com.example.fimudroid.MapFragment"
+        android:name="com.example.fimudroid.ui.map.MapFragment"
         android:label="Plan"
         tools:layout="@layout/fragment_map" />
 

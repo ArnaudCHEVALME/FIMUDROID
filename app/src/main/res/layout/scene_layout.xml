@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/info_scene"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="36dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginEnd="36dp"
+    app:layout_constraintBottom_toBottomOf="@+id/card_info"
+    app:layout_constraintEnd_toStartOf="@+id/info_close_button"
+    app:layout_constraintStart_toEndOf="@+id/info_find_button"
+    app:layout_constraintTop_toBottomOf="@+id/info_titre"
+    tools:showIn="@layout/fragment_map">
+
+
+    <ProgressBar
+        android:id="@+id/scene_progressBar"
+        style="@android:style/Widget.Material.ProgressBar.Horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="false"
+        android:max="600"
+        android:min="0"
+        android:progress="30"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/scene_artiste"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/scene_progressBar" />
+
+    <TextView
+        android:id="@+id/scene_genre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/scene_progressBar" />
+</androidx.constraintlayout.widget.ConstraintLayout>

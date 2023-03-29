@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:visibility="visible"
-    tools:context=".MapFragment">
+    tools:context=".ui.map.MapFragment">
 
 
     <org.osmdroid.views.MapView
@@ -67,7 +67,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:cardCornerRadius="10dp"
         app:cardElevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -75,12 +75,12 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/card_stand"
+            android:id="@+id/card_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <ImageButton
-                android:id="@+id/stand_close_button"
+                android:id="@+id/info_close_button"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:background="@null"
@@ -90,7 +90,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
-                android:id="@+id/stand_find_button"
+                android:id="@+id/info_find_button"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:background="@null"
@@ -100,7 +100,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/stand_titre"
+                android:id="@+id/info_titre"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="50dp"
@@ -109,35 +109,20 @@
                 android:gravity="center"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                app:layout_constraintEnd_toStartOf="@+id/stand_close_button"
-                app:layout_constraintStart_toEndOf="@+id/stand_find_button"
+                app:layout_constraintEnd_toStartOf="@+id/info_close_button"
+                app:layout_constraintStart_toEndOf="@+id/info_find_button"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/textviewServices"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Services :"
-                app:layout_constraintStart_toEndOf="@+id/stand_find_button"
-                app:layout_constraintTop_toBottomOf="@+id/stand_titre"></TextView>
-
-            <ScrollView
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="4dp"
-                android:maxHeight="50dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/info_constraint"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/stand_close_button"
-                app:layout_constraintStart_toEndOf="@+id/stand_find_button"
-                app:layout_constraintTop_toBottomOf="@+id/textviewServices">
+                app:layout_constraintEnd_toStartOf="@+id/info_close_button"
+                app:layout_constraintStart_toEndOf="@+id/info_find_button"
+                app:layout_constraintTop_toBottomOf="@id/info_titre">
 
-
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/stand_chipGroup"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
-            </ScrollView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,20 +1,20 @@
-package com.example.fimudroid
+package com.example.fimudroid.ui.map
 
 import android.content.Context
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat.getSystemService
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.example.fimudroid.R
 import com.example.fimudroid.network.FimuApiService
 import com.example.fimudroid.network.models.Scene
 import com.example.fimudroid.network.models.Service
@@ -33,7 +33,6 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
-import java.security.Provider
 
 
 class MapFragment : Fragment() {
@@ -160,41 +159,22 @@ class MapFragment : Fragment() {
                 markerStand.setOnMarkerClickListener { marker, mapView ->
                     view?.findViewById<CardView>(R.id.cards_map)?.visibility = View.VISIBLE
 
-                    view?.findViewById<CardView>(R.id.cards_map)?.visibility = View.VISIBLE
-                    val findButton = view?.findViewById<ImageButton>(R.id.stand_find_button)
-                    val closeButton = view?.findViewById<ImageButton>(R.id.stand_close_button)
+                    val info_view = StandInfoView(requireContext(),stand)
+                    view?.findViewById<ConstraintLayout>(R.id.card_info)?.addView(info_view)
+
+                    val findButton = view?.findViewById<ImageButton>(R.id.info_find_button)
+                    val closeButton = view?.findViewById<ImageButton>(R.id.info_close_button)
                     val standLocation =
                         GeoPoint(stand.latitude.toDouble(), stand.longitude.toDouble())
-                    val standTitre = view?.findViewById<TextView>(R.id.stand_titre)
-                    val standServicesGroup = view?.findViewById<ChipGroup>(R.id.stand_chipGroup)
 
                     mapController.animateTo(standLocation)
                     closeButton?.setOnClickListener {
                         view?.findViewById<CardView>(R.id.cards_map)?.visibility = View.INVISIBLE
-                        view?.findViewById<CardView>(R.id.cards_map)?.visibility = View.INVISIBLE
-                        standTitre?.text = ""
-                        standServicesGroup?.removeAllViews()
                     }
 
                     findButton?.setOnClickListener {
                         mapController.animateTo(standLocation)
                     }
-
-                    standTitre?.text = stand.libelle
-
-                    for (service: Service in stand.services) {
-                        val serviceChip: Chip = Chip(requireContext())
-                        serviceChip.text = service.libelle
-                        standServicesGroup?.addView(serviceChip)
-                    }
-
-                    for (i in 0..40) {
-                        val serviceChip: Chip = Chip(requireContext())
-                        val txt = "Connard $i"
-                        serviceChip.text = txt
-                        standServicesGroup?.addView(serviceChip)
-                    }
-
                     true
                 }
                 map.overlays.add(markerStand)
