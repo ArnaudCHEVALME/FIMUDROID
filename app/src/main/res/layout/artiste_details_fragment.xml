@@ -118,13 +118,14 @@
             tools:text="horraire de passage" />
 
         <ImageButton
-            android:background="@android:color/transparent"
             android:id="@+id/VideoGroupe"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
             android:adjustViewBounds="true"
+            android:background="@android:color/transparent"
+            android:contentDescription="VideoYoutube"
             android:cropToPadding="true"
             android:scaleType="fitCenter"
             android:src="@drawable/mdi_youtube"

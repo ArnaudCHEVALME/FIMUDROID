@@ -19,6 +19,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.lang.reflect.Field
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalTime
 import java.util.*
 
 
@@ -52,23 +54,17 @@ class ArtisteDetailsFragment : Fragment() {
 
                 paysView.text = currentArtiste.pays?.joinToString(", ") { it.libelle }
 
-                val inputFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
-                val outputFormat = SimpleDateFormat("dd MMMM", Locale.getDefault())
-
-
                 val horaireArtiste = StringBuilder()
 
                 for (concert in currentArtiste.concerts!!) {
-                    val dateString = concert.date_debut
                     // dd - MM
-                    val date = inputFormat.parse(concert.date_debut)
-                    val formattedDate = date?.let { outputFormat.format(it).uppercase() }
 
-                    val heureDebut =
-                        concert.heure_debut.substringBeforeLast(":") // remove seconds
+                    val startDate = LocalDate.parse(concert.date_debut.toString())
+
+                    val heureDebut = concert.heure_debut.substringBeforeLast(":") // remove seconds
                     val heureFin = concert.heure_fin.substringBeforeLast(":") // remove seconds
 
-                    horaireArtiste.append("$formattedDate\n$heureDebut - $heureFin\n${concert.scene.libelle}\n\n")
+                    horaireArtiste.append("$startDate \n$heureDebut - $heureFin\n${concert.scene.libelle}\n\n")
                 }
                 horaires.text = horaireArtiste.toString().trimEnd()
 
