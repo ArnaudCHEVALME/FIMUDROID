@@ -5,6 +5,7 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,10 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.fimudroid.R
 import com.example.fimudroid.network.FimuApiService
-import com.example.fimudroid.network.models.Concert
-import com.example.fimudroid.network.models.Scene
-import com.example.fimudroid.network.models.Service
-import com.example.fimudroid.network.models.Stand
+import com.example.fimudroid.network.models.*
 import com.example.fimudroid.network.retrofit
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -38,6 +36,13 @@ import org.osmdroid.views.MapController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import java.lang.reflect.Type
+import java.text.SimpleDateFormat
+import java.time.Instant.now
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.temporal.TemporalQueries.localDate
+import java.util.Date
 import java.util.Objects
 
 
@@ -154,7 +159,24 @@ class MapFragment : Fragment() {
                     titre +="\n- "+service.libelle
                 }
                 markerStand.title = titre
-                markerStand.icon = resources.getDrawable(R.drawable.stand)
+
+                val typesStand: List<TypeStand> = withContext(Dispatchers.IO){
+                    api.getTypesStand().data
+                }
+
+                for(typeStand in typesStand){
+                    Log.i("map",typeStand.toString())
+                }
+
+                when(stand.typestandId){
+                    1 -> markerStand.icon = resources.getDrawable(R.drawable.stand)
+                    2 -> markerStand.icon = resources.getDrawable(R.drawable.stand)
+                    3 -> markerStand.icon = resources.getDrawable(R.drawable.stand)
+                    4 -> markerStand.icon = resources.getDrawable(R.drawable.stand)
+                    5 -> markerStand.icon = resources.getDrawable(R.drawable.stand)
+                    6 -> markerStand.icon = resources.getDrawable(R.drawable.stand)
+                }
+
                 markerStand.setPanToView(true)
 
                 //markerStand.setInfoWindow(CustomInfoWindow(map,markerStand,stand))
@@ -258,16 +280,33 @@ class MapFragment : Fragment() {
                 val concerts: List<Concert> = withContext(Dispatchers.IO){
                     api.getConcerts().data
                 }
-                for (concert: Concert in concerts){
+
+                val concertByScene = concerts.groupBy { it.scene }
+
+                val c = concertByScene[scene]?.filter { LocalDate.now().isBefore(LocalDate.parse(it.date_debut)) }?.filter { LocalTime.now().isBefore(LocalTime.parse(it.heure_debut)) }?.sortedBy { it.heure_debut }?.first()
+                Log.i("map",c.toString())
+                if (c == null){
+                    concertTextView?.text = "Plus de concert"
+                    artisteTextView?.text = ""
+                    genreTextView?.text = ""
+                }else{
+                    concertTextView?.text = c?.heure_debut?.dropLast(3)+" - "+c?.heure_fin?.dropLast(3)
+                    artisteTextView?.text = c?.artiste?.nom
+                    genreTextView?.text = c?.artiste?.genres?.get(0)?.libelle
+                }
+
+
+                /*for (concert: Concert in concerts){
                     if (concert.sceneId == scene.id){
                         nextConcert = concert
-
+                        Log.i("map",concert.date_debut)
                         concertTextView?.text = nextConcert.heure_debut.dropLast(3)+" - "+nextConcert.heure_fin.dropLast(3)
                         artisteTextView?.text = nextConcert.artiste?.nom
                         genreTextView?.text = nextConcert.artiste?.genres?.get(0)?.libelle
                         break
                     }
-                }
+                }*/
+
 
 
             }
