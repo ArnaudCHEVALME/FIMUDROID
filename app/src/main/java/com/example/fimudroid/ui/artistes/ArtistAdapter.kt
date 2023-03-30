@@ -1,5 +1,6 @@
 package com.example.fimudroid.ui.artistes
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,8 +20,8 @@ class ArtistAdapter(
     class ItemViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView = view.findViewById(R.id.artist_name_text_view)
         val imageView: ImageView = view.findViewById(R.id.imageButton)
+        val pastille : View = view.findViewById(R.id.pastille_genre)
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         // create a new view
@@ -29,7 +30,6 @@ class ArtistAdapter(
 
         return ItemViewHolder(adapterLayout)
     }
-
 
     override fun getItemCount() = dataset.size
 
@@ -67,6 +67,8 @@ class ArtistAdapter(
 
         val paysView = holder.itemView.findViewById<TextView>(R.id.paysTextView)
         paysView.text = artiste.pays?.joinToString(", ") { it.libelle }
+
+        holder.pastille.background.setTint(Color.parseColor(artiste.categorie.couleur ?: "#000000"))
     }
 
 }
