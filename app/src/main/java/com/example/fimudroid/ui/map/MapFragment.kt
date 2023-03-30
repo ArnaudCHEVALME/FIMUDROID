@@ -169,12 +169,13 @@ class MapFragment : Fragment() {
                 }
 
                 when(stand.typestandId){
-                    1 -> markerStand.icon = resources.getDrawable(R.drawable.stand)
-                    2 -> markerStand.icon = resources.getDrawable(R.drawable.stand)
-                    3 -> markerStand.icon = resources.getDrawable(R.drawable.stand)
-                    4 -> markerStand.icon = resources.getDrawable(R.drawable.stand)
-                    5 -> markerStand.icon = resources.getDrawable(R.drawable.stand)
-                    6 -> markerStand.icon = resources.getDrawable(R.drawable.stand)
+                    1 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_restaurant)
+                    2 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_restaurant)
+                    3 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_toilet)
+                    4 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_buvette)
+                    5 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_boutique)
+                    6 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_secours)
+                    7 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_eau)
                 }
 
                 markerStand.setPanToView(true)
