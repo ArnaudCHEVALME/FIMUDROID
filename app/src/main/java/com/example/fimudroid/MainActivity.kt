@@ -1,5 +1,6 @@
 package com.example.fimudroid
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -69,6 +70,7 @@ class MainActivity : AppCompatActivity() {
             // debug log
             NavigationUI.onNavDestinationSelected(item, navController)
         }
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT // Crédit : Samson, Réalisation : Gabin
     }
 
     private fun onCreateView(){

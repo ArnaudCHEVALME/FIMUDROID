@@ -182,6 +182,7 @@ class MapFragment : Fragment() {
 
                 //markerStand.setInfoWindow(CustomInfoWindow(map,markerStand,stand))
                 markerStand.setOnMarkerClickListener { marker, mapView ->
+                    view?.findViewById<ChipGroup>(R.id.stand_chipGroup)?.removeAllViews()
                     afficheInfoView(stand, mapController)
                     true
                 }
@@ -199,7 +200,7 @@ class MapFragment : Fragment() {
                 sceneMarker.position = GeoPoint(scene.latitude.toDouble(),scene.longitude.toDouble())
                 val titre = scene.libelle+"\n=========\n"+scene.typescene?.libelle
                 sceneMarker.title = titre
-                sceneMarker.icon = resources.getDrawable(R.drawable.microphone)
+                sceneMarker.icon = resources.getDrawable(R.drawable.mdi_concert)
                 sceneMarker.setPanToView(true)
 
                 sceneMarker.setOnMarkerClickListener{marker,mapView ->
@@ -283,10 +284,10 @@ class MapFragment : Fragment() {
                 }
 
                 val concertByScene = concerts.groupBy { it.scene }
-
-                val c = concertByScene[scene]?.filter { LocalDate.now().isBefore(LocalDate.parse(it.date_debut)) }?.filter { LocalTime.now().isBefore(LocalTime.parse(it.heure_debut)) }?.sortedBy { it.heure_debut }?.first()
-                Log.i("map",c.toString())
-                if (c == null){
+                Log.i("map2",concertByScene.toString())
+                val c = concertByScene[scene]?.filter { LocalDate.now().isBefore(LocalDate.parse(it.date_debut)) }?.filter { LocalTime.now().isBefore(LocalTime.parse(it.heure_debut)) }?.sortedBy { it.heure_debut }?.first() ?: null
+                //Log.i("map",c.toString())
+                if (c === null){
                     concertTextView?.text = "Plus de concert"
                     artisteTextView?.text = ""
                     genreTextView?.text = ""
