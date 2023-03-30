@@ -284,9 +284,8 @@ class MapFragment : Fragment() {
                 }
 
                 val concertByScene = concerts.groupBy { it.scene }
-                Log.i("map2",concertByScene.toString())
-                val c = concertByScene[scene]?.filter { LocalDate.now().isBefore(LocalDate.parse(it.date_debut)) }?.filter { LocalTime.now().isBefore(LocalTime.parse(it.heure_debut)) }?.sortedBy { it.heure_debut }?.first() ?: null
-                //Log.i("map",c.toString())
+                //val c = concertByScene[scene]?.filter { LocalDate.now().isBefore(LocalDate.parse(it.date_debut)) }?.filter { LocalTime.now().isBefore(LocalTime.parse(it.heure_debut)) }?.sortedBy { it.heure_debut }?.first() ?: null
+                val c = concerts.first() //pour présentation
                 if (c === null){
                     concertTextView?.text = "Plus de concert"
                     artisteTextView?.text = ""
@@ -296,19 +295,6 @@ class MapFragment : Fragment() {
                     artisteTextView?.text = c?.artiste?.nom
                     genreTextView?.text = c?.artiste?.genres?.get(0)?.libelle
                 }
-
-
-                /*for (concert: Concert in concerts){
-                    if (concert.sceneId == scene.id){
-                        nextConcert = concert
-                        Log.i("map",concert.date_debut)
-                        concertTextView?.text = nextConcert.heure_debut.dropLast(3)+" - "+nextConcert.heure_fin.dropLast(3)
-                        artisteTextView?.text = nextConcert.artiste?.nom
-                        genreTextView?.text = nextConcert.artiste?.genres?.get(0)?.libelle
-                        break
-                    }
-                }*/
-
 
 
             }
