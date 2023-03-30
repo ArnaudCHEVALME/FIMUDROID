@@ -37,14 +37,13 @@
         <ScrollView
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
-
-            <LinearLayout
+            <com.example.fimudroid.ui.planning.CustomLinearLayout
                 android:id="@+id/planning_vertical_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:divider="@drawable/divider"
                 android:orientation="vertical"
-                android:showDividers="beginning|end|middle" />
+                android:showDividers="beginning|end|middle"/>
         </ScrollView>
     </HorizontalScrollView>
 
