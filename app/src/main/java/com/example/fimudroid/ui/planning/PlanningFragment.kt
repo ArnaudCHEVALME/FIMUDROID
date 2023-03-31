@@ -12,6 +12,8 @@ import android.widget.Button
 import android.widget.GridLayout
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -30,7 +32,7 @@ import kotlin.math.absoluteValue
 
 class PlanningFragment : Fragment() {
 
-    private lateinit var planningLayout: LinearLayout
+    private lateinit var planningLayout: CustomLinearLayout
     private lateinit var _concerts: List<Concert>
     private lateinit var dayBtns: LinearLayout
     private lateinit var catsLegend: GridLayout
@@ -137,6 +139,15 @@ class PlanningFragment : Fragment() {
                         .minOf { concert: Concert -> concert.heure_debut }
                 }
 
+        planningLayout.setStartTime(earliestTime)
+
+        val hourSpace = LinearLayout(context)
+        val hourLayoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            100
+        )
+        hourSpace.layoutParams = hourLayoutParams
+        planningLayout.addView(hourSpace)
         initLegend()
 
         // Add a linearLayout for each scene
@@ -153,7 +164,7 @@ class PlanningFragment : Fragment() {
             val sceneName = TextView(linearLayout.context)
 
             sceneName.hyphenationFrequency = Layout.HYPHENATION_FREQUENCY_NONE
-            sceneName.setBackgroundColor(Color.parseColor("#00FF00"))
+            sceneName.setBackgroundColor(Color.parseColor("#00AA00"))
 
             // Set dimensions of the text
             val sceneNameLayoutParams = LinearLayout.LayoutParams(
@@ -189,8 +200,12 @@ class PlanningFragment : Fragment() {
             )
             linearLayout.addView(blank)
 
-            val concertFView = ConcertView(linearLayout.context, concertF)
+            val concertFView = ConcertView(linearLayout.context)
+            concertFView.setConcert(concertF)
+
+            // add the view to the LinearLayout
             concertFView.setOnClickListener{clickConcert(concertF)}
+
             linearLayout.addView(concertFView)
             if (concerts.size > 1) {
                 for (i in concerts.indices-1) {
@@ -200,13 +215,14 @@ class PlanningFragment : Fragment() {
 
                     blankP.layoutParams = ViewGroup.LayoutParams(
                         getTimeDifferenceInMinutes(
-                            concertP.heure_debut,
+                            concertP.heure_fin,
                             concertN.heure_debut
                         ) * 8, 100
                     )
                     linearLayout.addView(blankP)
 
-                    val concertView = ConcertView(linearLayout.context, concertN)
+                    val concertView = ConcertView(linearLayout.context)
+                    concertView.setConcert(concertN)
                     concertView.setOnClickListener{clickConcert(concertN)}
                     linearLayout.addView(concertView)
                 }

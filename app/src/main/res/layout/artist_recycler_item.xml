@@ -7,72 +7,62 @@
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/imageCard"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:id="@+id/imageCard"
-        app:cardCornerRadius="8dp"
-        android:layout_centerHorizontal="true"
         android:thicknessRatio="1.9"
+        app:cardCornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/imageButton"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintVertical_bias="0.0"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            app:srcCompat="@android:mipmap/sym_def_app_icon">
-        </ImageView>
+            android:scaleType="centerCrop"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@android:mipmap/sym_def_app_icon" />
     </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/artist_name_text_view"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:text="Nom artiste"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="20sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/categorie_text_view"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageCard"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/categorie_text_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="15dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="A lot of text here so that it overflow"
+        android:text="A lot of text here so that it overflows by a lot"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintBottom_toTopOf="@+id/paysTextView"
+        app:layout_constraintEnd_toEndOf="@id/artist_name_text_view"
         app:layout_constraintStart_toStartOf="@+id/artist_name_text_view"
         app:layout_constraintTop_toBottomOf="@+id/artist_name_text_view" />
-
-    <TextView
-        android:id="@+id/genresTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:text="TextView"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/categorie_text_view"
-        app:layout_constraintStart_toStartOf="@+id/categorie_text_view"
-        app:layout_constraintTop_toBottomOf="@+id/categorie_text_view" />
 
     <TextView
         android:id="@+id/paysTextView"
@@ -82,21 +72,21 @@
         android:maxLines="1"
         android:text="TextView"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/genresTextView"
-        app:layout_constraintStart_toStartOf="@+id/genresTextView"
-        app:layout_constraintTop_toBottomOf="@+id/genresTextView" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/pastille_genre"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/categorie_text_view"
+        app:layout_constraintTop_toBottomOf="@+id/categorie_text_view" />
 
     <View
         android:id="@+id/pastille_genre"
         android:layout_width="15dp"
         android:layout_height="15dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
         android:background="@drawable/circle"
-        app:layout_constraintBottom_toBottomOf="@+id/artist_name_text_view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/artist_name_text_view"
-        app:layout_constraintTop_toTopOf="@+id/artist_name_text_view" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

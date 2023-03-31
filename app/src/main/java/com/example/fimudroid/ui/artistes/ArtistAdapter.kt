@@ -21,6 +21,8 @@ class ArtistAdapter(
         val textView: TextView = view.findViewById(R.id.artist_name_text_view)
         val imageView: ImageView = view.findViewById(R.id.imageButton)
         val pastille : View = view.findViewById(R.id.pastille_genre)
+        val category : TextView = view.findViewById(R.id.categorie_text_view)
+        val pays : TextView = view.findViewById(R.id.paysTextView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -58,16 +60,8 @@ class ArtistAdapter(
         }
 
         holder.textView.text = artiste.nom
-
-        val categoryTextView = holder.itemView.findViewById<TextView>(R.id.categorie_text_view)
-        categoryTextView.text = artiste.categorie.libelle
-
-        val genreView = holder.itemView.findViewById<TextView>(R.id.genresTextView)
-        genreView.text = artiste.genres?.joinToString(", ") { it.libelle }
-
-        val paysView = holder.itemView.findViewById<TextView>(R.id.paysTextView)
-        paysView.text = artiste.pays?.joinToString(", ") { it.libelle }
-
+        holder.category.text = artiste.categorie.libelle
+        holder.pays.text = artiste.pays?.joinToString(", ") { it.libelle }
         holder.pastille.background.setTint(Color.parseColor(artiste.categorie.couleur ?: "#000000"))
     }
 

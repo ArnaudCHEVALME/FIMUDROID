@@ -17,11 +17,9 @@ import com.example.fimudroid.network.retrofit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.reflect.Field
-import java.text.SimpleDateFormat
+import java.time.DayOfWeek
 import java.time.LocalDate
-import java.time.LocalTime
-import java.util.*
+import java.time.Month
 
 
 class ArtisteDetailsFragment : Fragment() {
@@ -56,15 +54,23 @@ class ArtisteDetailsFragment : Fragment() {
 
                 val horaireArtiste = StringBuilder()
 
-                for (concert in currentArtiste.concerts!!) {
-                    // dd - MM
 
-                    val startDate = LocalDate.parse(concert.date_debut.toString())
+                for (concert in currentArtiste.concerts!!) {
+                    val startDate = LocalDate.parse(concert.date_debut)
+                    val jour = getDay(startDate.dayOfWeek)
+                    val month = getMonth(startDate.month)
 
                     val heureDebut = concert.heure_debut.substringBeforeLast(":") // remove seconds
                     val heureFin = concert.heure_fin.substringBeforeLast(":") // remove seconds
 
-                    horaireArtiste.append("$startDate \n$heureDebut - $heureFin\n${concert.scene.libelle}\n\n")
+
+                    horaireArtiste.append("$jour ${startDate.dayOfMonth} $month")
+                    horaireArtiste.appendLine()
+                    horaireArtiste.append("$heureDebut - $heureFin")
+                    horaireArtiste.appendLine()
+                    horaireArtiste.append(concert.scene.libelle)
+                    horaireArtiste.append("\n\n")
+
                 }
                 horaires.text = horaireArtiste.toString().trimEnd()
 
@@ -127,16 +133,32 @@ class ArtisteDetailsFragment : Fragment() {
         }
         return root
     }
-}
 
-fun getId(resourceName: String, c: Class<*>): Int {
-    try {
-        val idField: Field = c.getDeclaredField(resourceName)
-        return idField.getInt(idField)
-    } catch (e: Exception) {
-        throw RuntimeException(
-            "No resource ID found for: "
-                    + resourceName + " / " + c, e
-        )
+    private fun getDay(day : DayOfWeek) : String{
+        return when (day) {
+            DayOfWeek.MONDAY -> "Lundi"
+            DayOfWeek.TUESDAY -> "Mardi"
+            DayOfWeek.WEDNESDAY -> "Mercredi"
+            DayOfWeek.THURSDAY -> "Jeudi"
+            DayOfWeek.FRIDAY -> "Vendredi"
+            DayOfWeek.SATURDAY -> "Samedi"
+            else -> "Dimanche"
+        }
+    }
+    private fun getMonth(month: Month) : String{
+        return when (month) {
+            Month.JANUARY -> "Janvier"
+            Month.FEBRUARY -> "Février"
+            Month.MARCH-> "Mars"
+            Month.APRIL -> "Avril"
+            Month.MAY -> "Mai"
+            Month.JUNE -> "Juin"
+            Month.JULY -> "Juillet"
+            Month.AUGUST -> "Août"
+            Month.SEPTEMBER -> "Séptembre"
+            Month.OCTOBER -> "Octobre"
+            Month.NOVEMBER -> "Novembre"
+            else -> "Décembre"
+        }
     }
 }
