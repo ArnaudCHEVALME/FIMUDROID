@@ -168,14 +168,17 @@ class PlanningFragment : Fragment() {
 
             // Set dimensions of the text
             val sceneNameLayoutParams = LinearLayout.LayoutParams(
-                300,
-                LinearLayout.LayoutParams.MATCH_PARENT
+                500,
+                LinearLayout.LayoutParams.MATCH_PARENT,
             )
+            sceneNameLayoutParams.gravity = Gravity.CENTER_VERTICAL
             sceneName.layoutParams = sceneNameLayoutParams
 
+
             // Set text
-            sceneName.text = scene.libelle
+            sceneName.text =  scene.libelle
             sceneName.gravity = Gravity.CENTER
+            sceneName.rotation = 90f
 
             // Set up auto-sizing text
             sceneName.setAutoSizeTextTypeUniformWithConfiguration(
@@ -186,6 +189,8 @@ class PlanningFragment : Fragment() {
             )
 
             // add scene libelle
+/*            sceneName.setBackgroundColor(Color.parseColor("#0000FF"))
+            linearLayout.setBackgroundColor(Color.parseColor("#FF0000"))*/
             linearLayout.addView(sceneName)
 
             // add a ConcertView to the linearLayout for each concert
