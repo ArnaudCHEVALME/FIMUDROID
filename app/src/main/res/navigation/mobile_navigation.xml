@@ -66,7 +66,7 @@
     <fragment
         android:id="@+id/navigation_programmation"
         android:name="com.example.fimudroid.ui.planning.PlanningFragment"
-        android:label="fragment_planning"
+        android:label="Programmation"
         tools:layout="@layout/fragment_planning" >
         <action
             android:id="@+id/action_programmation_to_artisteDetails"

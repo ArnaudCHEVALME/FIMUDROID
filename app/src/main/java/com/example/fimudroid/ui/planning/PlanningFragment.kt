@@ -1,6 +1,7 @@
 package com.example.fimudroid.ui.planning
 
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Layout
 import android.util.TypedValue
@@ -14,6 +15,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.marginLeft
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -164,12 +166,14 @@ class PlanningFragment : Fragment() {
             val sceneName = TextView(linearLayout.context)
 
             sceneName.hyphenationFrequency = Layout.HYPHENATION_FREQUENCY_NONE
-            sceneName.setBackgroundColor(Color.parseColor("#00AA00"))
+            sceneName.setBackgroundColor(Color.parseColor("#5A5A5A"))
+            sceneName.setTypeface(null, Typeface.BOLD)
+            sceneName.setTextColor(Color.parseColor("#FFFFFF"))
 
             // Set dimensions of the text
             val sceneNameLayoutParams = LinearLayout.LayoutParams(
                 500,
-                LinearLayout.LayoutParams.MATCH_PARENT,
+                300,
             )
             sceneNameLayoutParams.gravity = Gravity.CENTER_VERTICAL
             sceneName.layoutParams = sceneNameLayoutParams
@@ -178,7 +182,8 @@ class PlanningFragment : Fragment() {
             // Set text
             sceneName.text =  scene.libelle
             sceneName.gravity = Gravity.CENTER
-            sceneName.rotation = 90f
+            sceneName.rotation = -90f
+            sceneName.translationX = -150f
 
             // Set up auto-sizing text
             sceneName.setAutoSizeTextTypeUniformWithConfiguration(
@@ -206,6 +211,7 @@ class PlanningFragment : Fragment() {
             linearLayout.addView(blank)
 
             val concertFView = ConcertView(linearLayout.context)
+            concertFView.translationX = -200f
             concertFView.setConcert(concertF)
 
             // add the view to the LinearLayout
