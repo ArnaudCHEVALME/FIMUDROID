@@ -25,6 +25,8 @@ import com.example.fimudroid.network.models.Concert
 import com.example.fimudroid.network.models.Scene
 import com.example.fimudroid.network.retrofit
 import com.example.fimudroid.util.OnItemClickListener
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.button.MaterialButtonToggleGroup
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -41,6 +43,7 @@ class PlanningFragment : Fragment() {
     private lateinit var concertsByScene: Map<Scene, List<Concert>>
     private lateinit var dates: List<String>
     private lateinit var concertsByDateByScene: Map<String, Map<Scene, List<Concert>>>
+    private lateinit var toggleButtonGroup: MaterialButtonToggleGroup
 
 
     private val api: FimuApiService by lazy {
@@ -54,7 +57,7 @@ class PlanningFragment : Fragment() {
     ): View {
         val root = inflater.inflate(R.layout.fragment_planning, container, false)
         planningLayout = root.findViewById(R.id.planning_vertical_linear_layout)
-        dayBtns = root.findViewById(R.id.day_btns_linear_layout)
+        toggleButtonGroup = root.findViewById(R.id.toggleButton)
         catsLegend = root.findViewById(R.id.cat_legend_linear_layout)
 
         catsLegend.columnCount = 2
@@ -82,13 +85,14 @@ class PlanningFragment : Fragment() {
 
     private fun initBtns() {
         for (d in dates) {
-            val btn = Button(context)
-            btn.text = d
-            btn.setOnClickListener {
+            val button = MaterialButton(requireContext())
+            button.id = View.generateViewId()
+            button.text = d
+            button.setOnClickListener {
                 concertsByScene = concertsByDateByScene[d]!!
                 initPlanningView()
             }
-            dayBtns.addView(btn)
+            toggleButtonGroup.addView(button)
         }
     }
 

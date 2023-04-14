@@ -18,6 +18,7 @@ import com.example.fimudroid.databinding.ActivityMainBinding
 import com.example.fimudroid.network.FimuApiService
 import com.example.fimudroid.network.retrofit
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationBarView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -60,16 +61,24 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-
-        navView.setOnItemSelectedListener { item ->
-            val currentDestination = navController.currentDestination
-            if (currentDestination?.id == R.id.navigation_faq) {
-                navController.popBackStack()
-                invalidateOptionsMenu() // Refresh the menu options
+        NavigationBarView.OnItemReselectedListener { item ->
+            when(item.itemId) {
+                R.id.navigation_news -> {
+                    true
+                }
+                R.id.navigation_artiste_list -> {
+                    true
+                }
+                R.id.navigation_plan -> {
+                    true
+                }
+                R.id.navigation_programmation -> {
+                    true
+                }
+                else -> false
             }
-            // debug log
-            NavigationUI.onNavDestinationSelected(item, navController)
         }
+
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT // Crédit : Samson, Réalisation : Gabin
     }
 

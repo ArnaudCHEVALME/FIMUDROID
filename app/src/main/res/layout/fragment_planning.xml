@@ -6,17 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.planning.PlanningFragment">
 
-    <LinearLayout
-        android:id="@+id/day_btns_linear_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </LinearLayout>
-
     <GridLayout
         android:id="@+id/cat_legend_linear_layout"
         android:layout_width="wrap_content"
@@ -24,7 +13,17 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/day_btns_linear_layout" />
+        app:layout_constraintTop_toBottomOf="@id/toggleButton"
+        />
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/toggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:singleSelection="true">
+    </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <HorizontalScrollView
         android:layout_width="0dp"
@@ -37,15 +36,18 @@
         <ScrollView
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
+
             <com.example.fimudroid.ui.planning.CustomLinearLayout
                 android:id="@+id/planning_vertical_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:divider="@drawable/divider"
                 android:orientation="vertical"
-                android:showDividers="end|middle"/>
-        </ScrollView>
-    </HorizontalScrollView>
+                android:showDividers="end|middle">
+            </com.example.fimudroid.ui.planning.CustomLinearLayout>
 
+        </ScrollView>
+
+    </HorizontalScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
