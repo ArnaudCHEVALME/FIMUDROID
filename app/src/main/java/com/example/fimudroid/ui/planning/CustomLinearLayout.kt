@@ -52,8 +52,8 @@ class CustomLinearLayout(context: Context, attrs: AttributeSet?) : LinearLayout(
         val d = getTimeDifferenceInMinutes(earliestTime, "$firstHour:00")
 
         while (i * 60 * 8f + 300 <= width) {
-            canvas?.drawLine(i * 60 * 8f + d + 300 , 100f, i * 60 * 8f + d +300 , height * 1f, gray)
-            canvas?.drawText("${firstHour+i}h", i * 60 * 8f +d + 300-35 , 75f, blackAndTxt)
+            canvas?.drawLine(i * 60 * 8f + d +300 , 100f, i * 60 * 8f + d +300 , height * 1f, gray)
+            canvas?.drawText("${firstHour+i}h", i * 60 * 8f +d +300 - 35  , 75f, blackAndTxt)
             i++
         }
     }

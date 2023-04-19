@@ -167,6 +167,8 @@ class PlanningFragment : Fragment() {
             )
             linearLayout.layoutParams = rowLayoutParams
 
+            val textScene = TextView(linearLayout.context)
+
             val sceneName = TextView(linearLayout.context)
 
             sceneName.hyphenationFrequency = Layout.HYPHENATION_FREQUENCY_NONE
@@ -176,8 +178,8 @@ class PlanningFragment : Fragment() {
 
             // Set dimensions of the text
             val sceneNameLayoutParams = LinearLayout.LayoutParams(
-                500,
                 300,
+                LinearLayout.LayoutParams.MATCH_PARENT,
             )
             sceneNameLayoutParams.gravity = Gravity.CENTER_VERTICAL
             sceneName.layoutParams = sceneNameLayoutParams
@@ -186,8 +188,8 @@ class PlanningFragment : Fragment() {
             // Set text
             sceneName.text =  scene.libelle
             sceneName.gravity = Gravity.CENTER
-            sceneName.rotation = -90f
-            sceneName.translationX = -150f
+            //sceneName.rotation = -90f
+            //sceneName.translationX = 150f
 
             // Set up auto-sizing text
             sceneName.setAutoSizeTextTypeUniformWithConfiguration(
@@ -215,7 +217,7 @@ class PlanningFragment : Fragment() {
             linearLayout.addView(blank)
 
             val concertFView = ConcertView(linearLayout.context)
-            concertFView.translationX = -200f
+            //concertFView.translationX = -200f
             concertFView.setConcert(concertF)
 
             // add the view to the LinearLayout
@@ -242,6 +244,7 @@ class PlanningFragment : Fragment() {
                     linearLayout.addView(concertView)
                 }
             }
+
             planningLayout.addView(linearLayout)
         }
     }
