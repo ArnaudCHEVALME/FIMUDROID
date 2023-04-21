@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.FIMUDROID" parent="Theme.Material3.DayNight">
+    <style name="Theme.FIMUDROID" parent="Theme.Material3.Light">
     <!-- Primary brand color. -->
         <item name="colorPrimary">#db3c96</item>
         <item name="colorPrimaryVariant">#db3c96</item>
@@ -13,13 +13,4 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
-
-    <style name="Theme.FIMUDROID.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="Theme.FIMUDROID.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.FIMUDROID.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
