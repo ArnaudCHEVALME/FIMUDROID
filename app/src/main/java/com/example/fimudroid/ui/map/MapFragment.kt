@@ -1,11 +1,18 @@
 package com.example.fimudroid.ui.map
 
+import android.Manifest
+import android.app.Activity
 import android.content.Context
+import android.content.pm.PackageManager
 import android.location.Location
+import android.location.LocationListener
 import android.location.LocationManager
+import android.location.LocationRequest
 import android.os.Bundle
+import android.os.Looper
 import android.preference.PreferenceManager
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +20,16 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.fimudroid.R
 import com.example.fimudroid.network.FimuApiService
 import com.example.fimudroid.network.models.*
 import com.example.fimudroid.network.retrofit
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -32,24 +42,14 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.BoundingBox
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
-import org.osmdroid.views.MapController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
-import java.lang.reflect.Type
-import java.text.SimpleDateFormat
-import java.time.Instant.now
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.temporal.TemporalQueries.localDate
-import java.util.Date
-import java.util.Objects
+import java.util.*
 
 
 class MapFragment : Fragment() {
 
-    private val REQUEST_PERMISSIONS_REQUEST_CODE = 1
-    private lateinit var map : MapView
+
 
     private val api: FimuApiService by lazy {
         retrofit.create(FimuApiService::class.java)
@@ -62,159 +62,181 @@ class MapFragment : Fragment() {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        val root = inflater.inflate(R.layout.fragment_map,container,false)
-        map = root.findViewById(R.id.mapView)
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+            != PackageManager.PERMISSION_GRANTED) {
 
-        Configuration.getInstance().load(requireContext(), PreferenceManager.getDefaultSharedPreferences(requireContext()))
-        map.setTileSource(TileSourceFactory.MAPNIK)
-
-        map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
-
-        map.minZoomLevel = 16.5
-
-        map.maxZoomLevel = 21.5
-
-        val fimuBoundingBox : BoundingBox = BoundingBox(47.64836242902998, 6.8783751401231985,47.63332151596629, 6.852366367341309) // vrai
-        //val fimuBoundingBox : BoundingBox = BoundingBox(48.64836242902998, 6.8783751401231985,47.63332151596629, 5.852366367341309) // test
-        map.setScrollableAreaLimitDouble(fimuBoundingBox)
-
-        map.setMultiTouchControls(true)
-
-        val mapController = map.controller
-        mapController.setZoom(18.5)
-
-        val startPoint = GeoPoint( 47.638410197922674,6.862777328835964)
-
-/*
-        val mLocationOverlay = MyLocationNewOverlay(GpsMyLocationProvider(context), map)
-        mLocationOverlay.enableMyLocation()
-        map.getOverlays().add(mLocationOverlay)
-        //Log.i("Map",mLocationOverlay.myLocation.toDoubleString())*/
-
-/*        val lm: LocationManager
-        val gp: GeoPoint
-        val provider:String
-
-        lm = context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        if(lm.getAllProviders().contains(LocationManager.GPS_PROVIDER) && lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-            provider = LocationManager.GPS_PROVIDER;
-        }
-        val lastKnownLoc: Location? = lm.getLastKnownLocation(provider)*/
-
-        val lm: LocationManager = context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val providers: List<String> = lm.getProviders(true) // get enabled providers
-        var provider: String? = null
-
-        if (providers.contains(LocationManager.GPS_PROVIDER)) {
-            provider = LocationManager.GPS_PROVIDER
-        } else if (providers.contains(LocationManager.NETWORK_PROVIDER)) {
-            provider = LocationManager.NETWORK_PROVIDER
-        }
-
-        if (provider == null) {
-            throw IllegalStateException("No enabled location provider found")
-        }
-
-        val lastKnownLoc: Location? = lm?.getLastKnownLocation(provider)
-        val gp: GeoPoint
-
-        if (lastKnownLoc != null) {
-            gp = GeoPoint(
-                (lastKnownLoc.getLatitude()),
-                (lastKnownLoc.getLongitude())
-            )
+            // Demande la permission d'accès à la géolocalisation
+            ActivityCompat.requestPermissions(requireActivity(),
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                414)
         }else{
-            gp = GeoPoint(0,0)
-        }
+            lateinit var map : MapView
 
-        val locateFloatingButton = root.findViewById<FloatingActionButton>(R.id.floatingButtonLocate)
-        if( fimuBoundingBox.contains(gp.latitude,gp.longitude)){
-            mapController.setCenter(gp)
-            var posMarker : Marker = Marker(map)
-            posMarker.icon = resources.getDrawable(R.drawable.map_marker)
-            posMarker.position = gp
-            posMarker.setInfoWindow(null)
-            map.overlays.add(posMarker)
-            locateFloatingButton?.show()
-            locateFloatingButton?.visibility = View.VISIBLE
-            locateFloatingButton.setOnClickListener{
-                mapController.animateTo(gp)
+            val root = inflater.inflate(R.layout.fragment_map,container,false)
+            map = root.findViewById(R.id.mapView)
+
+            Configuration.getInstance().load(requireContext(), PreferenceManager.getDefaultSharedPreferences(requireContext()))
+            map.setTileSource(TileSourceFactory.MAPNIK)
+
+            map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
+
+            map.minZoomLevel = 16.5
+
+            map.maxZoomLevel = 21.5
+
+            val fimuBoundingBox : BoundingBox = BoundingBox(47.64836242902998, 6.8783751401231985,47.63332151596629, 6.852366367341309) // vrai
+            //val fimuBoundingBox : BoundingBox = BoundingBox(48.64836242902998, 6.8783751401231985,47.63332151596629, 5.852366367341309) // test
+            map.setScrollableAreaLimitDouble(fimuBoundingBox)
+
+            map.setMultiTouchControls(true)
+
+            val mapController = map.controller
+            mapController.setZoom(18.5)
+
+
+            val startPoint = GeoPoint( 47.638410197922674,6.862777328835964)
+
+            val lm: LocationManager = context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val providers: List<String> = lm.getProviders(true) // get enabled providers
+            var provider: String? = null
+
+            if (providers.contains(LocationManager.GPS_PROVIDER)) {
+                provider = LocationManager.GPS_PROVIDER
+            } else if (providers.contains(LocationManager.NETWORK_PROVIDER)) {
+                provider = LocationManager.NETWORK_PROVIDER
             }
-        }else{
-            locateFloatingButton?.hide()
-            locateFloatingButton?.visibility = View.GONE
+
+            if (provider == null) {
+                throw IllegalStateException("No enabled location provider found")
+            }
+            val gp: GeoPoint = GeoPoint(0, 0)
+
+           /* val gp: GeoPoint = GeoPoint(0, 0)
+
+            val location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+
+            val timer = Timer()
+            val timerTask = object : TimerTask() {
+                override fun run() {
+                    if (location != null) {
+                        gp.latitude = location.latitude
+                        gp.longitude = location.longitude
+                    }
+                }
+            }
+            timer.schedule(timerTask, 0, 3000)
+
             mapController.setCenter(startPoint)
+            val locateFloatingButton = root.findViewById<FloatingActionButton>(R.id.floatingButtonLocate)
+*/
+            mapController.setCenter(startPoint)
+
+            val location = getLocation(requireContext())
+            val latitude = location.first
+            val longitude = location.second
+            gp.latitude = latitude
+            gp.longitude = longitude
+
+            val locateFloatingButton = root.findViewById<FloatingActionButton>(R.id.floatingButtonLocate)
+
+            if( fimuBoundingBox.contains(gp.latitude,gp.longitude)){
+
+
+                locateFloatingButton?.show()
+                locateFloatingButton?.visibility = View.VISIBLE
+                locateFloatingButton.setOnClickListener{
+
+                    var posMarker : Marker = Marker(map)
+                    posMarker.icon = resources.getDrawable(R.drawable.map_marker)
+                    posMarker.position = gp
+                    posMarker.setInfoWindow(null)
+                    map.overlays.add(posMarker)
+                    mapController.animateTo(gp)
+                }
+            }else
+            {
+                locateFloatingButton.hide()
+            }
+
+
+            lifecycleScope.launch {
+                val stands: List<Stand> = withContext(Dispatchers.IO) {
+                    api.getStands().data
+                }
+
+                for (stand: Stand in stands){
+                    val markerStand = Marker(map)
+                    markerStand.position = GeoPoint(stand.latitude.toDouble()+0.0005,stand.longitude.toDouble())
+                    var titre = stand.libelle+"\n========="
+                    for(service: Service in stand.services){
+                        titre +="\n- "+service.libelle
+                    }
+                    markerStand.title = titre
+
+                    val typesStand: List<TypeStand> = withContext(Dispatchers.IO){
+                        api.getTypesStand().data
+                    }
+
+                    for(typeStand in typesStand){
+                        Log.i("map",typeStand.toString())
+                    }
+
+                    when(stand.typestandId){
+                        1 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_restaurant)
+                        2 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_restaurant)
+                        3 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_toilet)
+                        4 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_buvette)
+                        5 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_boutique)
+                        6 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_secours)
+                        7 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_eau)
+                    }
+
+                    markerStand.setPanToView(true)
+
+                    //markerStand.setInfoWindow(CustomInfoWindow(map,markerStand,stand))
+                    markerStand.setOnMarkerClickListener { marker, mapView ->
+                        view?.findViewById<ChipGroup>(R.id.stand_chipGroup)?.removeAllViews()
+                        afficheInfoView(stand, mapController)
+                        true
+                    }
+                    map.overlays.add(markerStand)
+                }
+            }
+
+            lifecycleScope.launch {
+                val scenes: List<Scene> = withContext(Dispatchers.IO){
+                    api.getScenes().data
+                }
+
+                for (scene : Scene in scenes){
+                    val sceneMarker : Marker = Marker(map)
+                    sceneMarker.position = GeoPoint(scene.latitude.toDouble(),scene.longitude.toDouble())
+                    val titre = scene.libelle+"\n=========\n"+scene.typescene?.libelle
+                    sceneMarker.title = titre
+                    sceneMarker.icon = resources.getDrawable(R.drawable.mdi_concert)
+                    sceneMarker.setPanToView(true)
+
+                    sceneMarker.setOnMarkerClickListener{marker,mapView ->
+                        afficheInfoView(scene,mapController)
+                        true
+                    }
+
+                    map.overlays.add(sceneMarker)
+                }
+            }
+
+
+            return root
         }
 
-        lifecycleScope.launch {
-            val stands: List<Stand> = withContext(Dispatchers.IO) {
-                api.getStands().data
-            }
-
-            for (stand: Stand in stands){
-                val markerStand = Marker(map)
-                markerStand.position = GeoPoint(stand.latitude.toDouble()+0.0005,stand.longitude.toDouble())
-                var titre = stand.libelle+"\n========="
-                for(service: Service in stand.services){
-                    titre +="\n- "+service.libelle
-                }
-                markerStand.title = titre
-
-                val typesStand: List<TypeStand> = withContext(Dispatchers.IO){
-                    api.getTypesStand().data
-                }
-
-                for(typeStand in typesStand){
-                    Log.i("map",typeStand.toString())
-                }
-
-                when(stand.typestandId){
-                    1 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_restaurant)
-                    2 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_restaurant)
-                    3 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_toilet)
-                    4 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_buvette)
-                    5 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_boutique)
-                    6 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_secours)
-                    7 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_eau)
-                }
-
-                markerStand.setPanToView(true)
-
-                //markerStand.setInfoWindow(CustomInfoWindow(map,markerStand,stand))
-                markerStand.setOnMarkerClickListener { marker, mapView ->
-                    view?.findViewById<ChipGroup>(R.id.stand_chipGroup)?.removeAllViews()
-                    afficheInfoView(stand, mapController)
-                    true
-                }
-                map.overlays.add(markerStand)
-            }
-        }
-
-        lifecycleScope.launch {
-            val scenes: List<Scene> = withContext(Dispatchers.IO){
-                api.getScenes().data
-            }
-
-            for (scene : Scene in scenes){
-                val sceneMarker : Marker = Marker(map)
-                sceneMarker.position = GeoPoint(scene.latitude.toDouble(),scene.longitude.toDouble())
-                val titre = scene.libelle+"\n=========\n"+scene.typescene?.libelle
-                sceneMarker.title = titre
-                sceneMarker.icon = resources.getDrawable(R.drawable.mdi_concert)
-                sceneMarker.setPanToView(true)
-
-                sceneMarker.setOnMarkerClickListener{marker,mapView ->
-                    afficheInfoView(scene,mapController)
-                    true
-                }
-
-                map.overlays.add(sceneMarker)
-            }
-        }
-        return root
+        // Add the else block to show a message
+        val textView = TextView(requireContext())
+        textView.text = "Pas de permission pour la localisation"
+        textView.gravity = Gravity.CENTER
+        return textView
     }
 
-    override fun onPause() {
+/*    override fun onPause() {
         map.onPause()
         super.onPause()
     }
@@ -222,7 +244,7 @@ class MapFragment : Fragment() {
     override fun onResume() {
         map.onResume()
         super.onResume()
-    }
+    }*/
 
     fun afficheInfoView(lieu: Any, mapController: IMapController){
         val card = view?.findViewById<CardView>(R.id.cards_map)
@@ -310,14 +332,72 @@ class MapFragment : Fragment() {
                 mapController.animateTo(sceneLocation)
             }
         }
-
-
-
-
-
-
     }
+
+    fun getLocation(context: Context): Pair<Double, Double> {
+        val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val REQUEST_LOCATION_PERMISSION = 414
+
+        // Vérification de la permission ACCESS_FINE_LOCATION
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // Demande de permission si nécessaire
+            ActivityCompat.requestPermissions(
+                context as Activity,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_LOCATION_PERMISSION
+            )
+            return Pair(0.0, 0.0)
+        }
+
+        // Écouteur de mises à jour de localisation
+        val locationListener = object : LocationListener {
+            override fun onLocationChanged(location: Location) {
+                Log.d("myTag", "latitude: ${location.latitude}, longitude: ${location.longitude}")
+            }
+
+            override fun onProviderDisabled(provider: String) {
+                // Non utilisé
+            }
+
+            override fun onProviderEnabled(provider: String) {
+                // Non utilisé
+            }
+
+            override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
+                // Non utilisé
+            }
+        }
+
+        // Enregistrement de l'écouteur de mises à jour de localisation
+        locationManager.requestLocationUpdates(
+            LocationManager.GPS_PROVIDER,
+            3000, // Mettre à jour toutes les 3 secondes
+            0f, // Mettre à jour même si la position n'a pas bougé
+            locationListener
+        )
+
+        // Récupération de la dernière position connue
+        val lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+
+        return if (lastLocation != null) {
+            Pair(lastLocation.latitude, lastLocation.longitude)
+        } else {
+            Pair(0.0, 0.0)
+        }
+    }
+
+
+
+
+
+
 }
+
+
 
 /*class CustomInfoWindow(mapView: MapView, marker: Marker, stand: Stand): InfoWindow(R.layout.bubble_stand, mapView){
 

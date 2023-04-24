@@ -167,8 +167,6 @@ class PlanningFragment : Fragment() {
             )
             linearLayout.layoutParams = rowLayoutParams
 
-            val textScene = TextView(linearLayout.context)
-
             val sceneName = TextView(linearLayout.context)
 
             sceneName.hyphenationFrequency = Layout.HYPHENATION_FREQUENCY_NONE
