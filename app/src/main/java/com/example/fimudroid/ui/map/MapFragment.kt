@@ -71,7 +71,6 @@ class MapFragment : Fragment() {
                 414)
         }else{
             lateinit var map : MapView
-
             val root = inflater.inflate(R.layout.fragment_map,container,false)
             map = root.findViewById(R.id.mapView)
 
@@ -111,24 +110,6 @@ class MapFragment : Fragment() {
             }
             val gp: GeoPoint = GeoPoint(0, 0)
 
-           /* val gp: GeoPoint = GeoPoint(0, 0)
-
-            val location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-
-            val timer = Timer()
-            val timerTask = object : TimerTask() {
-                override fun run() {
-                    if (location != null) {
-                        gp.latitude = location.latitude
-                        gp.longitude = location.longitude
-                    }
-                }
-            }
-            timer.schedule(timerTask, 0, 3000)
-
-            mapController.setCenter(startPoint)
-            val locateFloatingButton = root.findViewById<FloatingActionButton>(R.id.floatingButtonLocate)
-*/
             mapController.setCenter(startPoint)
 
             val location = getLocation(requireContext())
@@ -158,30 +139,22 @@ class MapFragment : Fragment() {
                 locateFloatingButton.hide()
             }
 
-
+            // Ajout des overlays pour les stands
             lifecycleScope.launch {
                 val stands: List<Stand> = withContext(Dispatchers.IO) {
                     api.getStands().data
                 }
 
-                for (stand: Stand in stands){
+                for (stand: Stand in stands) {
                     val markerStand = Marker(map)
-                    markerStand.position = GeoPoint(stand.latitude.toDouble()+0.0005,stand.longitude.toDouble())
-                    var titre = stand.libelle+"\n========="
-                    for(service: Service in stand.services){
-                        titre +="\n- "+service.libelle
+                    markerStand.position = GeoPoint(stand.latitude.toDouble() + 0.0005, stand.longitude.toDouble())
+                    var titre = stand.libelle + "\n========="
+                    for (service: Service in stand.services) {
+                        titre += "\n- " + service.libelle
                     }
                     markerStand.title = titre
 
-                    val typesStand: List<TypeStand> = withContext(Dispatchers.IO){
-                        api.getTypesStand().data
-                    }
-
-                    for(typeStand in typesStand){
-                        Log.i("map",typeStand.toString())
-                    }
-
-                    when(stand.typestandId){
+                    when (stand.typestandId) {
                         1 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_restaurant)
                         2 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_restaurant)
                         3 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_toilet)
@@ -192,35 +165,37 @@ class MapFragment : Fragment() {
                     }
 
                     markerStand.setPanToView(true)
-
-                    //markerStand.setInfoWindow(CustomInfoWindow(map,markerStand,stand))
                     markerStand.setOnMarkerClickListener { marker, mapView ->
                         view?.findViewById<ChipGroup>(R.id.stand_chipGroup)?.removeAllViews()
                         afficheInfoView(stand, mapController)
                         true
                     }
+
+                    map.invalidate()
                     map.overlays.add(markerStand)
                 }
             }
 
+// Ajout des overlays pour les scènes
             lifecycleScope.launch {
-                val scenes: List<Scene> = withContext(Dispatchers.IO){
+                val scenes: List<Scene> = withContext(Dispatchers.IO) {
                     api.getScenes().data
                 }
 
-                for (scene : Scene in scenes){
-                    val sceneMarker : Marker = Marker(map)
-                    sceneMarker.position = GeoPoint(scene.latitude.toDouble(),scene.longitude.toDouble())
-                    val titre = scene.libelle+"\n=========\n"+scene.typescene?.libelle
+                for (scene: Scene in scenes) {
+                    val sceneMarker = Marker(map)
+                    sceneMarker.position = GeoPoint(scene.latitude.toDouble(), scene.longitude.toDouble())
+                    val titre = scene.libelle + "\n=========\n" + scene.typescene?.libelle
                     sceneMarker.title = titre
                     sceneMarker.icon = resources.getDrawable(R.drawable.mdi_concert)
                     sceneMarker.setPanToView(true)
 
-                    sceneMarker.setOnMarkerClickListener{marker,mapView ->
-                        afficheInfoView(scene,mapController)
+                    sceneMarker.setOnMarkerClickListener { marker, mapView ->
+                        afficheInfoView(scene, mapController)
                         true
                     }
 
+                    map.invalidate()
                     map.overlays.add(sceneMarker)
                 }
             }
@@ -318,10 +293,7 @@ class MapFragment : Fragment() {
                     genreTextView?.text = c?.artiste?.genres?.get(0)?.libelle
                 }
 
-
             }
-
-
 
             mapController.animateTo(sceneLocation)
             closeButton?.setOnClickListener {
