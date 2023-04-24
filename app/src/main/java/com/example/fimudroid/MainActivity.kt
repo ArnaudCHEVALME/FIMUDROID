@@ -1,37 +1,32 @@
 package com.example.fimudroid
 
 import android.content.pm.ActivityInfo
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
+import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.fimudroid.databinding.ActivityMainBinding
 import com.example.fimudroid.network.FimuApiService
 import com.example.fimudroid.network.retrofit
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationBarView
+import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.system.exitProcess
-import android.Manifest
-
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var toolbar: Toolbar
     private lateinit var binding: ActivityMainBinding
     private val api: FimuApiService by lazy {
         retrofit.create(FimuApiService::class.java)
@@ -41,11 +36,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         //checkApiStatus()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Get the Toolbar from the layout
+        toolbar = findViewById(R.id.topAppBar)
+        setSupportActionBar(toolbar)
 
         // Get the NavHostFragment from the layout
         val navHostFragment =
@@ -56,6 +54,20 @@ class MainActivity : AppCompatActivity() {
         val navView: BottomNavigationView = binding.navView
 
         val navController = navHostFragment.navController
+
+        val FAQButton = findViewById<MaterialButton>(R.id.FAQButton)
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.navigation_news) {
+                FAQButton.visibility = View.VISIBLE
+            } else {
+                FAQButton.visibility = View.GONE
+            }
+        }
+
+        FAQButton.setOnClickListener {
+            navController.navigate(R.id.navigation_faq)
+        }
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
@@ -66,23 +78,22 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        NavigationBarView.OnItemReselectedListener { item ->
-            when(item.itemId) {
-                R.id.navigation_news -> {
-                    true
-                }
-                R.id.navigation_artiste_list -> {
-                    true
-                }
-                R.id.navigation_plan -> {
-                    true
-                }
-                R.id.navigation_programmation -> {
-                    true
-                }
-                else -> false
+        navView.setOnNavigationItemSelectedListener { item ->
+            val currentFragment = navController.currentDestination?.id
+            val newFragment = when (item.itemId) {
+                R.id.navigation_news -> R.id.navigation_news
+                R.id.navigation_artiste_list -> R.id.navigation_artiste_list
+                R.id.navigation_plan -> R.id.navigation_plan
+                R.id.navigation_programmation -> R.id.navigation_programmation
+                else -> null
             }
+            if (currentFragment != newFragment) {
+                navController.navigate(item.itemId)
+            }
+            true
         }
+
+
 
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT // Crédit : Samson, Réalisation : Gabin
     }
@@ -129,24 +140,4 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val menuInflater: MenuInflater = menuInflater
-        if (navController.currentDestination?.id == R.id.navigation_faq) {
-            return true
-        } else {
-            menuInflater.inflate(R.menu.info_menu, menu)
-        }
-        return true
-    }
-
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.navigation_faq -> {
-                navController.navigate(R.id.navigation_faq)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
 }

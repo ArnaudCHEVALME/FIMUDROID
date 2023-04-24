@@ -1,7 +1,6 @@
 package com.example.fimudroid.ui.news
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,8 +25,8 @@ import kotlinx.coroutines.withContext
  * create an instance of this fragment.
  */
 class NewsListFragment : Fragment(), OnItemClickListener {
-
     private val api: FimuApiService by lazy {
+
         retrofit.create(FimuApiService::class.java)
     }
 
@@ -55,6 +54,7 @@ class NewsListFragment : Fragment(), OnItemClickListener {
                 )
             )
             root.findViewById<RecyclerView>(R.id.news_recycler).setHasFixedSize(true)
+
         }
 
         return root
@@ -66,4 +66,5 @@ class NewsListFragment : Fragment(), OnItemClickListener {
         requireView().findNavController()
             .navigate(R.id.action_navigation_news_to_newsDetails, bundle)
     }
+
 }

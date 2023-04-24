@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
@@ -20,9 +19,9 @@ class ArtistAdapter(
     class ItemViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView = view.findViewById(R.id.artist_name_text_view)
         val imageView: ImageView = view.findViewById(R.id.imageButton)
-        val pastille : View = view.findViewById(R.id.pastille_genre)
-        val category : TextView = view.findViewById(R.id.categorie_text_view)
-        val pays : TextView = view.findViewById(R.id.paysTextView)
+        val pastille: View = view.findViewById(R.id.pastille_genre)
+        val category: TextView = view.findViewById(R.id.categorie_text_view)
+        val pays: TextView = view.findViewById(R.id.paysTextView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -32,6 +31,7 @@ class ArtistAdapter(
 
         return ItemViewHolder(adapterLayout)
     }
+
 
     override fun getItemCount() = dataset.size
 
@@ -64,5 +64,4 @@ class ArtistAdapter(
         holder.pays.text = artiste.pays?.joinToString(", ") { it.libelle }
         holder.pastille.background.setTint(Color.parseColor(artiste.categorie.couleur ?: "#000000"))
     }
-
 }
