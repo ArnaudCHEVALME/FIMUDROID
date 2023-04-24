@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.FIMUDROID" parent="Theme.Material3.Light">
+    <style name="Theme.FIMUDROID" parent="Theme.Material3.Light.NoActionBar">
     <!-- Primary brand color. -->
         <item name="colorPrimary">#db3c96</item>
         <item name="colorPrimaryVariant">#db3c96</item>
