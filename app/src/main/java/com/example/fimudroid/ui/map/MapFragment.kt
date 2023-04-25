@@ -17,9 +17,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
@@ -64,10 +62,7 @@ class MapFragment : Fragment() {
             }
         }
     }
-    fun refreshFragment() {
-        val transaction = requireFragmentManager().beginTransaction()
-        transaction.detach(this).attach(this).commit()
-    }
+
 
     private val api: FimuApiService by lazy {
         retrofit.create(FimuApiService::class.java)
@@ -254,10 +249,29 @@ class MapFragment : Fragment() {
         }
 
 // Add the else block to show a message
+        val linearLayout = LinearLayout(requireContext())
+        linearLayout.orientation = LinearLayout.VERTICAL
+
         val textView = TextView(requireContext())
-        textView.text = "Pas de permission pour la localisation\n Si tu as activé la géoloc quitte et reviens sur cette page"
+        textView.text = "Pas de permission pour la localisation\n"
         textView.gravity = Gravity.CENTER
-        return textView
+
+        val button = Button(requireContext())
+        button.text = "Refresh"
+        button.setOnClickListener {
+            refreshFragment()
+        }
+
+        linearLayout.addView(textView)
+        linearLayout.addView(button)
+        return linearLayout
+    }
+
+    fun refreshFragment() {
+        val fragmentManager = requireFragmentManager()
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(this.id, this.javaClass.newInstance())
+        fragmentTransaction.commit()
     }
 
     override fun onPause() {
