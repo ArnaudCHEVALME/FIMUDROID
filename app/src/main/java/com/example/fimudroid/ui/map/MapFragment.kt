@@ -2,7 +2,9 @@ package com.example.fimudroid.ui.map
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
@@ -11,6 +13,7 @@ import android.location.LocationRequest
 import android.os.Bundle
 import android.os.Looper
 import android.preference.PreferenceManager
+import android.provider.Settings
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -55,6 +58,10 @@ class MapFragment : Fragment() {
         retrofit.create(FimuApiService::class.java)
     }
 
+    private var locationListener: LocationListener? = null
+    private lateinit var map: MapView
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -62,7 +69,27 @@ class MapFragment : Fragment() {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+            val locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                // Si la navigation n'est pas activée, proposer d'aller aux paramètres de localisation
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setTitle("Activation de la navigation")
+                    .setMessage("La navigation n'est pas activée. Voulez-vous l'activer maintenant ?")
+                    .setCancelable(false)
+                    .setPositiveButton("Oui") { dialog, id ->
+                        // Ouverture des paramètres de localisation pour activer la navigation
+                        val settingsIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                        startActivity(settingsIntent)
+                    }
+                    .setNegativeButton("Non") { dialog, id ->
+                        // Fermeture de la boîte de dialogue et arrêt de l'application
+                        dialog.cancel()
+                        requireActivity().finish()
+                    }
+                val alert = builder.create()
+                alert.show()
+            }
+        else if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED) {
 
             // Demande la permission d'accès à la géolocalisation
@@ -70,7 +97,7 @@ class MapFragment : Fragment() {
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 414)
         }else{
-            lateinit var map : MapView
+            map = MapView(requireContext())
             val root = inflater.inflate(R.layout.fragment_map,container,false)
             map = root.findViewById(R.id.mapView)
 
@@ -79,13 +106,13 @@ class MapFragment : Fragment() {
 
             map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
 
-            map.minZoomLevel = 16.5
+            //map.minZoomLevel = 16.5
 
-            map.maxZoomLevel = 21.5
+            //map.maxZoomLevel = 21.5
 
             val fimuBoundingBox : BoundingBox = BoundingBox(47.64836242902998, 6.8783751401231985,47.63332151596629, 6.852366367341309) // vrai
             //val fimuBoundingBox : BoundingBox = BoundingBox(48.64836242902998, 6.8783751401231985,47.63332151596629, 5.852366367341309) // test
-            map.setScrollableAreaLimitDouble(fimuBoundingBox)
+            //map.setScrollableAreaLimitDouble(fimuBoundingBox)
 
             map.setMultiTouchControls(true)
 
@@ -112,11 +139,18 @@ class MapFragment : Fragment() {
 
             mapController.setCenter(startPoint)
 
-            val location = getLocation(requireContext())
+
+            var posMarker : Marker = Marker(map)
+            posMarker.icon = resources.getDrawable(R.drawable.map_marker)
+            posMarker.setInfoWindow(null)
+
+
+            val location = getLocation(requireContext(), posMarker)
             val latitude = location.first
             val longitude = location.second
             gp.latitude = latitude
             gp.longitude = longitude
+
 
             val locateFloatingButton = root.findViewById<FloatingActionButton>(R.id.floatingButtonLocate)
 
@@ -127,15 +161,13 @@ class MapFragment : Fragment() {
                 locateFloatingButton?.visibility = View.VISIBLE
                 locateFloatingButton.setOnClickListener{
 
-                    var posMarker : Marker = Marker(map)
-                    posMarker.icon = resources.getDrawable(R.drawable.map_marker)
-                    posMarker.position = gp
-                    posMarker.setInfoWindow(null)
-                    map.overlays.add(posMarker)
                     mapController.animateTo(gp)
+                    posMarker.position = GeoPoint(latitude, longitude)
+                    map.overlays.add(posMarker)
+
                 }
             }else
-            {
+           {
                 locateFloatingButton.hide()
             }
 
@@ -201,25 +233,30 @@ class MapFragment : Fragment() {
             }
 
 
+
             return root
         }
 
         // Add the else block to show a message
         val textView = TextView(requireContext())
-        textView.text = "Pas de permission pour la localisation"
+        textView.text = "Pas de permission pour la localisation\n Si tu as activé la géoloc quitte et reviens sur cette page"
         textView.gravity = Gravity.CENTER
         return textView
     }
 
-/*    override fun onPause() {
-        map.onPause()
+    override fun onPause() {
+        //map.onPause()
         super.onPause()
+        val locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        locationListener?.let { locationManager.removeUpdates(it) }
     }
 
     override fun onResume() {
-        map.onResume()
+        //map.onResume()
         super.onResume()
-    }*/
+    }
+
+
 
     fun afficheInfoView(lieu: Any, mapController: IMapController){
         val card = view?.findViewById<CardView>(R.id.cards_map)
@@ -306,7 +343,8 @@ class MapFragment : Fragment() {
         }
     }
 
-    fun getLocation(context: Context): Pair<Double, Double> {
+
+    fun getLocation(context: Context, posMarker : Marker): Pair<Double, Double> {
         val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         val REQUEST_LOCATION_PERMISSION = 414
 
@@ -326,9 +364,12 @@ class MapFragment : Fragment() {
         }
 
         // Écouteur de mises à jour de localisation
-        val locationListener = object : LocationListener {
+        locationListener = object : LocationListener {
             override fun onLocationChanged(location: Location) {
                 Log.d("myTag", "latitude: ${location.latitude}, longitude: ${location.longitude}")
+                posMarker.position = GeoPoint(location.latitude, location.longitude)
+                map.invalidate()
+
             }
 
             override fun onProviderDisabled(provider: String) {
@@ -348,8 +389,8 @@ class MapFragment : Fragment() {
         locationManager.requestLocationUpdates(
             LocationManager.GPS_PROVIDER,
             3000, // Mettre à jour toutes les 3 secondes
-            0f, // Mettre à jour même si la position n'a pas bougé
-            locationListener
+            5f, // Mettre à jour même si la position n'a pas bougé
+            locationListener as LocationListener
         )
 
         // Récupération de la dernière position connue
