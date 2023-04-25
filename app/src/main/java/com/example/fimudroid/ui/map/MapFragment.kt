@@ -9,9 +9,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import android.location.LocationRequest
 import android.os.Bundle
-import android.os.Looper
 import android.preference.PreferenceManager
 import android.provider.Settings
 import android.util.Log
@@ -21,6 +19,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
@@ -30,9 +29,6 @@ import com.example.fimudroid.R
 import com.example.fimudroid.network.FimuApiService
 import com.example.fimudroid.network.models.*
 import com.example.fimudroid.network.retrofit
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -47,12 +43,31 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
-import java.util.*
 
 
 class MapFragment : Fragment() {
 
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            LOCATE_ME_PERM -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    Toast.makeText(requireContext(), "Permission accordée", Toast.LENGTH_SHORT).show()
+                    refreshFragment()
+                } else
+                {
+                    Log.d("TAG", "Permission refusée")
+                    Toast.makeText(requireContext(), "Permission refusée", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+    fun refreshFragment() {
+        val transaction = requireFragmentManager().beginTransaction()
+        transaction.detach(this).attach(this).commit()
+    }
 
     private val api: FimuApiService by lazy {
         retrofit.create(FimuApiService::class.java)
@@ -60,6 +75,7 @@ class MapFragment : Fragment() {
 
     private var locationListener: LocationListener? = null
     private lateinit var map: MapView
+    private val LOCATE_ME_PERM = 414;
 
 
     override fun onCreateView(
@@ -95,7 +111,7 @@ class MapFragment : Fragment() {
             // Demande la permission d'accès à la géolocalisation
             ActivityCompat.requestPermissions(requireActivity(),
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                414)
+                LOCATE_ME_PERM)
         }else{
             map = MapView(requireContext())
             val root = inflater.inflate(R.layout.fragment_map,container,false)
@@ -106,13 +122,13 @@ class MapFragment : Fragment() {
 
             map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
 
-            //map.minZoomLevel = 16.5
+            map.minZoomLevel = 16.5
 
-            //map.maxZoomLevel = 21.5
+            map.maxZoomLevel = 21.5
 
             val fimuBoundingBox : BoundingBox = BoundingBox(47.64836242902998, 6.8783751401231985,47.63332151596629, 6.852366367341309) // vrai
             //val fimuBoundingBox : BoundingBox = BoundingBox(48.64836242902998, 6.8783751401231985,47.63332151596629, 5.852366367341309) // test
-            //map.setScrollableAreaLimitDouble(fimuBoundingBox)
+            map.setScrollableAreaLimitDouble(fimuBoundingBox)
 
             map.setMultiTouchControls(true)
 
@@ -237,7 +253,7 @@ class MapFragment : Fragment() {
             return root
         }
 
-        // Add the else block to show a message
+// Add the else block to show a message
         val textView = TextView(requireContext())
         textView.text = "Pas de permission pour la localisation\n Si tu as activé la géoloc quitte et reviens sur cette page"
         textView.gravity = Gravity.CENTER
@@ -255,6 +271,8 @@ class MapFragment : Fragment() {
         //map.onResume()
         super.onResume()
     }
+
+
 
 
 
