@@ -189,7 +189,7 @@ class PlanningFragment : Fragment() {
             )
             linearLayout.layoutParams = rowLayoutParams
 
-            val sceneName = TextView(linearLayout.context)
+           /* val sceneName = TextView(linearLayout.context)
 
             sceneName.hyphenationFrequency = Layout.HYPHENATION_FREQUENCY_NONE
             sceneName.setBackgroundColor(Color.parseColor("#5A5A5A"))
@@ -220,9 +220,9 @@ class PlanningFragment : Fragment() {
             )
 
             // add scene libelle
-/*            sceneName.setBackgroundColor(Color.parseColor("#0000FF"))
-            linearLayout.setBackgroundColor(Color.parseColor("#FF0000"))*/
-            linearLayout.addView(sceneName)
+*//*            sceneName.setBackgroundColor(Color.parseColor("#0000FF"))
+            linearLayout.setBackgroundColor(Color.parseColor("#FF0000"))*//*
+            linearLayout.addView(sceneName)*/
 
             // add a ConcertView to the linearLayout for each concert
             val concerts = concertsByScene[scene]?.sortedBy { it.heure_debut } ?: emptyList()

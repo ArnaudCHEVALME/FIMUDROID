@@ -269,18 +269,14 @@ class MapFragment : Fragment() {
         return linearLayout
     }
 
-    fun refreshFragment() {
-        val fragmentManager = requireFragmentManager()
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(this.id, this.javaClass.newInstance())
-        fragmentTransaction.commit()
-    }
+
 
     override fun onPause() {
         //map.onPause()
         super.onPause()
         val locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
         locationListener?.let { locationManager.removeUpdates(it) }
+
     }
 
     override fun onResume() {
@@ -288,6 +284,12 @@ class MapFragment : Fragment() {
         super.onResume()
     }
 
+    fun refreshFragment() {
+        val fragmentManager = requireFragmentManager()
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(this.id, this.javaClass.newInstance())
+        fragmentTransaction.commit()
+    }
 
 
 
@@ -423,7 +425,7 @@ class MapFragment : Fragment() {
         locationManager.requestLocationUpdates(
             LocationManager.GPS_PROVIDER,
             3000, // Mettre à jour toutes les 3 secondes
-            5f, // Mettre à jour même si la position n'a pas bougé
+            2f, // Mettre à jour même si la position n'a pas bougé
             locationListener as LocationListener
         )
 
