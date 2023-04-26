@@ -31,6 +31,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalTime
+import java.time.Month
 import java.time.temporal.ChronoUnit
 import kotlin.math.absoluteValue
 
@@ -85,14 +86,35 @@ class PlanningFragment : Fragment() {
 
     private fun initBtns() {
         for (d in dates) {
-            val button = MaterialButton(requireContext())
+            val button = MaterialButton(requireContext(), null, R.attr.materialButtonOutlinedStyle)
             button.id = View.generateViewId()
-            button.text = d
+            // format Day + Mount name
+            val jour = d.split("-")[2].toInt()
+            val mois = getMonth(Month.of(d.split("-")[1].toInt()))
+            button.text = "$jour $mois"
             button.setOnClickListener {
                 concertsByScene = concertsByDateByScene[d]!!
                 initPlanningView()
             }
             toggleButtonGroup.addView(button)
+        }
+
+
+    }
+    private fun getMonth(month: Month) : String{
+        return when (month) {
+            Month.JANUARY -> "Janvier"
+            Month.FEBRUARY -> "Février"
+            Month.MARCH-> "Mars"
+            Month.APRIL -> "Avril"
+            Month.MAY -> "Mai"
+            Month.JUNE -> "Juin"
+            Month.JULY -> "Juillet"
+            Month.AUGUST -> "Août"
+            Month.SEPTEMBER -> "Séptembre"
+            Month.OCTOBER -> "Octobre"
+            Month.NOVEMBER -> "Novembre"
+            else -> "Décembre"
         }
     }
 
@@ -225,8 +247,9 @@ class PlanningFragment : Fragment() {
             if (concerts.size > 1) {
                 for (i in concerts.indices-1) {
                     val blankP = View(linearLayout.context)
+
                     val concertP = concerts[i]
-                    val concertN = concerts[i + 1]
+                    val concertN = concerts[i+1]
 
                     blankP.layoutParams = ViewGroup.LayoutParams(
                         getTimeDifferenceInMinutes(

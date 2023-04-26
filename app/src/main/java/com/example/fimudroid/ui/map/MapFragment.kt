@@ -21,6 +21,8 @@ import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.databinding.DataBindingUtil.setContentView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.fimudroid.R
@@ -152,7 +154,7 @@ class MapFragment : Fragment() {
 
 
             var posMarker : Marker = Marker(map)
-            posMarker.icon = resources.getDrawable(R.drawable.map_marker)
+            posMarker.icon = ResourcesCompat.getDrawable(resources, R.drawable.map_user, null)
             posMarker.setInfoWindow(null)
 
 
@@ -198,13 +200,13 @@ class MapFragment : Fragment() {
                     markerStand.title = titre
 
                     when (stand.typestandId) {
-                        1 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_restaurant)
-                        2 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_restaurant)
-                        3 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_toilet)
-                        4 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_buvette)
-                        5 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_boutique)
-                        6 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_secours)
-                        7 -> markerStand.icon = resources.getDrawable(R.drawable.mdi_eau)
+                        1 -> markerStand.icon = resources.getDrawable(R.drawable.map_resto)
+                        2 -> markerStand.icon = resources.getDrawable(R.drawable.map_resto)
+                        3 -> markerStand.icon = resources.getDrawable(R.drawable.map_toilet)
+                        4 -> markerStand.icon = resources.getDrawable(R.drawable.map_buvette)
+                        5 -> markerStand.icon = resources.getDrawable(R.drawable.map_boutique)
+                        6 -> markerStand.icon = resources.getDrawable(R.drawable.map_secours)
+                        7 -> markerStand.icon = resources.getDrawable(R.drawable.map_eau)
                     }
 
                     markerStand.setPanToView(true)
@@ -230,7 +232,7 @@ class MapFragment : Fragment() {
                     sceneMarker.position = GeoPoint(scene.latitude.toDouble(), scene.longitude.toDouble())
                     val titre = scene.libelle + "\n=========\n" + scene.typescene?.libelle
                     sceneMarker.title = titre
-                    sceneMarker.icon = resources.getDrawable(R.drawable.mdi_concert)
+                    sceneMarker.icon = resources.getDrawable(R.drawable.map_scene)
                     sceneMarker.setPanToView(true)
 
                     sceneMarker.setOnMarkerClickListener { marker, mapView ->

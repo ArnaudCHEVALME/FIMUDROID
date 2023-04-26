@@ -16,15 +16,23 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title="@string/app_name">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/FAQButton"
-        style="@style/Widget.Material3.Button.TonalButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/title_info"
-        android:layout_gravity="right"
-        android:layout_marginRight="10dp"
-        />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/FAQButton"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:text="@string/title_info" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/ArtistFilterButton"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginEnd="10dp"
+            android:text="Filtrer" />
 
     </com.google.android.material.appbar.MaterialToolbar>
 
@@ -51,10 +59,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav_menu"
-        />
-
-
+        app:menu="@menu/bottom_nav_menu" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
