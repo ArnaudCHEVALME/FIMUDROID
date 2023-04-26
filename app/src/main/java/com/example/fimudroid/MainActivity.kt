@@ -1,11 +1,20 @@
 package com.example.fimudroid
 
+import android.content.Context
 import android.content.pm.ActivityInfo
+import android.graphics.Rect
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.View
+import android.view.ViewTreeObserver
+import android.view.WindowManager
+import android.widget.FrameLayout
+import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
@@ -16,6 +25,8 @@ import com.example.fimudroid.databinding.ActivityMainBinding
 import com.example.fimudroid.network.FimuApiService
 import com.example.fimudroid.network.retrofit
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +36,8 @@ import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
+    private val bottomSheetView by lazy { findViewById<ConstraintLayout>(R.id.artist_bottom_sheet) }
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private lateinit var toolbar: Toolbar
     private lateinit var binding: ActivityMainBinding
     private val api: FimuApiService by lazy {
@@ -56,11 +68,17 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         val FAQButton = findViewById<MaterialButton>(R.id.FAQButton)
+        val ArtistFilterButton = findViewById<MaterialButton>(R.id.ArtistFilterButton)
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id == R.id.navigation_news) {
                 FAQButton.visibility = View.VISIBLE
             } else {
                 FAQButton.visibility = View.GONE
+            }
+            if (destination.id == R.id.navigation_artiste_list) {
+                ArtistFilterButton.visibility = View.VISIBLE
+            } else {
+                ArtistFilterButton.visibility = View.GONE
             }
         }
 
@@ -68,11 +86,23 @@ class MainActivity : AppCompatActivity() {
             navController.navigate(R.id.navigation_faq)
         }
 
+
+        ArtistFilterButton.setOnClickListener {
+            bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView)
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+
+        }
+
+
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_news, R.id.navigation_artiste_list, R.id.navigation_plan, R.id.navigation_programmation
+                R.id.navigation_news,
+                R.id.navigation_artiste_list,
+                R.id.navigation_plan,
+                R.id.navigation_programmation
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -92,13 +122,10 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-
-
-
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT // Crédit : Samson, Réalisation : Gabin
     }
 
-    private fun onCreateView(){
+    private fun onCreateView() {
         checkApiStatus()
     }
 
@@ -138,6 +165,11 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main)
         return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
+    private fun setBottomSheetVisibility(isVisible: Boolean) {
+        val updatedState = if (isVisible) BottomSheetBehavior.STATE_EXPANDED else BottomSheetBehavior.STATE_COLLAPSED
+        bottomSheetBehavior.state = updatedState
     }
 
 }
