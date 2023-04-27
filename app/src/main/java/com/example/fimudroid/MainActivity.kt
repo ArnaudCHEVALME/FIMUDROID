@@ -180,45 +180,6 @@ class MainActivity : AppCompatActivity() {
         layoutParams.height = resources.getDimensionPixelSize(R.dimen.artiste_bottom_sheet_height)
         bottomSheetView.layoutParams = layoutParams
 
-        val rootView = findViewById<View>(android.R.id.content)
-        val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val display = windowManager.defaultDisplay
-        val screenRect = Rect()
-        display.getRectSize(screenRect)
-
-        val keyboardEventListener = object : ViewTreeObserver.OnGlobalLayoutListener {
-            private var keyboardHeight = 0
-
-            override fun onGlobalLayout() {
-                val r = Rect()
-                rootView.getWindowVisibleDisplayFrame(r)
-                val screenHeight = rootView.height
-                val keypadHeight = screenHeight - r.bottom
-                if (keypadHeight > screenHeight * 0.15) {
-                    if (keypadHeight != keyboardHeight) {
-                        keyboardHeight = keypadHeight
-                        val layoutParams = bottomSheetView.layoutParams
-                        layoutParams.height = screenRect.height() - keyboardHeight
-                        bottomSheetView.layoutParams = layoutParams
-                    }
-                } else {
-                    if (keyboardHeight != 0) {
-                        keyboardHeight = 0
-                        val layoutParams = bottomSheetView.layoutParams
-                        layoutParams.height = resources.getDimensionPixelSize(R.dimen.artiste_bottom_sheet_height)
-                        bottomSheetView.layoutParams = layoutParams
-                    }
-                }
-            }
-        }
-
-        bottomSheetDialog.setOnShowListener {
-            rootView.viewTreeObserver.addOnGlobalLayoutListener(keyboardEventListener)
-        }
-
-        bottomSheetDialog.setOnDismissListener {
-            rootView.viewTreeObserver.removeOnGlobalLayoutListener(keyboardEventListener)
-        }
 
         bottomSheetDialog.show()
     }

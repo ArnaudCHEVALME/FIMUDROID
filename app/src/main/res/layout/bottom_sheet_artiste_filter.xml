@@ -1,89 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/artist_bottom_sheet"
+    style="@style/Widget.Material3.BottomSheet"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    android:fitsSystemWindows="true">
 
-    <FrameLayout
-        android:id="@+id/artist_bottom_sheet"
-        style="@style/Widget.Material3.BottomSheet"
+    <!-- Bottom sheet contents. -->
+
+    <com.google.android.material.search.SearchBar
+        android:id="@+id/standard_button"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-        <!-- Drag handle for accessibility -->
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:hint="Rechercher"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:focusable="true"
+        android:clickable="true"
+        />
 
-        <com.google.android.material.bottomsheet.BottomSheetDragHandleView
-            android:id="@+id/drag_handle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <!-- Bottom sheet contents. -->
-
-        <com.google.android.material.search.SearchBar
-            android:id="@+id/standard_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Rechercher"
-            android:imeOptions="actionSearch"
-            android:inputType="text"
-            android:translationY="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/paysSpinnerLayout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/paysSpinnerLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="-12dp"
+        android:hint="Pays">
+        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+            android:id="@+id/paysTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:hint="Pays"
-            android:translationY="70dp">
+            android:clickable="true" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                android:id="@+id/paysTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/categorieSpinnerLayout"
-            style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/categorieSpinnerLayout"
+        style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="12dp"
+        android:hint="Catégorie">
+        <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:hint="Catégorie"
-            android:translationY="140dp">
+            android:inputType="none"
+            app:simpleItems="@array/jours" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-            <AutoCompleteTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none"
-                app:simpleItems="@array/jours" />
-        </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/jourTextInputLayout"
+        style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="12dp"
+        android:hint="Jour">
 
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/jourTextInputLayout"
-            style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:hint="Jour"
-            android:translationY="210dp">
+            android:inputType="none"
+            android:labelFor="@+id/jourTextInputLayout"
+            app:simpleItems="@array/jours" />
 
-            <AutoCompleteTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none"
-                android:labelFor="@+id/jourTextInputLayout"
-                app:simpleItems="@array/jours" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        </com.google.android.material.textfield.TextInputLayout>
-    </FrameLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
-
+</LinearLayout>

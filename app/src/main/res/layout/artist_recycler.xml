@@ -14,14 +14,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:singleSelection="true">
+        app:singleSelection="true"
+        app:selectionRequired="true"
+        app:checkedButton="@+id/artist_sortAZ_button">
 
         <Button
             android:id="@+id/artist_sortAZ_button"
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="A - Z" />
+            android:text="@string/artist_sortAZ_text"
+            android:tag="asc" />
 
         <Button
             android:id="@+id/artist_sortCat_button"

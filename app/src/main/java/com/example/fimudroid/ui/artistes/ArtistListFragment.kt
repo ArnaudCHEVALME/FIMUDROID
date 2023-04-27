@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ToggleButton
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -16,6 +18,7 @@ import com.example.fimudroid.network.FimuApiService
 import com.example.fimudroid.network.models.Artiste
 import com.example.fimudroid.network.retrofit
 import com.example.fimudroid.util.OnItemClickListener
+import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -53,14 +56,17 @@ class ArtistListFragment : Fragment(), OnItemClickListener {
             )
             root.findViewById<RecyclerView>(R.id.artist_recycler_view).setHasFixedSize(true)
 
-            val sortAZButton: View = root.findViewById(R.id.artist_sortAZ_button)
+            val sortAZButton: MaterialButton = root.findViewById(R.id.artist_sortAZ_button)
+            sortAZButton.isChecked = true
             sortAZButton.setOnClickListener {
                 if (sortAZButton.tag == "asc") {
                     sortAZButton.tag = "desc"
                     artistes = artistes.sortedByDescending { it.nom }
+                    sortAZButton.text = "Z - A"
                 } else {
                     sortAZButton.tag = "asc"
                     artistes = artistes.sortedBy { it.nom }
+                    sortAZButton.text = "A - Z"
                 }
                 artistAdapter.updateData(artistes)
                 artistAdapter.notifyDataSetChanged()
