@@ -28,6 +28,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.navigation.NavigationBarView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -88,9 +89,7 @@ class MainActivity : AppCompatActivity() {
 
 
         ArtistFilterButton.setOnClickListener {
-            bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView)
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-
+            showArtisteBottomSheet()
         }
 
 
@@ -108,7 +107,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        navView.setOnNavigationItemSelectedListener { item ->
+        NavigationBarView.OnItemSelectedListener { item ->
             val currentFragment = navController.currentDestination?.id
             val newFragment = when (item.itemId) {
                 R.id.navigation_news -> R.id.navigation_news
@@ -167,9 +166,63 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
-    private fun setBottomSheetVisibility(isVisible: Boolean) {
-        val updatedState = if (isVisible) BottomSheetBehavior.STATE_EXPANDED else BottomSheetBehavior.STATE_COLLAPSED
-        bottomSheetBehavior.state = updatedState
+    private fun showArtisteBottomSheet() {
+        val bottomSheetDialog = BottomSheetDialog(this)
+        val bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet_artiste_filter, null)
+        bottomSheetDialog.setContentView(bottomSheetView)
+
+        val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView.parent as View)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        bottomSheetBehavior.isDraggable = false
+        bottomSheetBehavior.peekHeight = 0
+
+        val layoutParams = bottomSheetView.layoutParams
+        layoutParams.height = resources.getDimensionPixelSize(R.dimen.artiste_bottom_sheet_height)
+        bottomSheetView.layoutParams = layoutParams
+
+        val rootView = findViewById<View>(android.R.id.content)
+        val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val display = windowManager.defaultDisplay
+        val screenRect = Rect()
+        display.getRectSize(screenRect)
+
+        val keyboardEventListener = object : ViewTreeObserver.OnGlobalLayoutListener {
+            private var keyboardHeight = 0
+
+            override fun onGlobalLayout() {
+                val r = Rect()
+                rootView.getWindowVisibleDisplayFrame(r)
+                val screenHeight = rootView.height
+                val keypadHeight = screenHeight - r.bottom
+                if (keypadHeight > screenHeight * 0.15) {
+                    if (keypadHeight != keyboardHeight) {
+                        keyboardHeight = keypadHeight
+                        val layoutParams = bottomSheetView.layoutParams
+                        layoutParams.height = screenRect.height() - keyboardHeight
+                        bottomSheetView.layoutParams = layoutParams
+                    }
+                } else {
+                    if (keyboardHeight != 0) {
+                        keyboardHeight = 0
+                        val layoutParams = bottomSheetView.layoutParams
+                        layoutParams.height = resources.getDimensionPixelSize(R.dimen.artiste_bottom_sheet_height)
+                        bottomSheetView.layoutParams = layoutParams
+                    }
+                }
+            }
+        }
+
+        bottomSheetDialog.setOnShowListener {
+            rootView.viewTreeObserver.addOnGlobalLayoutListener(keyboardEventListener)
+        }
+
+        bottomSheetDialog.setOnDismissListener {
+            rootView.viewTreeObserver.removeOnGlobalLayoutListener(keyboardEventListener)
+        }
+
+        bottomSheetDialog.show()
     }
+
+
 
 }

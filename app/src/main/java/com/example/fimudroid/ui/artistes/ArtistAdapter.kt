@@ -12,7 +12,7 @@ import com.example.fimudroid.network.models.Artiste
 import com.example.fimudroid.util.OnItemClickListener
 
 class ArtistAdapter(
-    private val dataset: List<Artiste>,
+    private var dataset: List<Artiste>,
     private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<ArtistAdapter.ItemViewHolder>() {
 
@@ -63,5 +63,10 @@ class ArtistAdapter(
         holder.category.text = artiste.categorie.libelle
         holder.pays.text = artiste.pays?.joinToString(", ") { it.libelle }
         holder.pastille.background.setTint(Color.parseColor(artiste.categorie.couleur ?: "#000000"))
+    }
+
+    fun updateData(artistes: List<Artiste>) {
+        this.dataset = artistes
+        notifyDataSetChanged()
     }
 }

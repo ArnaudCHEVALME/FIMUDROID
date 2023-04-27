@@ -17,5 +17,30 @@ interface ArtisteDao {
     fun getById(idArtiste:Int): List<Artiste>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(artistes: List<Artiste>)
+    fun insertAll(vararg artistes: Artiste)
+
+    @Query("SELECT * FROM artistes ORDER BY nom ASC")
+    fun sortByNameAsc(): LiveData<List<Artiste>> {
+        return getAll()
+    }
+    @Query("SELECT * FROM artistes ORDER BY nom DESC")
+    fun sortByNameDesc(): LiveData<List<Artiste>> {
+        return getAll()
+    }
+
+    @Query("SELECT * FROM artistes WHERE pays = :pays")
+    fun filterByCountry(country: String): LiveData<List<Artiste>> {
+        return getAll()
+    }
+
+    @Query("SELECT * FROM artistes WHERE categorie = :categorie")
+    fun filterByCategory(category: String): LiveData<List<Artiste>> {
+        return getAll()
+    }
+
+    @Query("SELECT * FROM artistes WHERE concerts.date = :date")
+    fun filterByDay(date: String): LiveData<List<Artiste>> {
+        return getAll()
+    }
+
 }

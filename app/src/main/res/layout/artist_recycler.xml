@@ -17,18 +17,18 @@
         app:singleSelection="true">
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/artist_sortAZ_button"
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button 1" />
+            android:text="A - Z" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/artist_sortCat_button"
             style="?attr/materialButtonOutlinedStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button 2" />
+            android:text="Par catégorie" />
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <androidx.recyclerview.widget.RecyclerView

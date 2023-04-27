@@ -48,18 +48,22 @@ import org.osmdroid.views.overlay.Marker
 class MapFragment : Fragment() {
 
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             LOCATE_ME_PERM -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                {
-                    Toast.makeText(requireContext(), "Permission accordée", Toast.LENGTH_SHORT).show()
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(requireContext(), "Permission accordée", Toast.LENGTH_SHORT)
+                        .show()
                     refreshFragment()
-                } else
-                {
+                } else {
                     Log.d("TAG", "Permission refusée")
-                    Toast.makeText(requireContext(), "Permission refusée", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Permission refusée", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
@@ -82,39 +86,48 @@ class MapFragment : Fragment() {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
 
-            val locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                // Si la navigation n'est pas activée, proposer d'aller aux paramètres de localisation
-                val builder = AlertDialog.Builder(requireContext())
-                builder.setTitle("Activation de la navigation")
-                    .setMessage("La navigation n'est pas activée. Voulez-vous l'activer maintenant ?")
-                    .setCancelable(false)
-                    .setPositiveButton("Oui") { dialog, id ->
-                        // Ouverture des paramètres de localisation pour activer la navigation
-                        val settingsIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                        startActivity(settingsIntent)
-                    }
-                    .setNegativeButton("Non") { dialog, id ->
-                        // Fermeture de la boîte de dialogue et arrêt de l'application
-                        dialog.cancel()
-                        requireActivity().finish()
-                    }
-                val alert = builder.create()
-                alert.show()
-            }
-        else if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED) {
+        val locationManager =
+            requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            // Si la navigation n'est pas activée, proposer d'aller aux paramètres de localisation
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("Activation de la navigation")
+                .setMessage("La navigation n'est pas activée. Voulez-vous l'activer maintenant ?")
+                .setCancelable(false)
+                .setPositiveButton("Oui") { dialog, id ->
+                    // Ouverture des paramètres de localisation pour activer la navigation
+                    val settingsIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    startActivity(settingsIntent)
+                }
+                .setNegativeButton("Non") { dialog, id ->
+                    // Fermeture de la boîte de dialogue et arrêt de l'application
+                    dialog.cancel()
+                    requireActivity().finish()
+                }
+            val alert = builder.create()
+            alert.show()
+        } else if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            != PackageManager.PERMISSION_GRANTED
+        ) {
 
             // Demande la permission d'accès à la géolocalisation
-            ActivityCompat.requestPermissions(requireActivity(),
+            ActivityCompat.requestPermissions(
+                requireActivity(),
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                LOCATE_ME_PERM)
-        }else{
+                LOCATE_ME_PERM
+            )
+        } else {
             map = MapView(requireContext())
-            val root = inflater.inflate(R.layout.fragment_map,container,false)
+            val root = inflater.inflate(R.layout.fragment_map, container, false)
             map = root.findViewById(R.id.mapView)
 
-            Configuration.getInstance().load(requireContext(), PreferenceManager.getDefaultSharedPreferences(requireContext()))
+            Configuration.getInstance().load(
+                requireContext(),
+                PreferenceManager.getDefaultSharedPreferences(requireContext())
+            )
             map.setTileSource(TileSourceFactory.MAPNIK)
 
             map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
@@ -123,7 +136,12 @@ class MapFragment : Fragment() {
 
             map.maxZoomLevel = 21.5
 
-            val fimuBoundingBox : BoundingBox = BoundingBox(47.64836242902998, 6.8783751401231985,47.63332151596629, 6.852366367341309) // vrai
+            val fimuBoundingBox: BoundingBox = BoundingBox(
+                47.64836242902998,
+                6.8783751401231985,
+                47.63332151596629,
+                6.852366367341309
+            ) // vrai
             //val fimuBoundingBox : BoundingBox = BoundingBox(48.64836242902998, 6.8783751401231985,47.63332151596629, 5.852366367341309) // test
             map.setScrollableAreaLimitDouble(fimuBoundingBox)
 
@@ -133,9 +151,10 @@ class MapFragment : Fragment() {
             mapController.setZoom(18.5)
 
 
-            val startPoint = GeoPoint( 47.638410197922674,6.862777328835964)
+            val startPoint = GeoPoint(47.638410197922674, 6.862777328835964)
 
-            val lm: LocationManager = context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val lm: LocationManager =
+                context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
             val providers: List<String> = lm.getProviders(true) // get enabled providers
             var provider: String? = null
 
@@ -153,7 +172,7 @@ class MapFragment : Fragment() {
             mapController.setCenter(startPoint)
 
 
-            var posMarker : Marker = Marker(map)
+            var posMarker: Marker = Marker(map)
             posMarker.icon = ResourcesCompat.getDrawable(resources, R.drawable.map_user, null)
             posMarker.setInfoWindow(null)
 
@@ -165,22 +184,22 @@ class MapFragment : Fragment() {
             gp.longitude = longitude
 
 
-            val locateFloatingButton = root.findViewById<FloatingActionButton>(R.id.floatingButtonLocate)
+            val locateFloatingButton =
+                root.findViewById<FloatingActionButton>(R.id.floatingButtonLocate)
 
-            if( fimuBoundingBox.contains(gp.latitude,gp.longitude)){
+            if (fimuBoundingBox.contains(gp.latitude, gp.longitude)) {
 
 
                 locateFloatingButton?.show()
                 locateFloatingButton?.visibility = View.VISIBLE
-                locateFloatingButton.setOnClickListener{
+                locateFloatingButton.setOnClickListener {
 
                     mapController.animateTo(gp)
                     posMarker.position = GeoPoint(latitude, longitude)
                     map.overlays.add(posMarker)
 
                 }
-            }else
-           {
+            } else {
                 locateFloatingButton.hide()
             }
 
@@ -192,7 +211,8 @@ class MapFragment : Fragment() {
 
                 for (stand: Stand in stands) {
                     val markerStand = Marker(map)
-                    markerStand.position = GeoPoint(stand.latitude.toDouble() + 0.0005, stand.longitude.toDouble())
+                    markerStand.position =
+                        GeoPoint(stand.latitude.toDouble() + 0.0005, stand.longitude.toDouble())
                     var titre = stand.libelle + "\n========="
                     for (service: Service in stand.services) {
                         titre += "\n- " + service.libelle
@@ -202,13 +222,12 @@ class MapFragment : Fragment() {
                     when (stand.typestandId) {
                         1 -> markerStand.icon = resources.getDrawable(R.drawable.map_resto)
                         2 -> markerStand.icon = resources.getDrawable(R.drawable.map_resto)
-                        3 -> markerStand.icon = resources.getDrawable(R.drawable.map_toilet)
+                        3 -> markerStand.icon = resources.getDrawable(R.drawable.map_secours)
                         4 -> markerStand.icon = resources.getDrawable(R.drawable.map_buvette)
                         5 -> markerStand.icon = resources.getDrawable(R.drawable.map_boutique)
-                        6 -> markerStand.icon = resources.getDrawable(R.drawable.map_secours)
+                        6 -> markerStand.icon = resources.getDrawable(R.drawable.map_toilet)
                         7 -> markerStand.icon = resources.getDrawable(R.drawable.map_eau)
                     }
-
                     markerStand.setPanToView(true)
                     markerStand.setOnMarkerClickListener { marker, mapView ->
                         view?.findViewById<ChipGroup>(R.id.stand_chipGroup)?.removeAllViews()
@@ -219,6 +238,251 @@ class MapFragment : Fragment() {
                     map.invalidate()
                     map.overlays.add(markerStand)
                 }
+
+                val exempleStands: List<Stand> = withContext(Dispatchers.IO) {
+                    listOf(
+                        Stand(
+                            1,
+                            1,
+                            "47.6372767950151",
+                            "Stand 1",
+                            "6.860763451177344",
+                            listOf(
+                                Service(
+                                    1,
+                                    "Service 1"
+                                )
+                            ),
+                            TypeStand(
+                                1,
+                                "Type 1"
+                            )
+                        ),
+                        Stand(
+                            2,
+                            2,
+                            "47.6372767950151",
+                            "Stand 2",
+                            "6.860863451177344",
+                            listOf(
+                                Service(
+                                    2,
+                                    "Service 2"
+                                )
+                            ),
+                            TypeStand(
+                                2,
+                                "Type 2"
+                            )
+                        ),
+                        Stand(
+                            3,
+                            3,
+                            "47.6372767950151",
+                            "Stand 3",
+                            "6.860963451177344",
+                            listOf(
+                                Service(
+                                    3,
+                                    "Service 3"
+                                )
+                            ),
+                            TypeStand(
+                                3,
+                                "Type 3"
+                            )
+                        ),
+                        Stand(
+                            4,
+                            4,
+                            "47.6372767950151",
+                            "Stand 4",
+                            "6.861063451177344",
+                            listOf(
+                                Service(
+                                    4,
+                                    "Service 4"
+                                )
+                            ),
+                            TypeStand(
+                                4,
+                                "Type 4"
+                            )
+                        ),
+                        Stand(
+                            5,
+                            5,
+                            "47.6372767950151",
+                            "Stand 5",
+                            "6.861163451177344",
+                            listOf(
+                                Service(
+                                    5,
+                                    "Service 5"
+                                )
+                            ),
+                            TypeStand(
+                                5,
+                                "Type 5"
+                            )
+                        ),
+                        Stand(
+                            6,
+                            6,
+                            "47.6372767950151",
+                            "Stand 6",
+                            "6.861263451177344",
+                            listOf(
+                                Service(
+                                    6,
+                                    "Service 6"
+                                )
+                            ),
+                            TypeStand(
+                                6,
+                                "Type 6"
+                            )
+                        ),
+                        Stand(
+                            7,
+                            7,
+                            "47.6372767950151",
+                            "Stand 7",
+                            "6.861363451177344",
+                            listOf(
+                                Service(
+                                    7,
+                                    "Service 7"
+                                )
+                            ),
+                            TypeStand(
+                                7,
+                                "Type 7"
+                            )
+                        ),
+                        Stand(
+                            8,
+                            8,
+                            "47.6372767950151",
+                            "Stand 8",
+                            "6.861463451177344",
+                            listOf(
+                                Service(
+                                    8,
+                                    "Service 8"
+                                )
+                            ),
+                            TypeStand(
+                                8,
+                                "Type 8"
+                            )
+                        ),
+                        Stand(
+                            9,
+                            9,
+                            "47.6372767950151",
+                            "Stand 9",
+                            "6.861563451177344",
+                            listOf(
+                                Service(
+                                    9,
+                                    "Service 9"
+                                )
+                            ),
+                            TypeStand(
+                                9,
+                                "Type 9"
+                            )
+                        ),
+                        Stand(
+                            10,
+                            10,
+                            "47.6372767950151",
+                            "Stand 10",
+                            "6.861663451177344",
+                            listOf(
+                                Service(
+                                    10,
+                                    "Service 10"
+                                )
+                            ),
+                            TypeStand(
+                                10,
+                                "Type 10"
+                            )
+                        ),
+                        Stand(
+                            11,
+                            11,
+                            "47.6372767950151",
+                            "Stand 11",
+                            "6.861763451177344",
+                            listOf(
+                                Service(
+                                    11,
+                                    "Service 11"
+                                )
+                            ),
+                            TypeStand(
+                                11,
+                                "Type 11"
+                            )
+                        ),
+                        Stand(
+                            12,
+                            12,
+                            "47.6372767950151",
+                            "Stand 12",
+                            "6.861863451177344",
+                            listOf(
+                                Service(
+                                    12,
+                                    "Service 12"
+                                )
+                            ),
+                            TypeStand(
+                                12,
+                                "Type 12"
+                            )
+                        ),
+                    )
+                }
+
+                for (stand: Stand in exempleStands) {
+                    val markerStand = Marker(map)
+                    markerStand.position =
+                        GeoPoint(stand.latitude.toDouble() + 0.0005, stand.longitude.toDouble())
+                    var titre = stand.libelle + "\n========="
+                    for (service: Service in stand.services) {
+                        titre += "\n- " + service.libelle
+                    }
+                    markerStand.title = titre
+
+                    when (stand.typestandId) {
+                        1 -> markerStand.icon = resources.getDrawable(R.drawable.map_resto)
+                        2 -> markerStand.icon = resources.getDrawable(R.drawable.map_secours)
+                        3 -> markerStand.icon = resources.getDrawable(R.drawable.map_buvette)
+                        4 -> markerStand.icon = resources.getDrawable(R.drawable.map_boutique)
+                        5 -> markerStand.icon = resources.getDrawable(R.drawable.map_toilet)
+                        6 -> markerStand.icon = resources.getDrawable(R.drawable.map_eau)
+                        7 -> markerStand.icon = resources.getDrawable(R.drawable.map_scene)
+                        8 -> markerStand.icon = resources.getDrawable(R.drawable.map_entree)
+                        9 -> markerStand.icon = resources.getDrawable(R.drawable.map_sortie)
+                        10 -> markerStand.icon = resources.getDrawable(R.drawable.map_info)
+                        11 -> markerStand.icon = resources.getDrawable(R.drawable.map_parking)
+                        12 -> markerStand.icon = resources.getDrawable(R.drawable.map_parking_velo)
+                    }
+                    markerStand.setPanToView(true)
+                    markerStand.setOnMarkerClickListener { marker, mapView ->
+                        view?.findViewById<ChipGroup>(R.id.stand_chipGroup)?.removeAllViews()
+                        afficheInfoView(stand, mapController)
+                        true
+                    }
+
+                    map.invalidate()
+                    map.overlays.add(markerStand)
+                }
+
             }
 
 // Ajout des overlays pour les scènes
@@ -229,7 +493,8 @@ class MapFragment : Fragment() {
 
                 for (scene: Scene in scenes) {
                     val sceneMarker = Marker(map)
-                    sceneMarker.position = GeoPoint(scene.latitude.toDouble(), scene.longitude.toDouble())
+                    sceneMarker.position =
+                        GeoPoint(scene.latitude.toDouble(), scene.longitude.toDouble())
                     val titre = scene.libelle + "\n=========\n" + scene.typescene?.libelle
                     sceneMarker.title = titre
                     sceneMarker.icon = resources.getDrawable(R.drawable.map_scene)
@@ -274,7 +539,8 @@ class MapFragment : Fragment() {
     override fun onPause() {
         //map.onPause()
         super.onPause()
-        val locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val locationManager =
+            requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
         locationListener?.let { locationManager.removeUpdates(it) }
 
     }
@@ -291,10 +557,7 @@ class MapFragment : Fragment() {
         fragmentTransaction.commit()
     }
 
-
-
-
-    fun afficheInfoView(lieu: Any, mapController: IMapController){
+    fun afficheInfoView(lieu: Any, mapController: IMapController) {
         val card = view?.findViewById<CardView>(R.id.cards_map)
         card?.visibility = View.VISIBLE
 
@@ -308,11 +571,11 @@ class MapFragment : Fragment() {
         val findButton = view?.findViewById<ImageButton>(R.id.info_find_button)
         val closeButton = view?.findViewById<ImageButton>(R.id.info_close_button)
 
-        if (lieu is Stand){
+        if (lieu is Stand) {
             info_scene?.visibility = View.GONE
             info_stand?.visibility = View.VISIBLE
 
-            val stand : Stand = lieu
+            val stand: Stand = lieu
             val standLocation =
                 GeoPoint(stand.latitude.toDouble(), stand.longitude.toDouble())
             val standServicesGroup = view?.findViewById<ChipGroup>(R.id.stand_chipGroup)
@@ -333,11 +596,11 @@ class MapFragment : Fragment() {
             findButton?.setOnClickListener {
                 mapController.animateTo(standLocation)
             }
-        }else{
+        } else {
             info_scene?.visibility = View.VISIBLE
             info_stand?.visibility = View.GONE
 
-            val scene : Scene = lieu as Scene
+            val scene: Scene = lieu as Scene
             val sceneLocation =
                 GeoPoint(scene.latitude.toDouble(), scene.longitude.toDouble())
             val concertTextView = view?.findViewById<TextView>(R.id.scene_concert)
@@ -345,23 +608,24 @@ class MapFragment : Fragment() {
             val genreTextView = view?.findViewById<TextView>(R.id.scene_genre)
 
 
-            titre?.text = "Scène de "+scene.libelle
+            titre?.text = "Scène de " + scene.libelle
 
-            var nextConcert : Concert
+            var nextConcert: Concert
             lifecycleScope.launch {
-                val concerts: List<Concert> = withContext(Dispatchers.IO){
+                val concerts: List<Concert> = withContext(Dispatchers.IO) {
                     api.getConcerts().data
                 }
 
                 val concertByScene = concerts.groupBy { it.scene }
                 //val c = concertByScene[scene]?.filter { LocalDate.now().isBefore(LocalDate.parse(it.date_debut)) }?.filter { LocalTime.now().isBefore(LocalTime.parse(it.heure_debut)) }?.sortedBy { it.heure_debut }?.first() ?: null
                 val c = concerts.first() //pour présentation
-                if (c === null){
+                if (c === null) {
                     concertTextView?.text = "Plus de concert"
                     artisteTextView?.text = ""
                     genreTextView?.text = ""
-                }else{
-                    concertTextView?.text = c?.heure_debut?.dropLast(3)+" - "+c?.heure_fin?.dropLast(3)
+                } else {
+                    concertTextView?.text =
+                        c?.heure_debut?.dropLast(3) + " - " + c?.heure_fin?.dropLast(3)
                     artisteTextView?.text = c?.artiste?.nom
                     genreTextView?.text = c?.artiste?.genres?.get(0)?.libelle
                 }
@@ -380,7 +644,7 @@ class MapFragment : Fragment() {
     }
 
 
-    fun getLocation(context: Context, posMarker : Marker): Pair<Double, Double> {
+    fun getLocation(context: Context, posMarker: Marker): Pair<Double, Double> {
         val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         val REQUEST_LOCATION_PERMISSION = 414
 
@@ -440,12 +704,7 @@ class MapFragment : Fragment() {
     }
 
 
-
-
-
-
 }
-
 
 
 /*class CustomInfoWindow(mapView: MapView, marker: Marker, stand: Stand): InfoWindow(R.layout.bubble_stand, mapView){

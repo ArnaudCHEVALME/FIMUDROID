@@ -11,6 +11,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
+import com.example.fimudroid.database.FimuDB
 import com.example.fimudroid.network.FimuApiService
 import com.example.fimudroid.network.models.Artiste
 import com.example.fimudroid.network.retrofit
@@ -21,7 +22,7 @@ import kotlinx.coroutines.withContext
 
 
 class ArtistListFragment : Fragment(), OnItemClickListener {
-
+    private lateinit var db: FimuDB
     private val api: FimuApiService by lazy {
         retrofit.create(FimuApiService::class.java)
     }
@@ -33,13 +34,15 @@ class ArtistListFragment : Fragment(), OnItemClickListener {
 
         val recyclerView: RecyclerView = root.findViewById(R.id.artist_recycler_view)
 
+        // Use a coroutine to fetch the API data and insert it into the DAO
         lifecycleScope.launch {
-            val artistes: List<Artiste> = withContext(Dispatchers.IO) {
+            var artistes: List<Artiste> = withContext(Dispatchers.IO) {
                 api.getArtistes().data
-            }
+            }.sortedBy { it.nom }
 
             Log.i("news", artistes.toString())
 
+            // Display the data in a RecyclerView
             val artistAdapter = ArtistAdapter(artistes, this@ArtistListFragment)
 
             recyclerView.adapter = artistAdapter
@@ -49,6 +52,32 @@ class ArtistListFragment : Fragment(), OnItemClickListener {
                 )
             )
             root.findViewById<RecyclerView>(R.id.artist_recycler_view).setHasFixedSize(true)
+
+            val sortAZButton: View = root.findViewById(R.id.artist_sortAZ_button)
+            sortAZButton.setOnClickListener {
+                if (sortAZButton.tag == "asc") {
+                    sortAZButton.tag = "desc"
+                    artistes = artistes.sortedByDescending { it.nom }
+                } else {
+                    sortAZButton.tag = "asc"
+                    artistes = artistes.sortedBy { it.nom }
+                }
+                artistAdapter.updateData(artistes)
+                artistAdapter.notifyDataSetChanged()
+            }
+
+            val sortCatButton = root.findViewById<View>(R.id.artist_sortCat_button)
+            sortCatButton.setOnClickListener {
+                if (sortCatButton.tag == "asc") {
+                    sortCatButton.tag = "desc"
+                    artistes = artistes.sortedByDescending { it.categorie.libelle }
+                } else {
+                    sortCatButton.tag = "asc"
+                    artistes = artistes.sortedBy { it.categorie.libelle }
+                }
+                artistAdapter.updateData(artistes)
+                artistAdapter.notifyDataSetChanged()
+            }
         }
         return root
     }
