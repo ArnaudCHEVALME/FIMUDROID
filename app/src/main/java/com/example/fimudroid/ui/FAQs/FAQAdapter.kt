@@ -1,5 +1,6 @@
 package com.example.fimudroid.ui.FAQs
 
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,15 +14,14 @@ data class Question(val questionText: String, val answerText: String)
 
 
 class FAQAdapter (
-
     private val dataset: List<Question>,
-    private val listener: OnItemClickListener
     ) : RecyclerView.Adapter<FAQAdapter.FAQViewHolder>() {
         class FAQViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
             val arrowButton: View = view.findViewById(R.id.arrowButton)
             val questionText: TextView = view.findViewById(R.id.questionText)
             val answerText: TextView = view.findViewById(R.id.answerText)
             val answerLayout: View = view.findViewById(R.id.answerLayout)
+            val questionCard: View = view.findViewById(R.id.questionCard)
         }
 
 
@@ -36,7 +36,7 @@ class FAQAdapter (
         val question = dataset[position]
 
         holder.questionText.text = question.questionText
-        holder.answerText.text = question.answerText
+        holder.answerText.text = Html.fromHtml(question.answerText, Html.FROM_HTML_MODE_COMPACT)
 
         fun collapseAll() {
             if (holder.answerLayout.visibility == View.GONE) {
@@ -50,7 +50,7 @@ class FAQAdapter (
             }
 
         }
-        holder.questionText.setOnClickListener {
+        holder.questionCard.setOnClickListener {
             collapseAll()
         }
         holder.arrowButton.setOnClickListener {

@@ -22,7 +22,7 @@ class FAQListFragment : Fragment(), OnItemClickListener {
 
         val recyclerView: RecyclerView = root.findViewById(R.id.faq_recycler)
         viewModel.getAllFAQs().observe(viewLifecycleOwner) { faqs ->
-            val faqAdapter = FAQAdapter(faqs, this)
+            val faqAdapter = FAQAdapter(faqs)
 
             recyclerView.adapter = faqAdapter
         }

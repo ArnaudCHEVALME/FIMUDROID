@@ -22,13 +22,16 @@ import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.databinding.DataBindingUtil.setContentView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
 import com.example.fimudroid.network.FimuApiService
 import com.example.fimudroid.network.models.*
 import com.example.fimudroid.network.retrofit
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -77,7 +80,7 @@ class MapFragment : Fragment() {
     private var locationListener: LocationListener? = null
     private lateinit var map: MapView
     private val LOCATE_ME_PERM = 414;
-
+    private lateinit var mapFilterAdapter: MapFilterAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -203,6 +206,24 @@ class MapFragment : Fragment() {
                 locateFloatingButton.hide()
             }
 
+            /*
+            val recyclerView = inflater.inflate(R.layout.bottom_sheet_map_filter, container, false)
+                .findViewById<RecyclerView>(R.id.map_filter_recycler_view)
+            lifecycleScope.launch {
+                val types: List<TypeStand> = withContext(Dispatchers.IO) {
+                    api.getTypesStand().data
+                }
+                val mapFilterAdapter = MapFilterAdapter(types)
+                recyclerView.adapter = mapFilterAdapter
+                recyclerView.addItemDecoration(
+                    DividerItemDecoration(
+                        recyclerView.context,
+                        DividerItemDecoration.VERTICAL
+                    )
+                )
+            }
+           */
+
             // Ajout des overlays pour les stands
             lifecycleScope.launch {
                 val stands: List<Stand> = withContext(Dispatchers.IO) {
@@ -212,7 +233,7 @@ class MapFragment : Fragment() {
                 for (stand: Stand in stands) {
                     val markerStand = Marker(map)
                     markerStand.position =
-                        GeoPoint(stand.latitude.toDouble() + 0.0005, stand.longitude.toDouble())
+                        GeoPoint(stand.latitude.toDouble() + 0.000005, stand.longitude.toDouble())
                     var titre = stand.libelle + "\n========="
                     for (service: Service in stand.services) {
                         titre += "\n- " + service.libelle
@@ -445,13 +466,30 @@ class MapFragment : Fragment() {
                                 "Type 12"
                             )
                         ),
+                        Stand(
+                            13,
+                            13,
+                            "47.6372767950151",
+                            "Stand 13",
+                            "6.861963451177344",
+                            listOf(
+                                Service(
+                                    13,
+                                    "Service 13"
+                                )
+                            ),
+                            TypeStand(
+                                13,
+                                "Type 13"
+                            )
+                        ),
                     )
                 }
 
                 for (stand: Stand in exempleStands) {
                     val markerStand = Marker(map)
                     markerStand.position =
-                        GeoPoint(stand.latitude.toDouble() + 0.0005, stand.longitude.toDouble())
+                        GeoPoint(stand.latitude.toDouble() + 0.000005, stand.longitude.toDouble())
                     var titre = stand.libelle + "\n========="
                     for (service: Service in stand.services) {
                         titre += "\n- " + service.libelle
@@ -471,6 +509,7 @@ class MapFragment : Fragment() {
                         10 -> markerStand.icon = resources.getDrawable(R.drawable.map_info)
                         11 -> markerStand.icon = resources.getDrawable(R.drawable.map_parking)
                         12 -> markerStand.icon = resources.getDrawable(R.drawable.map_parking_velo)
+                        13 -> markerStand.icon = resources.getDrawable(R.drawable.map_stand)
                     }
                     markerStand.setPanToView(true)
                     markerStand.setOnMarkerClickListener { marker, mapView ->
@@ -511,7 +550,6 @@ class MapFragment : Fragment() {
             }
 
 
-
             return root
         }
 
@@ -533,7 +571,6 @@ class MapFragment : Fragment() {
         linearLayout.addView(button)
         return linearLayout
     }
-
 
 
     override fun onPause() {
@@ -743,3 +780,5 @@ class MapFragment : Fragment() {
     }
 
 }*/
+
+

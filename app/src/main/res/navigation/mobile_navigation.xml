@@ -9,7 +9,7 @@
         android:id="@+id/navigation_news"
         android:name="com.example.fimudroid.ui.news.NewsListFragment"
         android:label="@string/title_news"
-        tools:layout="@layout/news_recycler" >
+        tools:layout="@layout/news_recycler">
         <action
             android:id="@+id/action_navigation_news_to_newsDetails"
             app:destination="@id/newsDetails"
@@ -30,7 +30,7 @@
         android:id="@+id/navigation_artiste_list"
         android:name="com.example.fimudroid.ui.artistes.ArtistListFragment"
         android:label="@string/title_artiste_list"
-        tools:layout="@layout/artist_recycler" >
+        tools:layout="@layout/artist_recycler">
         <action
             android:id="@+id/action_navigation_artiste_list_to_artisteDetailsFragment"
             app:destination="@id/artisteDetailsFragment">
@@ -55,7 +55,7 @@
         android:id="@+id/artisteDetailsFragment"
         android:name="com.example.fimudroid.ui.artistes.ArtisteDetailsFragment"
         android:label="@string/title_artiste_list"
-        tools:layout="@layout/artiste_details_fragment" >
+        tools:layout="@layout/artiste_details_fragment">
         <argument
             android:name="itemId"
             app:argType="integer" />
@@ -67,10 +67,10 @@
         android:id="@+id/navigation_programmation"
         android:name="com.example.fimudroid.ui.planning.PlanningFragment"
         android:label="Programmation"
-        tools:layout="@layout/fragment_planning" >
+        tools:layout="@layout/fragment_planning">
         <action
             android:id="@+id/action_programmation_to_artisteDetails"
-            app:destination="@id/artisteDetailsFragment" >
+            app:destination="@id/artisteDetailsFragment">
             <argument
                 android:name="itemId"
                 android:defaultValue="-1" />

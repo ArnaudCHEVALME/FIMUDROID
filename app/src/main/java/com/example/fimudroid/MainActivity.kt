@@ -1,20 +1,11 @@
 package com.example.fimudroid
 
-import android.content.Context
 import android.content.pm.ActivityInfo
-import android.graphics.Rect
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.View
-import android.view.ViewTreeObserver
-import android.view.WindowManager
-import android.widget.FrameLayout
-import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
@@ -24,6 +15,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.fimudroid.databinding.ActivityMainBinding
 import com.example.fimudroid.network.FimuApiService
 import com.example.fimudroid.network.retrofit
+import com.example.fimudroid.ui.map.MapFiltersFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -37,8 +29,6 @@ import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
 
-    private val bottomSheetView by lazy { findViewById<ConstraintLayout>(R.id.artist_bottom_sheet) }
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private lateinit var toolbar: Toolbar
     private lateinit var binding: ActivityMainBinding
     private val api: FimuApiService by lazy {
@@ -70,29 +60,28 @@ class MainActivity : AppCompatActivity() {
 
         val FAQButton = findViewById<MaterialButton>(R.id.FAQButton)
         val ArtistFilterButton = findViewById<MaterialButton>(R.id.ArtistFilterButton)
+        val MapFilterButton = findViewById<MaterialButton>(R.id.MapFilterButton)
+        val buttonsMap = mapOf(
+            R.id.navigation_news to FAQButton,
+            R.id.navigation_artiste_list to ArtistFilterButton,
+            R.id.navigation_plan to MapFilterButton
+        )
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.navigation_news) {
-                FAQButton.visibility = View.VISIBLE
-            } else {
-                FAQButton.visibility = View.GONE
-            }
-            if (destination.id == R.id.navigation_artiste_list) {
-                ArtistFilterButton.visibility = View.VISIBLE
-            } else {
-                ArtistFilterButton.visibility = View.GONE
+            buttonsMap.forEach { (destinationId, button) ->
+                button.visibility = if (destination.id == destinationId) View.VISIBLE else View.GONE
             }
         }
-
         FAQButton.setOnClickListener {
             navController.navigate(R.id.navigation_faq)
         }
-
-
         ArtistFilterButton.setOnClickListener {
             showArtisteBottomSheet()
         }
-
-
+        MapFilterButton.setOnClickListener {
+            val mapFiltersFragment = MapFiltersFragment()
+            mapFiltersFragment.show(supportFragmentManager, "MapFiltersFragmentTag")
+        }
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -121,11 +110,8 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT // Crédit : Samson, Réalisation : Gabin
-    }
-
-    private fun onCreateView() {
-        checkApiStatus()
+        requestedOrientation =
+            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT // Crédit : Samson, Réalisation : Gabin
     }
 
     private fun checkApiStatus() {
@@ -166,9 +152,9 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
-    private fun showArtisteBottomSheet() {
+    private fun showBottomSheet(layoutResId: Int, heightResId: Int) {
         val bottomSheetDialog = BottomSheetDialog(this)
-        val bottomSheetView = layoutInflater.inflate(R.layout.bottom_sheet_artiste_filter, null)
+        val bottomSheetView = layoutInflater.inflate(layoutResId, null)
         bottomSheetDialog.setContentView(bottomSheetView)
 
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetView.parent as View)
@@ -177,13 +163,14 @@ class MainActivity : AppCompatActivity() {
         bottomSheetBehavior.peekHeight = 0
 
         val layoutParams = bottomSheetView.layoutParams
-        layoutParams.height = resources.getDimensionPixelSize(R.dimen.artiste_bottom_sheet_height)
+        layoutParams.height = resources.getDimensionPixelSize(heightResId)
         bottomSheetView.layoutParams = layoutParams
-
 
         bottomSheetDialog.show()
     }
 
 
-
+    private fun showArtisteBottomSheet() {
+        showBottomSheet(R.layout.bottom_sheet_artiste_filter, R.dimen.artiste_bottom_sheet_height)
+    }
 }

@@ -45,7 +45,7 @@ class NewsListFragment : Fragment(), OnItemClickListener {
                 api.getNews().data
             }
 
-            val newsHeaderAdapter = ImageHeaderNewsAdapter("pute.com")
+            val newsHeaderAdapter = ImageHeaderNewsAdapter("fimu.fr")
             val newsAdapter = NewsAdapter(news, this@NewsListFragment)
             recyclerView.adapter = ConcatAdapter(newsHeaderAdapter, newsAdapter)
             recyclerView.addItemDecoration(
