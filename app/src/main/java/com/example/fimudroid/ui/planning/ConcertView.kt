@@ -23,8 +23,12 @@ class ConcertView(context: Context) : ConstraintLayout(context) {
 
         setBackgroundColor(Color.parseColor(concert.artiste?.categorie?.couleur ?: "#BEBEBE"))
         artisteNameTextView.text = concert.artiste?.nom ?: "C'est qui ce pélo ?"
+
         artistePaysTextView.text =
             concert.artiste?.pays?.joinToString(", ") { it.libelle } ?: "Il vient d'où ? O_o"
+
+        artisteNameTextView.setTextColor(Color.parseColor("#FFFFFF"))
+        artistePaysTextView.setTextColor(Color.parseColor("#FFFFFF"))
 
         val duree = getTimeDifferenceInMinutes(concert.heure_debut, concert.heure_fin)
         println(duree)

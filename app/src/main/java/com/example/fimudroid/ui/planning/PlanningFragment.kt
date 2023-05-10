@@ -1,21 +1,13 @@
 package com.example.fimudroid.ui.planning
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Layout
 import android.util.TypedValue
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.GridLayout
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.view.marginLeft
+import android.view.*
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -24,7 +16,6 @@ import com.example.fimudroid.network.FimuApiService
 import com.example.fimudroid.network.models.Concert
 import com.example.fimudroid.network.models.Scene
 import com.example.fimudroid.network.retrofit
-import com.example.fimudroid.util.OnItemClickListener
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
 import kotlinx.coroutines.Dispatchers
@@ -46,11 +37,22 @@ class PlanningFragment : Fragment() {
     private lateinit var concertsByDateByScene: Map<String, Map<Scene, List<Concert>>>
     private lateinit var toggleButtonGroup: MaterialButtonToggleGroup
 
+    private lateinit var ScrollViewPlanning: ScrollView
+    //private lateinit var sceneLayout: CustomLinearLayout
+    private lateinit var horizontalScrollView: HorizontalScrollView
+    private lateinit var horizontalScrollViewPlanning: HorizontalScrollView
+    private lateinit var scrollScene: ScrollView
+    //private lateinit var scrollSceneX: HorizontalScrollView
+
+    var lastX = 0f
+    var lastY = 0f
+
 
     private val api: FimuApiService by lazy {
         retrofit.create(FimuApiService::class.java)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -60,6 +62,15 @@ class PlanningFragment : Fragment() {
         planningLayout = root.findViewById(R.id.planning_vertical_linear_layout)
         toggleButtonGroup = root.findViewById(R.id.toggleButton)
         catsLegend = root.findViewById(R.id.cat_legend_linear_layout)
+        ScrollViewPlanning = root.findViewById(R.id.scrollViewA)
+        //sceneLayout = root.findViewById(R.id.SceneLayout)
+        // Récupérer la référence de la vue HorizontalScrollView
+        horizontalScrollView = root.findViewById(R.id.CustomHorizontalScrollView)
+        horizontalScrollViewPlanning = root.findViewById(R.id.HorizontalScrollPlanning)
+
+        scrollScene = root.findViewById(R.id.scrollViewScene)
+        //scrollSceneX = root.findViewById(R.id.scrollviewscenex)
+
 
         catsLegend.columnCount = 2
         catsLegend.useDefaultMargins = true
@@ -81,6 +92,185 @@ class PlanningFragment : Fragment() {
             concertsByScene = concertsByDateByScene[dates[0]] ?: emptyMap()
             initPlanningView()
         }
+
+        ScrollViewPlanning.isHorizontalScrollBarEnabled = false
+        ScrollViewPlanning.isVerticalScrollBarEnabled = false
+        ScrollViewPlanning.isNestedScrollingEnabled = false;
+
+        planningLayout.isHorizontalScrollBarEnabled = false
+        planningLayout.isVerticalScrollBarEnabled = false
+
+
+        horizontalScrollViewPlanning.isHorizontalScrollBarEnabled = false
+        horizontalScrollViewPlanning.isVerticalScrollBarEnabled = false
+        horizontalScrollViewPlanning.isNestedScrollingEnabled = false;
+
+        ScrollViewPlanning.isHorizontalScrollBarEnabled = false
+        ScrollViewPlanning.isVerticalScrollBarEnabled = false
+        ScrollViewPlanning.isNestedScrollingEnabled = false;
+
+
+
+////////////////////////////////////////////////////////////// Définir un écouteur tactile pour la vue NestedScrollView
+
+/*        scrollSceneX.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    lastX = event.x
+                    lastY = event.y
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    val deltaX = event.x - lastX
+                    val deltaY = event.y - lastY
+                    //planningLayout.scrollBy(-deltaX.toInt(), -deltaY.toInt())
+                    ScrollViewPlanning.scrollBy(0, -deltaY.toInt())
+                    //horizontalScrollViewPlanning.scrollBy(-deltaX.toInt(), 0)
+                    //horizontalScrollView.scrollBy(-deltaX.toInt(), 0)
+                    scrollScene.scrollBy(0, -deltaY.toInt())
+                    lastX = event.x
+                    lastY = event.y
+                    return@setOnTouchListener true
+                }
+            }
+            return@setOnTouchListener false
+        }*/
+
+        scrollScene.setOnScrollChangeListener { _, _, scrollY, _, _ ->
+            ScrollViewPlanning.scrollTo(0, scrollY)
+        }
+        ScrollViewPlanning.setOnScrollChangeListener { _, _, scrollY, _, _ ->
+            scrollScene.scrollTo(0, scrollY)
+        }
+
+/*        ScrollViewPlanning.setOnScrollChangeListener { _, scrollX, _, _, _ ->
+            horizontalScrollView.scrollTo(scrollX, 0)
+        }
+
+        horizontalScrollView.setOnScrollChangeListener { _, scrollX, _, _, _ ->
+            ScrollViewPlanning.scrollTo(scrollX, 0)
+        }*/
+
+/*
+        scrollScene.setOnScrollChangeListener { _, _, scrollY, _, _ ->
+            ScrollViewPlanning.scrollTo(0, scrollY)
+            planningLayout.scrollTo(0, scrollY)
+        }
+*/
+
+        scrollScene.scrollY = planningLayout.scrollY
+        scrollScene.scrollY = ScrollViewPlanning.scrollY
+        scrollScene.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    lastX = event.x
+                    lastY = event.y
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    val deltaX = event.x - lastX
+                    val deltaY = event.y - lastY
+                    //planningLayout.scrollBy(-deltaX.toInt(), -deltaY.toInt())
+                    ScrollViewPlanning.scrollBy(0, -deltaY.toInt())
+                    //horizontalScrollViewPlanning.scrollBy(-deltaX.toInt(), 0)
+                    //horizontalScrollView.scrollBy(-deltaX.toInt(), 0)
+                    scrollScene.scrollBy(0, -deltaY.toInt())
+                    lastX = event.x
+                    lastY = event.y
+                    return@setOnTouchListener true
+                }
+            }
+            return@setOnTouchListener false
+        }
+
+        planningLayout.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    lastX = event.x
+                    lastY = event.y
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    val deltaX = event.x - lastX
+                    val deltaY = event.y - lastY
+                    //planningLayout.scrollBy(-deltaX.toInt(), -deltaY.toInt())
+                    ScrollViewPlanning.scrollBy(0, -deltaY.toInt())
+                    horizontalScrollViewPlanning.scrollBy(-deltaX.toInt(), 0)
+                    horizontalScrollView.scrollBy(-deltaX.toInt(), 0)
+                    scrollScene.scrollBy(0, -deltaY.toInt())
+                    lastX = event.x
+                    lastY = event.y
+                    return@setOnTouchListener true
+                }
+            }
+            return@setOnTouchListener false
+        }
+
+        ScrollViewPlanning.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    lastX = event.x
+                    lastY = event.y
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    val deltaX = event.x - lastX
+                    val deltaY = event.y - lastY
+                    //planningLayout.scrollBy(-deltaX.toInt(), -deltaY.toInt())
+                    ScrollViewPlanning.scrollBy(0, -deltaY.toInt())
+                    horizontalScrollViewPlanning.scrollBy(-deltaX.toInt(), 0)
+                    horizontalScrollView.scrollBy(-deltaX.toInt(), 0)
+                    scrollScene.scrollBy(0, -deltaY.toInt())
+                    lastX = event.x
+                    lastY = event.y
+                    return@setOnTouchListener true
+                }
+            }
+            return@setOnTouchListener false
+        }
+
+
+        horizontalScrollView.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    lastX = event.x
+                    lastY = event.y
+                    return@setOnTouchListener false
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    val deltaX = event.x - lastX
+                    val deltaY = event.y - lastY
+                    //planningLayout.scrollBy(-deltaX.toInt(), -deltaY.toInt())
+                    horizontalScrollViewPlanning.scrollBy(-deltaX.toInt(), 0)
+                    horizontalScrollView.scrollBy(-deltaX.toInt(), 0)
+                    //scrollScene.scrollBy(0, -deltaY.toInt())
+                    lastX = event.x
+                    lastY = event.y
+                    return@setOnTouchListener true
+                }
+                else -> return@setOnTouchListener false
+            }
+        }
+        horizontalScrollViewPlanning.translationY = -100f
+        horizontalScrollViewPlanning.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    lastX = event.x
+                    lastY = event.y
+                    return@setOnTouchListener false
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    val deltaX = event.x - lastX
+                    val deltaY = event.y - lastY
+                    //planningLayout.scrollBy(-deltaX.toInt(), -deltaY.toInt())
+                    ScrollViewPlanning.scrollBy(0, -deltaY.toInt())
+                    horizontalScrollViewPlanning.scrollBy(-deltaX.toInt(), 0)
+                    horizontalScrollView.scrollBy(-deltaX.toInt(), 0)
+                    //scrollScene.scrollBy(0, -deltaY.toInt())
+                    lastX = event.x
+                    lastY = event.y
+                    return@setOnTouchListener true
+                }
+                else -> return@setOnTouchListener false
+            }
+        }
+
         return root
     }
 
@@ -157,6 +347,7 @@ class PlanningFragment : Fragment() {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun initPlanningView() {
         planningLayout.removeAllViews()
 
@@ -178,9 +369,12 @@ class PlanningFragment : Fragment() {
         planningLayout.addView(hourSpace)
         initLegend()
 
+
+
         // Add a linearLayout for each scene
         for (scene in concertsByScene.keys.sortedBy { it.libelle }) {
             val linearLayout = LinearLayout(planningLayout.context)
+
 
             // Set dimensions of the row
             val rowLayoutParams = LinearLayout.LayoutParams(
@@ -189,7 +383,14 @@ class PlanningFragment : Fragment() {
             )
             linearLayout.layoutParams = rowLayoutParams
 
-           /* val sceneName = TextView(linearLayout.context)
+            // Set dimensions of the row
+            val rowLayoutParamsscene = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                500
+            )
+            //sceneLayout.layoutParams = rowLayoutParamsscene
+
+             val sceneName = TextView(linearLayout.context)
 
             sceneName.hyphenationFrequency = Layout.HYPHENATION_FREQUENCY_NONE
             sceneName.setBackgroundColor(Color.parseColor("#5A5A5A"))
@@ -220,9 +421,15 @@ class PlanningFragment : Fragment() {
             )
 
             // add scene libelle
-*//*            sceneName.setBackgroundColor(Color.parseColor("#0000FF"))
-            linearLayout.setBackgroundColor(Color.parseColor("#FF0000"))*//*
-            linearLayout.addView(sceneName)*/
+            //sceneName.setBackgroundColor(Color.parseColor("#0000FF"))
+            //sceneLayout.setBackgroundColor(Color.parseColor("#FF0000"))//
+
+
+
+
+
+
+
 
             // add a ConcertView to the linearLayout for each concert
             val concerts = concertsByScene[scene]?.sortedBy { it.heure_debut } ?: emptyList()
@@ -242,6 +449,26 @@ class PlanningFragment : Fragment() {
 
             // add the view to the LinearLayout
             concertFView.setOnClickListener{clickConcert(concertF)}
+            concertFView.setOnTouchListener { _, event ->
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        lastX = event.x
+                        lastY = event.y
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        val deltaX = event.x - lastX
+                        val deltaY = event.y - lastY
+                        //planningLayout.scrollBy(-deltaX.toInt(), -deltaY.toInt())
+                        ScrollViewPlanning.scrollBy(0, -deltaY.toInt())
+                        horizontalScrollViewPlanning.scrollBy(-deltaX.toInt(), 0)
+                        horizontalScrollView.scrollBy(-deltaX.toInt(), 0)
+                        lastX = event.x
+                        lastY = event.y
+                        return@setOnTouchListener true
+                    }
+                }
+                return@setOnTouchListener false
+            }
 
             linearLayout.addView(concertFView)
             if (concerts.size > 1) {
@@ -257,17 +484,52 @@ class PlanningFragment : Fragment() {
                             concertN.heure_debut
                         ) * 8, 100
                     )
+
+
                     linearLayout.addView(blankP)
 
                     val concertView = ConcertView(linearLayout.context)
                     concertView.setConcert(concertN)
                     concertView.setOnClickListener{clickConcert(concertN)}
+                    //concertView.setOnClickListener(null)
+
+
+                    concertView.setOnTouchListener { _, event ->
+                        when (event.action) {
+                            MotionEvent.ACTION_DOWN -> {
+                                lastX = event.x
+                                lastY = event.y
+                            }
+                            MotionEvent.ACTION_MOVE -> {
+                                val deltaX = event.x - lastX
+                                val deltaY = event.y - lastY
+                                //planningLayout.scrollBy(-deltaX.toInt(), -deltaY.toInt())
+                                ScrollViewPlanning.scrollBy(0, -deltaY.toInt())
+                                horizontalScrollViewPlanning.scrollBy(-deltaX.toInt(), 0)
+                                horizontalScrollView.scrollBy(-deltaX.toInt(), 0)
+                                lastX = event.x
+                                lastY = event.y
+                                return@setOnTouchListener true
+                            }
+                        }
+                        return@setOnTouchListener false
+                    }
+
                     linearLayout.addView(concertView)
                 }
             }
 
             planningLayout.addView(linearLayout)
+            //sceneLayout.rotation = 90f;
+
+
+
+
+
+            //sceneLayout.addView(sceneName)
         }
+
+
     }
 
     private fun getTimeDifferenceInMinutes(time1: String, time2: String): Int {

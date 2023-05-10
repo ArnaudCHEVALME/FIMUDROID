@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
+import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
 import java.text.SimpleDateFormat
 import java.time.LocalTime
@@ -51,9 +52,9 @@ class CustomLinearLayout(context: Context, attrs: AttributeSet?) : LinearLayout(
         var i = 0
         val d = getTimeDifferenceInMinutes(earliestTime, "$firstHour:00")
 
-        while (i * 60 * 8f + 300 <= width) {
+        while (i * 60 * 8f <= width) {
             canvas?.drawLine(i * 60 * 8f + d  , 100f, i * 60 * 8f + d  , height * 1f, gray)
-            //canvas?.drawText("${firstHour+i}h", i * 60 * 8f +d - 35  , 75f, blackAndTxt)
+           /* canvas?.drawText("${(firstHour+i)%24}h", i * 60 * 8f +d - 35  , 75f, blackAndTxt)*/
             i++
         }
     }
@@ -66,7 +67,7 @@ class CustomLinearLayout(context: Context, attrs: AttributeSet?) : LinearLayout(
         val currentTime = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
         val d = getTimeDifferenceInMinutes(earliestTime, currentTime)
 
-        canvas?.drawLine(d*8f + 300,100f,d*8f + 300,height*1f, red)
+        canvas?.drawLine(d*8f,100f,d*8f,height*1f, red)
     }
 
     fun setStartTime(time: String) {
