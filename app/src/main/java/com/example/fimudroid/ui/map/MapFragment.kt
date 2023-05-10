@@ -6,6 +6,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -24,14 +25,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.fimudroid.R
 import com.example.fimudroid.network.FimuApiService
 import com.example.fimudroid.network.models.*
 import com.example.fimudroid.network.retrofit
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -49,7 +47,10 @@ import org.osmdroid.views.overlay.Marker
 
 
 class MapFragment : Fragment() {
-
+    private lateinit var bottomSheetDialogStand: BottomSheetDialog
+    private lateinit var bottomSheetDialogScene: BottomSheetDialog
+    private lateinit var bottomSheetStandView: View
+    private lateinit var bottomSheetSceneView: View
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -139,6 +140,7 @@ class MapFragment : Fragment() {
 
             map.maxZoomLevel = 21.5
 
+
             val fimuBoundingBox: BoundingBox = BoundingBox(
                 47.64836242902998,
                 6.8783751401231985,
@@ -189,7 +191,7 @@ class MapFragment : Fragment() {
 
             val locateFloatingButton =
                 root.findViewById<FloatingActionButton>(R.id.floatingButtonLocate)
-
+            /*
             if (fimuBoundingBox.contains(gp.latitude, gp.longitude)) {
 
 
@@ -205,7 +207,7 @@ class MapFragment : Fragment() {
             } else {
                 locateFloatingButton.hide()
             }
-
+            */
             /*
             val recyclerView = inflater.inflate(R.layout.bottom_sheet_map_filter, container, false)
                 .findViewById<RecyclerView>(R.id.map_filter_recycler_view)
@@ -239,26 +241,19 @@ class MapFragment : Fragment() {
                         titre += "\n- " + service.libelle
                     }
                     markerStand.title = titre
-
-                    when (stand.typestandId) {
-                        1 -> markerStand.icon = resources.getDrawable(R.drawable.map_resto)
-                        2 -> markerStand.icon = resources.getDrawable(R.drawable.map_resto)
-                        3 -> markerStand.icon = resources.getDrawable(R.drawable.map_secours)
-                        4 -> markerStand.icon = resources.getDrawable(R.drawable.map_buvette)
-                        5 -> markerStand.icon = resources.getDrawable(R.drawable.map_boutique)
-                        6 -> markerStand.icon = resources.getDrawable(R.drawable.map_toilet)
-                        7 -> markerStand.icon = resources.getDrawable(R.drawable.map_eau)
-                    }
+                    markerStand.icon = setIconForStand(stand)
                     markerStand.setPanToView(true)
                     markerStand.setOnMarkerClickListener { marker, mapView ->
-                        view?.findViewById<ChipGroup>(R.id.stand_chipGroup)?.removeAllViews()
-                        afficheInfoView(stand, mapController)
+                        bottomSheetDialogStand.findViewById<ChipGroup>(R.id.servicesChipGroup)?.removeAllViews()
+                        updateBottomSheetInfoStand(stand, mapController)
+                        bottomSheetDialogStand.show()
                         true
                     }
 
                     map.invalidate()
                     map.overlays.add(markerStand)
                 }
+                /*
 
                 val exempleStands: List<Stand> = withContext(Dispatchers.IO) {
                     listOf(
@@ -521,7 +516,7 @@ class MapFragment : Fragment() {
                     map.invalidate()
                     map.overlays.add(markerStand)
                 }
-
+*/
             }
 
 // Ajout des overlays pour les scènes
@@ -540,7 +535,8 @@ class MapFragment : Fragment() {
                     sceneMarker.setPanToView(true)
 
                     sceneMarker.setOnMarkerClickListener { marker, mapView ->
-                        afficheInfoView(scene, mapController)
+                        updateBottomSheetInfoScene(scene, mapController)
+                        bottomSheetDialogScene.show()
                         true
                     }
 
@@ -549,6 +545,13 @@ class MapFragment : Fragment() {
                 }
             }
 
+            bottomSheetStandView = inflater.inflate(R.layout.map_stand_fragment, container, false)
+            bottomSheetDialogStand = BottomSheetDialog(requireContext())
+            bottomSheetDialogStand.setContentView(bottomSheetStandView)
+
+            bottomSheetSceneView = inflater.inflate(R.layout.map_scene_fragment, container, false)
+            bottomSheetDialogScene = BottomSheetDialog(requireContext())
+            bottomSheetDialogScene.setContentView(bottomSheetSceneView)
 
             return root
         }
@@ -571,6 +574,76 @@ class MapFragment : Fragment() {
         linearLayout.addView(button)
         return linearLayout
     }
+
+    private fun updateBottomSheetInfoStand(stand: Stand, mapController: IMapController) {
+        val standTitleTextView = bottomSheetStandView.findViewById<TextView>(R.id.libelleStand)
+        val standServicesGroup = bottomSheetStandView.findViewById<ChipGroup>(R.id.servicesChipGroup)
+        val standImage = bottomSheetStandView.findViewById<ImageView>(R.id.imageStand)
+
+        standTitleTextView.text = stand.libelle
+        setIconForStand(stand)?.let { standImage.setImageDrawable(it) }
+        for (service: Service in stand.services) {
+            val serviceChip = Chip(requireContext())
+            serviceChip.text = service.libelle
+            standServicesGroup?.addView(serviceChip)
+        }
+        val standLocation = GeoPoint(stand.latitude.toDouble(), stand.longitude.toDouble())
+        mapController.animateTo(standLocation)
+    }
+
+    private fun updateBottomSheetInfoScene(scene: Scene, mapController: IMapController) {
+        val sceneTitleTextView = bottomSheetSceneView.findViewById<TextView>(R.id.libelleScene)
+        val concertTextView = bottomSheetSceneView.findViewById<TextView>(R.id.sceneConcert)
+        val artisteTextView = bottomSheetSceneView.findViewById<TextView>(R.id.sceneArtiste)
+        val genreTextView = bottomSheetSceneView.findViewById<TextView>(R.id.sceneGenre)
+
+
+        sceneTitleTextView.text = scene.libelle
+        var nextConcert: Concert
+        lifecycleScope.launch {
+            val concerts: List<Concert> = withContext(Dispatchers.IO) {
+                api.getConcerts().data
+            }
+
+            val concertByScene = concerts.groupBy { it.scene }
+            //val c = concertByScene[scene]?.filter { LocalDate.now().isBefore(LocalDate.parse(it.date_debut)) }?.filter { LocalTime.now().isBefore(LocalTime.parse(it.heure_debut)) }?.sortedBy { it.heure_debut }?.first() ?: null
+            val c = concerts.first() //pour présentation
+            if (c === null) {
+                concertTextView?.text = "Plus de concert"
+                artisteTextView?.text = ""
+                genreTextView?.text = ""
+            } else {
+                concertTextView?.text =
+                    c?.heure_debut?.dropLast(3) + " - " + c?.heure_fin?.dropLast(3)
+                artisteTextView?.text = c?.artiste?.nom
+                genreTextView?.text = c?.artiste?.genres?.get(0)?.libelle
+            }
+
+        }
+
+        val sceneLocation = GeoPoint(scene.latitude.toDouble(), scene.longitude.toDouble())
+        mapController.animateTo(sceneLocation)
+    }
+
+    private fun setIconForStand(stand: Stand): Drawable? {
+        return when (stand.typestand.libelle) {
+            "Bar à eau" -> resources.getDrawable(R.drawable.map_eau)
+            "Boutique" -> resources.getDrawable(R.drawable.map_boutique)
+            "Buvette" -> resources.getDrawable(R.drawable.map_buvette)
+            "Entrées" -> resources.getDrawable(R.drawable.map_entree)
+            "FIMU des Enfants" -> resources.getDrawable(R.drawable.map_toilet)
+            "Navette" -> resources.getDrawable(R.drawable.map_navette)
+            "Parking vélos" -> resources.getDrawable(R.drawable.map_parking_velo)
+            "Partenaire" -> resources.getDrawable(R.drawable.map_stand)
+            "Point Infos" -> resources.getDrawable(R.drawable.map_info)
+            "Prévention" -> resources.getDrawable(R.drawable.map_prevention)
+            "Secours" -> resources.getDrawable(R.drawable.map_secours)
+            "Stand alimentaire" -> resources.getDrawable(R.drawable.map_resto)
+            else -> {
+                resources.getDrawable(R.drawable.map_stand)}
+        }
+    }
+
 
 
     override fun onPause() {
@@ -597,8 +670,6 @@ class MapFragment : Fragment() {
     fun afficheInfoView(lieu: Any, mapController: IMapController) {
         val card = view?.findViewById<CardView>(R.id.cards_map)
         card?.visibility = View.VISIBLE
-
-        val info_stand = view?.findViewById<ConstraintLayout>(R.id.stand_constraint)
         val info_scene = view?.findViewById<ConstraintLayout>(R.id.scene_constraint)
 
 
@@ -609,33 +680,9 @@ class MapFragment : Fragment() {
         val closeButton = view?.findViewById<ImageButton>(R.id.info_close_button)
 
         if (lieu is Stand) {
-            info_scene?.visibility = View.GONE
-            info_stand?.visibility = View.VISIBLE
 
-            val stand: Stand = lieu
-            val standLocation =
-                GeoPoint(stand.latitude.toDouble(), stand.longitude.toDouble())
-            val standServicesGroup = view?.findViewById<ChipGroup>(R.id.stand_chipGroup)
-
-            titre?.text = stand.libelle
-            for (service: Service in stand.services) {
-                val serviceChip: Chip = Chip(context)
-                serviceChip.text = service.libelle
-                standServicesGroup?.addView(serviceChip)
-            }
-
-            mapController.animateTo(standLocation)
-            closeButton?.setOnClickListener {
-                view?.findViewById<CardView>(R.id.cards_map)?.visibility = View.INVISIBLE
-                standServicesGroup?.removeAllViews()
-            }
-
-            findButton?.setOnClickListener {
-                mapController.animateTo(standLocation)
-            }
         } else {
             info_scene?.visibility = View.VISIBLE
-            info_stand?.visibility = View.GONE
 
             val scene: Scene = lieu as Scene
             val sceneLocation =

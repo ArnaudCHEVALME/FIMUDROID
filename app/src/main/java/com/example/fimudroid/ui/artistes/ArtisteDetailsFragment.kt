@@ -86,6 +86,22 @@ class ArtisteDetailsFragment : Fragment() {
                 )
                 layoutParams.setMargins(20, 20, 20, 20)
 
+                val video_link = currentArtiste.lien_video
+                if (video_link != null) {
+                    val btn = ImageView(linksViewGroup.context)
+//                    btn.layoutParams = layoutParams
+                    btn.setImageResource(R.drawable.mdi_youtube)
+                    btn.scaleType = ImageView.ScaleType.CENTER_INSIDE
+                    btn.adjustViewBounds = true
+                    btn.setOnClickListener {
+                        val intent3 = Intent(Intent.ACTION_VIEW)
+                        intent3.data = Uri.parse(video_link)
+                        startActivity(intent3)
+                    }
+                    linksViewGroup.addView(btn)
+                }
+
+
                 for (link in currentArtiste.reseauxSociauxes!!) {
                     val btn = ImageView(linksViewGroup.context)
 //                    btn.layoutParams = layoutParams
@@ -112,6 +128,15 @@ class ArtisteDetailsFragment : Fragment() {
                     }
 //                    btn.cropToPadding = true
                     linksViewGroup.addView(btn)
+                }
+
+                // make linksViewGroup evenly spaced
+                linksViewGroup.weightSum = linksViewGroup.childCount.toFloat()
+                for (i in 0 until linksViewGroup.childCount) {
+                    val child = linksViewGroup.getChildAt(i)
+                    val params = child.layoutParams as LinearLayout.LayoutParams
+                    params.weight = 1f
+                    child.layoutParams = params
                 }
 
                 val drawableResource = when (currentArtiste.id) {

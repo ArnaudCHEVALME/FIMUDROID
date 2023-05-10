@@ -15,6 +15,7 @@ import com.example.fimudroid.network.retrofit
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.Month
 
 
 /**
@@ -39,10 +40,8 @@ class NewsDetails : Fragment() {
         val title:TextView = root.findViewById(R.id.actu_title)
         val core:TextView = root.findViewById(R.id.actu_core)
         val date:TextView = root.findViewById(R.id.detail_news_date)
-        val bar:View = root.findViewById(R.id.side_bare_news)
         val header: ImageView = root.findViewById(R.id.actu_image)
 
-        bar.setBackgroundColor(Color.parseColor("#93CAED"))
         title.text = "Chargement..."
         core.text = "Chargement..."
         date.text = "Chargement..."
@@ -51,8 +50,13 @@ class NewsDetails : Fragment() {
                 val news = api.getNewsById(news_id).data
                 title.text = news.titre
                 core.text = news.contenu
-                date.text = (news.dateEnvoi?.subSequence(0, 10).toString()+", "+news.heureEnvoi)
 
+                val jour = news.dateEnvoi!!.split("-")[2].toInt()
+                val mois = getMonth(Month.of(news.dateEnvoi.split("-")[1].toInt()))
+                // heure + min
+                val heure = news.heureEnvoi
+
+                date.text = "Publié le $jour $mois à $heure"
 
                 val drawableResource = when (news.id) {
                     1 -> R.drawable.ma_joye
@@ -70,24 +74,6 @@ class NewsDetails : Fragment() {
 
                 header.setImageResource(drawableResource)
 
-
-                if(news.typeactu.id == 1){
-
-                    bar.setBackgroundColor(Color.parseColor("#93CAED"))
-
-                    //Changer l'icon de l'actu en fonction du type d'actu
-//            val resId = R.drawable.ic_notifications_black_24dp
-//            holder.icon.setImageResource(resId)
-                }
-                else if (news.typeactu.id == 2){
-                    bar.setBackgroundColor(Color.parseColor("#EEEE9B"))
-//            val resId = androidx.databinding.library.baseAdapters.R.drawable.notification_icon_background
-//            holder.icon.setImageResource(resId)
-                }
-                else{
-                    bar.setBackgroundColor(Color.parseColor("#F47174"))
-                }
-
             }
         }
 
@@ -95,5 +81,23 @@ class NewsDetails : Fragment() {
         return root
     }
 
+    private fun getMonth(month: Month) : String{
+        return when (month) {
+            Month.JANUARY -> "Janvier"
+            Month.FEBRUARY -> "Février"
+            Month.MARCH-> "Mars"
+            Month.APRIL -> "Avril"
+            Month.MAY -> "Mai"
+            Month.JUNE -> "Juin"
+            Month.JULY -> "Juillet"
+            Month.AUGUST -> "Août"
+            Month.SEPTEMBER -> "Séptembre"
+            Month.OCTOBER -> "Octobre"
+            Month.NOVEMBER -> "Novembre"
+            else -> "Décembre"
+        }
+    }
+
     companion object
 }
+
