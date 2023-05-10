@@ -2,4 +2,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="artiste_bottom_sheet_height">300dp</dimen>
+    <dimen name="map_bottom_sheet_height">400dp</dimen>
 </resources>

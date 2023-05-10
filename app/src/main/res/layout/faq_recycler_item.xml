@@ -1,54 +1,76 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget.Material3.CardView.Filled"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:id="@+id/questionCard"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
 
-    <!-- Question Text -->
-    <TextView
-        android:id="@+id/questionText"
+    >
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:text="Question"
-        android:textStyle="bold"
-        android:textSize="18sp" />
+        >
 
-    <!-- Arrow Button -->
-    <ImageButton
-        android:id="@+id/arrowButton"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_alignTop="@+id/questionText"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_arrow_down" />
 
-    <!-- Answer Layout (Collapsed by default) -->
-    <LinearLayout
-        android:id="@+id/answerLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/questionText"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:orientation="vertical"
-        android:visibility="gone"
-        android:scaleType="centerCrop">
-
-        <!-- Answer Text -->
+        <!-- Question Text -->
         <TextView
-            android:id="@+id/answerText"
+            android:id="@+id/questionText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Answer"
-            android:textSize="16sp" />
-    </LinearLayout>
-</RelativeLayout>
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="-16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_toStartOf="@+id/arrowButton"
+            android:text="Question"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- Arrow Button -->
+
+        <!-- Answer Layout (Collapsed by default) -->
+        <ImageView
+            android:id="@+id/arrowButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignTop="@+id/questionText"
+            android:layout_alignBottom="@+id/questionText"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="end"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/chevron_down" />
+
+
+        <LinearLayout
+            android:id="@+id/answerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/questionText"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical"
+            android:scaleType="centerCrop"
+            android:visibility="gone">
+
+            <!-- Answer Text -->
+            <TextView
+                android:id="@+id/answerText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Answer"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>
