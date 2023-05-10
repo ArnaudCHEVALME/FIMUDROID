@@ -6,22 +6,24 @@
             android:viewportWidth="24"
             android:viewportHeight="24">
             <path
-                android:fillColor="#81C784"
+                android:fillColor="#FF5722"
                 android:pathData="M 12 2 A 7 7 0 0 0 5 9 C 5 14.25 12 22 12 22 C 12 22 19 14.25 19 9 A 7 7 0 0 0 12 2" />
         </vector>
     </item>
 
     <item
-        android:bottom="10dp"
+        android:bottom="10.8dp"
         android:gravity="center">
         <vector
-            android:width="16dp"
-            android:height="16dp"
+            android:width="19dp"
+            android:height="19dp"
             android:viewportWidth="24"
             android:viewportHeight="24">
             <path
                 android:fillColor="#ffffff"
-                android:pathData="M12,13A5,5 0 0,1 7,8H9A3,3 0 0,0 12,11A3,3 0 0,0 15,8H17A5,5 0 0,1 12,13M12,3A3,3 0 0,1 15,6H9A3,3 0 0,1 12,3M19,6H17A5,5 0 0,0 12,1A5,5 0 0,0 7,6H5C3.89,6 3,6.89 3,8V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V8C21,6.89 20.1,6 19,6Z" />
+                android:pathData="M3,9H7L12,4V20L7,15H3V9M16.59,12L14,9.41L15.41,8L18,10.59L20.59,8L22,9.41L19.41,12L22,14.59L20.59,16L18,13.41L15.41,16L14,14.59L16.59,12Z" />
         </vector>
     </item>
+
 </layer-list>
+

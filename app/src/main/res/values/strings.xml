@@ -23,4 +23,6 @@
     <string name="title_info">FAQ</string>
     <string name="programmation"><u>PROGRAMME</u></string>
     <string name="artist_sortAZ_text">A - Z</string>
+    <string name="libelle_stand">Libelle Stand</string>
+    <string name="libelle_scene" />
 </resources>

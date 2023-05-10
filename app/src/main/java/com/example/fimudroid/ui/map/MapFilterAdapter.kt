@@ -27,20 +27,21 @@ class MapFilterAdapter(
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val typeStands = dataset[position]
-        val drawableResource = when (typeStands.id) {
-            1 -> R.drawable.map_resto
-            2 -> R.drawable.map_resto
-            3 -> R.drawable.map_secours
-            4 -> R.drawable.map_buvette
-            5 -> R.drawable.map_boutique
-            6 -> R.drawable.map_toilet
-            7 -> R.drawable.map_eau
-            8 -> R.drawable.ma_oceya
-            9 -> R.drawable.ma_encore
-            10 -> R.drawable.ma_encore
-            else -> R.drawable.ma_cloud
+        val drawableResource = when (typeStands.libelle) {
+            "Bar à eau" -> R.drawable.map_eau
+            "Boutique" -> R.drawable.map_boutique
+            "Buvette" -> R.drawable.map_buvette
+            "Entrées" -> R.drawable.map_entree
+            "FIMU des Enfants" -> R.drawable.map_toilet
+            "Navette" -> R.drawable.map_navette
+            "Parking vélos" -> R.drawable.map_parking_velo
+            "Partenaire" -> R.drawable.map_stand
+            "Point Infos" -> R.drawable.map_info
+            "Prévention" -> R.drawable.map_prevention
+            "Secours" -> R.drawable.map_secours
+            "Stand alimentaire" -> R.drawable.map_resto
+            else -> {R.drawable.map_marker}
         }
-
         holder.typeIcon.setImageResource(drawableResource)
         holder.typeName.text = typeStands.libelle
 

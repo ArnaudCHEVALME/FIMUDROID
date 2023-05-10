@@ -32,6 +32,10 @@ class MapFiltersFragment : BottomSheetDialogFragment() {
             var typesStand = withContext(Dispatchers.IO) {
                 api.getTypesStand().data
             }.sortedBy { it.libelle }
+
+            val TypesToRemoves = listOf("Entrées", "Parking vélos")
+            typesStand = typesStand.filter { !TypesToRemoves.contains(it.libelle) }
+
             val typeStandAdapter = MapFilterAdapter(typesStand)
             recyclerView.adapter = typeStandAdapter
             recyclerView.addItemDecoration(
