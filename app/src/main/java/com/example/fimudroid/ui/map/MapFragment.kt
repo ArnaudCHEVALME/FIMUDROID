@@ -669,7 +669,12 @@ class MapFragment : Fragment() {
     fun refreshFragment() {
         val fragmentManager = requireFragmentManager()
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(this.id, this.javaClass.newInstance())
+        fragmentTransaction.setReorderingAllowed(true)
+
+        val mapFragment = MapFragment() // Créez une nouvelle instance de votre fragment de carte
+
+        fragmentTransaction.replace(this.id, mapFragment)
+        fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
     }
 
