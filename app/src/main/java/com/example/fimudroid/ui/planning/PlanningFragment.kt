@@ -164,6 +164,7 @@ class PlanningFragment : Fragment() {
                 MotionEvent.ACTION_DOWN -> {
                     lastX = event.x
                     lastY = event.y
+                    ScrollViewPlanning.requestDisallowInterceptTouchEvent(true)
                 }
                 MotionEvent.ACTION_MOVE -> {
                     val deltaX = event.x - lastX
@@ -186,6 +187,11 @@ class PlanningFragment : Fragment() {
                 MotionEvent.ACTION_DOWN -> {
                     lastX = event.x
                     lastY = event.y
+                    ScrollViewPlanning.requestDisallowInterceptTouchEvent(true)
+                    horizontalScrollViewPlanning.requestDisallowInterceptTouchEvent(true)
+                    horizontalScrollView.requestDisallowInterceptTouchEvent(true)
+                    scrollScene.requestDisallowInterceptTouchEvent(true)
+
                 }
                 MotionEvent.ACTION_MOVE -> {
                     val deltaX = event.x - lastX
@@ -208,6 +214,9 @@ class PlanningFragment : Fragment() {
                 MotionEvent.ACTION_DOWN -> {
                     lastX = event.x
                     lastY = event.y
+                    horizontalScrollViewPlanning.requestDisallowInterceptTouchEvent(true)
+                    horizontalScrollView.requestDisallowInterceptTouchEvent(true)
+                    scrollScene.requestDisallowInterceptTouchEvent(true)
                 }
                 MotionEvent.ACTION_MOVE -> {
                     val deltaX = event.x - lastX
@@ -231,6 +240,10 @@ class PlanningFragment : Fragment() {
                 MotionEvent.ACTION_DOWN -> {
                     lastX = event.x
                     lastY = event.y
+
+                    ScrollViewPlanning.requestDisallowInterceptTouchEvent(true)
+                    horizontalScrollViewPlanning.requestDisallowInterceptTouchEvent(true)
+                    scrollScene.requestDisallowInterceptTouchEvent(true)
                     return@setOnTouchListener false
                 }
                 MotionEvent.ACTION_MOVE -> {
@@ -253,6 +266,9 @@ class PlanningFragment : Fragment() {
                 MotionEvent.ACTION_DOWN -> {
                     lastX = event.x
                     lastY = event.y
+                    ScrollViewPlanning.requestDisallowInterceptTouchEvent(true)
+                    horizontalScrollView.requestDisallowInterceptTouchEvent(true)
+                    scrollScene.requestDisallowInterceptTouchEvent(true)
                     return@setOnTouchListener false
                 }
                 MotionEvent.ACTION_MOVE -> {
@@ -312,7 +328,12 @@ class PlanningFragment : Fragment() {
         catsLegend.removeAllViews()
         val categories = concertsByScene.values.flatten().map { it.artiste?.categorie }.distinct()
 
-        for ((index, cat) in categories.sortedBy { it?.libelle }.withIndex()) {
+        // Définir l'ordre personnalisé des catégories
+        val customOrder = listOf("Musique actuelle", "Musique du monde", "Musique classique", "Jazz") // Remplacez avec votre propre ordre
+
+        val sortedCategories = categories.sortedWith(compareBy { customOrder.indexOf(it?.libelle) })
+
+        for ((index, cat) in sortedCategories.withIndex()) {
             // color
             val colorCircle = View(context)
             colorCircle.layoutParams = LinearLayout.LayoutParams(30, 30).apply {
@@ -472,7 +493,7 @@ class PlanningFragment : Fragment() {
 
             linearLayout.addView(concertFView)
             if (concerts.size > 1) {
-                for (i in concerts.indices-1) {
+                for (i in 0 until concerts.size - 1) {
                     val blankP = View(linearLayout.context)
 
                     val concertP = concerts[i]

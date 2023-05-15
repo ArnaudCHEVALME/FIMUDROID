@@ -10,6 +10,7 @@
         android:id="@+id/CustomHorizontalScrollView"
         android:layout_width="412dp"
         android:layout_height="43dp"
+        android:scrollbars="none"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cat_legend_linear_layout">
 
@@ -25,6 +26,7 @@
         android:layout_width="60dp"
         android:layout_height="0dp"
         android:background="@color/purple_200"
+        android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="@+id/scrollViewA"
         app:layout_constraintEnd_toStartOf="@+id/scrollViewA"
         app:layout_constraintStart_toStartOf="parent"
@@ -96,6 +98,8 @@
         android:id="@+id/toggleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:singleSelection="true">

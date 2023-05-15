@@ -56,17 +56,5 @@
         app:layout_constraintStart_toStartOf="@+id/actu_title"
         app:layout_constraintTop_toBottomOf="@+id/actu_title" />
 
-    <TextView
-        android:id="@+id/news_date"
-        android:layout_width="80dp"
-        android:layout_height="15dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="15dp"
-        android:text="TextView"
-        android:gravity="center"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/actu_image" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

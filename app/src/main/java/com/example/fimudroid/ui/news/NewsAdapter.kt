@@ -25,7 +25,7 @@ class NewsAdapter(
         val title: TextView = view.findViewById(R.id.actu_title)
         val sidebar: View = view.findViewById(R.id.side_bare_news)
         val core: TextView = view.findViewById(R.id.news_core)
-        val date: TextView = view.findViewById(R.id.news_date)
+        //val date: TextView = view.findViewById(R.id.news_date)
         val image: ImageView = view.findViewById(R.id.actu_image)
     }
 
@@ -47,7 +47,7 @@ class NewsAdapter(
         val actu = dataset[position]
         holder.title.text = actu.titre
         holder.core.text = actu.contenu?: "no Text"
-        holder.date.text = actu.dateEnvoi?.subSequence(0, 10) ?: "no Date"
+        //holder.date.text = actu.dateEnvoi?.subSequence(0, 10) ?: "no Date"
 
 
         val drawableResource = when (actu.id) {

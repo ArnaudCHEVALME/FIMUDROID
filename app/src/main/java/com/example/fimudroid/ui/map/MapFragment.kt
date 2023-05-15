@@ -25,6 +25,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import com.example.fimudroid.R
 import com.example.fimudroid.network.FimuApiService
 import com.example.fimudroid.network.models.*
@@ -615,7 +616,12 @@ class MapFragment : Fragment() {
             } else {
                 concertTextView?.text =
                     c?.heure_debut?.dropLast(3) + " - " + c?.heure_fin?.dropLast(3)
+                artisteTextView.setOnClickListener{
+                    clickConcert(c)
+                    bottomSheetDialogScene.dismiss()
+                }
                 artisteTextView?.text = c?.artiste?.nom
+
                 genreTextView?.text = c?.artiste?.genres?.get(0)?.libelle
             }
 
@@ -785,6 +791,13 @@ class MapFragment : Fragment() {
         } else {
             Pair(0.0, 0.0)
         }
+    }
+
+    fun clickConcert(c : Concert){
+        val bundle = Bundle()
+        bundle.putInt("id_art", c.artisteId)
+        requireView().findNavController()
+            .navigate(R.id.action_navigation_plan_to_artisteDetailsFragment, bundle)
     }
 
 

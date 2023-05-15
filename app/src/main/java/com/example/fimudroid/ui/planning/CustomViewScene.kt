@@ -27,7 +27,7 @@ class CustomViewScene(context: Context, attrs: AttributeSet?) : View(context, at
 
         // Mesure la taille du contenu de la vue
         val contentWidth = 170 // Remplacez cette valeur par la taille réelle de votre contenu
-        val contentHeight = 3121 // Remplacez cette valeur par la taille réelle de votre contenu
+        val contentHeight = 8121 // Remplacez cette valeur par la taille réelle de votre contenu
 
         // Définit la taille de la vue en fonction du contenu et des spécifications de mesure
         val desiredWidth = resolveSize(contentWidth, widthMeasureSpec)
