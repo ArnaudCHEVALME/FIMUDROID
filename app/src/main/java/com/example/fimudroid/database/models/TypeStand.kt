@@ -7,5 +7,6 @@ import androidx.room.PrimaryKey
 data class TypeStand(
     @PrimaryKey
     val id: Int,
-    val libelle: String
+    val libelle: String,
+    var showed: Boolean
 )

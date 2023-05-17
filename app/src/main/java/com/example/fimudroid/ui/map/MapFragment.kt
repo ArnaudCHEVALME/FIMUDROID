@@ -27,6 +27,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.example.fimudroid.R
+import com.example.fimudroid.database.FimuDB
+import com.example.fimudroid.database.daos.TypeStandDao
+import com.example.fimudroid.database.models.TypeStand
 import com.example.fimudroid.network.FimuApiService
 import com.example.fimudroid.network.models.*
 import com.example.fimudroid.network.retrofit
@@ -35,6 +38,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.osmdroid.api.IMapController
@@ -192,7 +196,7 @@ class MapFragment : Fragment() {
 
             val locateFloatingButton =
                 root.findViewById<FloatingActionButton>(R.id.floatingButtonLocate)
-            /*
+
             if (fimuBoundingBox.contains(gp.latitude, gp.longitude)) {
 
 
@@ -208,7 +212,7 @@ class MapFragment : Fragment() {
             } else {
                 locateFloatingButton.hide()
             }
-            */
+
             /*
             val recyclerView = inflater.inflate(R.layout.bottom_sheet_map_filter, container, false)
                 .findViewById<RecyclerView>(R.id.map_filter_recycler_view)
@@ -227,324 +231,10 @@ class MapFragment : Fragment() {
             }
            */
 
-            // Ajout des overlays pour les stands
-            lifecycleScope.launch {
-                val stands: List<Stand> = withContext(Dispatchers.IO) {
-                    api.getStands().data
-                }
 
-                for (stand: Stand in stands) {
-                    val markerStand = Marker(map)
-                    markerStand.position =
-                        GeoPoint(stand.latitude.toDouble() + 0.000005, stand.longitude.toDouble())
-                    var titre = stand.libelle + "\n========="
-                    for (service: Service in stand.services) {
-                        titre += "\n- " + service.libelle
-                    }
-                    markerStand.title = titre
-                    markerStand.icon = setIconForStand(stand)
-                    markerStand.setPanToView(true)
-                    markerStand.setOnMarkerClickListener { marker, mapView ->
-                        bottomSheetDialogStand.findViewById<ChipGroup>(R.id.servicesChipGroup)?.removeAllViews()
-                        updateBottomSheetInfoStand(stand, mapController)
-                        bottomSheetDialogStand.show()
-                        true
-                    }
 
-                    map.invalidate()
-                    map.overlays.add(markerStand)
-                }
-                /*
-
-                val exempleStands: List<Stand> = withContext(Dispatchers.IO) {
-                    listOf(
-                        Stand(
-                            1,
-                            1,
-                            "47.6372767950151",
-                            "Stand 1",
-                            "6.860763451177344",
-                            listOf(
-                                Service(
-                                    1,
-                                    "Service 1"
-                                )
-                            ),
-                            TypeStand(
-                                1,
-                                "Type 1"
-                            )
-                        ),
-                        Stand(
-                            2,
-                            2,
-                            "47.6372767950151",
-                            "Stand 2",
-                            "6.860863451177344",
-                            listOf(
-                                Service(
-                                    2,
-                                    "Service 2"
-                                )
-                            ),
-                            TypeStand(
-                                2,
-                                "Type 2"
-                            )
-                        ),
-                        Stand(
-                            3,
-                            3,
-                            "47.6372767950151",
-                            "Stand 3",
-                            "6.860963451177344",
-                            listOf(
-                                Service(
-                                    3,
-                                    "Service 3"
-                                )
-                            ),
-                            TypeStand(
-                                3,
-                                "Type 3"
-                            )
-                        ),
-                        Stand(
-                            4,
-                            4,
-                            "47.6372767950151",
-                            "Stand 4",
-                            "6.861063451177344",
-                            listOf(
-                                Service(
-                                    4,
-                                    "Service 4"
-                                )
-                            ),
-                            TypeStand(
-                                4,
-                                "Type 4"
-                            )
-                        ),
-                        Stand(
-                            5,
-                            5,
-                            "47.6372767950151",
-                            "Stand 5",
-                            "6.861163451177344",
-                            listOf(
-                                Service(
-                                    5,
-                                    "Service 5"
-                                )
-                            ),
-                            TypeStand(
-                                5,
-                                "Type 5"
-                            )
-                        ),
-                        Stand(
-                            6,
-                            6,
-                            "47.6372767950151",
-                            "Stand 6",
-                            "6.861263451177344",
-                            listOf(
-                                Service(
-                                    6,
-                                    "Service 6"
-                                )
-                            ),
-                            TypeStand(
-                                6,
-                                "Type 6"
-                            )
-                        ),
-                        Stand(
-                            7,
-                            7,
-                            "47.6372767950151",
-                            "Stand 7",
-                            "6.861363451177344",
-                            listOf(
-                                Service(
-                                    7,
-                                    "Service 7"
-                                )
-                            ),
-                            TypeStand(
-                                7,
-                                "Type 7"
-                            )
-                        ),
-                        Stand(
-                            8,
-                            8,
-                            "47.6372767950151",
-                            "Stand 8",
-                            "6.861463451177344",
-                            listOf(
-                                Service(
-                                    8,
-                                    "Service 8"
-                                )
-                            ),
-                            TypeStand(
-                                8,
-                                "Type 8"
-                            )
-                        ),
-                        Stand(
-                            9,
-                            9,
-                            "47.6372767950151",
-                            "Stand 9",
-                            "6.861563451177344",
-                            listOf(
-                                Service(
-                                    9,
-                                    "Service 9"
-                                )
-                            ),
-                            TypeStand(
-                                9,
-                                "Type 9"
-                            )
-                        ),
-                        Stand(
-                            10,
-                            10,
-                            "47.6372767950151",
-                            "Stand 10",
-                            "6.861663451177344",
-                            listOf(
-                                Service(
-                                    10,
-                                    "Service 10"
-                                )
-                            ),
-                            TypeStand(
-                                10,
-                                "Type 10"
-                            )
-                        ),
-                        Stand(
-                            11,
-                            11,
-                            "47.6372767950151",
-                            "Stand 11",
-                            "6.861763451177344",
-                            listOf(
-                                Service(
-                                    11,
-                                    "Service 11"
-                                )
-                            ),
-                            TypeStand(
-                                11,
-                                "Type 11"
-                            )
-                        ),
-                        Stand(
-                            12,
-                            12,
-                            "47.6372767950151",
-                            "Stand 12",
-                            "6.861863451177344",
-                            listOf(
-                                Service(
-                                    12,
-                                    "Service 12"
-                                )
-                            ),
-                            TypeStand(
-                                12,
-                                "Type 12"
-                            )
-                        ),
-                        Stand(
-                            13,
-                            13,
-                            "47.6372767950151",
-                            "Stand 13",
-                            "6.861963451177344",
-                            listOf(
-                                Service(
-                                    13,
-                                    "Service 13"
-                                )
-                            ),
-                            TypeStand(
-                                13,
-                                "Type 13"
-                            )
-                        ),
-                    )
-                }
-
-                for (stand: Stand in exempleStands) {
-                    val markerStand = Marker(map)
-                    markerStand.position =
-                        GeoPoint(stand.latitude.toDouble() + 0.000005, stand.longitude.toDouble())
-                    var titre = stand.libelle + "\n========="
-                    for (service: Service in stand.services) {
-                        titre += "\n- " + service.libelle
-                    }
-                    markerStand.title = titre
-
-                    when (stand.typestandId) {
-                        1 -> markerStand.icon = resources.getDrawable(R.drawable.map_resto)
-                        2 -> markerStand.icon = resources.getDrawable(R.drawable.map_secours)
-                        3 -> markerStand.icon = resources.getDrawable(R.drawable.map_buvette)
-                        4 -> markerStand.icon = resources.getDrawable(R.drawable.map_boutique)
-                        5 -> markerStand.icon = resources.getDrawable(R.drawable.map_toilet)
-                        6 -> markerStand.icon = resources.getDrawable(R.drawable.map_eau)
-                        7 -> markerStand.icon = resources.getDrawable(R.drawable.map_scene)
-                        8 -> markerStand.icon = resources.getDrawable(R.drawable.map_entree)
-                        9 -> markerStand.icon = resources.getDrawable(R.drawable.map_sortie)
-                        10 -> markerStand.icon = resources.getDrawable(R.drawable.map_info)
-                        11 -> markerStand.icon = resources.getDrawable(R.drawable.map_parking)
-                        12 -> markerStand.icon = resources.getDrawable(R.drawable.map_parking_velo)
-                        13 -> markerStand.icon = resources.getDrawable(R.drawable.map_stand)
-                    }
-                    markerStand.setPanToView(true)
-                    markerStand.setOnMarkerClickListener { marker, mapView ->
-                        view?.findViewById<ChipGroup>(R.id.stand_chipGroup)?.removeAllViews()
-                        afficheInfoView(stand, mapController)
-                        true
-                    }
-
-                    map.invalidate()
-                    map.overlays.add(markerStand)
-                }
-*/
-            }
-
-// Ajout des overlays pour les scènes
-            lifecycleScope.launch {
-                val scenes: List<Scene> = withContext(Dispatchers.IO) {
-                    api.getScenes().data
-                }
-
-                for (scene: Scene in scenes) {
-                    val sceneMarker = Marker(map)
-                    sceneMarker.position =
-                        GeoPoint(scene.latitude.toDouble(), scene.longitude.toDouble())
-                    val titre = scene.libelle + "\n=========\n" + scene.typescene?.libelle
-                    sceneMarker.title = titre
-                    sceneMarker.icon = resources.getDrawable(R.drawable.map_scene)
-                    sceneMarker.setPanToView(true)
-
-                    sceneMarker.setOnMarkerClickListener { marker, mapView ->
-                        updateBottomSheetInfoScene(scene, mapController)
-                        bottomSheetDialogScene.show()
-                        true
-                    }
-
-                    map.invalidate()
-                    map.overlays.add(sceneMarker)
-                }
-            }
+            initStandMarkers()
+            initSceneMarkers()
 
             bottomSheetStandView = inflater.inflate(R.layout.map_stand_fragment, container, false)
             bottomSheetDialogStand = BottomSheetDialog(requireContext())
@@ -578,7 +268,8 @@ class MapFragment : Fragment() {
 
     private fun updateBottomSheetInfoStand(stand: Stand, mapController: IMapController) {
         val standTitleTextView = bottomSheetStandView.findViewById<TextView>(R.id.libelleStand)
-        val standServicesGroup = bottomSheetStandView.findViewById<ChipGroup>(R.id.servicesChipGroup)
+        val standServicesGroup =
+            bottomSheetStandView.findViewById<ChipGroup>(R.id.servicesChipGroup)
         val standImage = bottomSheetStandView.findViewById<ImageView>(R.id.imageStand)
 
         standTitleTextView.text = stand.libelle
@@ -616,7 +307,7 @@ class MapFragment : Fragment() {
             } else {
                 concertTextView?.text =
                     c?.heure_debut?.dropLast(3) + " - " + c?.heure_fin?.dropLast(3)
-                artisteTextView.setOnClickListener{
+                artisteTextView.setOnClickListener {
                     clickConcert(c)
                     bottomSheetDialogScene.dismiss()
                 }
@@ -637,19 +328,19 @@ class MapFragment : Fragment() {
             "Boutique" -> resources.getDrawable(R.drawable.map_boutique)
             "Buvette" -> resources.getDrawable(R.drawable.map_buvette)
             "Entrées" -> resources.getDrawable(R.drawable.map_entree)
-            "FIMU des Enfants" -> resources.getDrawable(R.drawable.map_toilet)
+            "FIMU des Enfants" -> resources.getDrawable(R.drawable.map_enfant)
             "Navette" -> resources.getDrawable(R.drawable.map_navette)
             "Parking vélos" -> resources.getDrawable(R.drawable.map_parking_velo)
             "Partenaire" -> resources.getDrawable(R.drawable.map_stand)
             "Point Infos" -> resources.getDrawable(R.drawable.map_info)
             "Prévention" -> resources.getDrawable(R.drawable.map_prevention)
-            "Secours" -> resources.getDrawable(R.drawable.map_secours)
+            "Secours" -> resources.getDrawable(R.drawable.map_entree_sortie)
             "Stand alimentaire" -> resources.getDrawable(R.drawable.map_resto)
             else -> {
-                resources.getDrawable(R.drawable.map_stand)}
+                resources.getDrawable(R.drawable.map_stand)
+            }
         }
     }
-
 
 
     override fun onPause() {
@@ -798,11 +489,102 @@ class MapFragment : Fragment() {
         }
     }
 
-    fun clickConcert(c : Concert){
+    fun clickConcert(c: Concert) {
         val bundle = Bundle()
         bundle.putInt("id_art", c.artisteId)
         requireView().findNavController()
             .navigate(R.id.action_navigation_plan_to_artisteDetailsFragment, bundle)
+    }
+
+    fun updateMap() {
+        map.overlays.clear()
+        initStandMarkers()
+        initSceneMarkers()
+        map.invalidate()
+    }
+
+    private fun initStandMarkers() {
+        lifecycleScope.launch {
+            while (map.repository == null) {
+                delay(100) // Delay for a short period before checking again
+            }
+            val stands: List<Stand> = withContext(Dispatchers.IO) {
+                api.getStands().data
+            }
+
+            val database: FimuDB = FimuDB.getInstance(requireContext())
+            val typeStandDao: TypeStandDao = database.typeStandDao()
+            val allTypeStands: List<TypeStand> = typeStandDao.getAll()
+            val standsToShow: MutableList<Stand> = mutableListOf()
+            standsToShow.addAll(stands)
+            // remove where typestand.id == stand.typestandId and allTypeStands.showed == false
+            for (stand: Stand in stands) {
+                for (typeStand: TypeStand in allTypeStands) {
+                    if (stand.typestand.libelle == typeStand.libelle && !typeStand.showed) {
+                        standsToShow.remove(stand)
+                    }
+                }
+            }
+
+
+            Log.d("STANDS", standsToShow.toString())
+            Log.d("allTypeStands", allTypeStands.toString())
+            for (stand: Stand in standsToShow) {
+                val markerStand = Marker(map)
+                markerStand.position =
+                    GeoPoint(
+                        stand.latitude.toDouble() + 0.000005,
+                        stand.longitude.toDouble()
+                    )
+                var titre = stand.libelle + "\n========="
+                for (service: Service in stand.services) {
+                    titre += "\n- " + service.libelle
+                }
+                markerStand.title = titre
+                markerStand.icon = setIconForStand(stand)
+                markerStand.setPanToView(true)
+                markerStand.setOnMarkerClickListener { marker, mapView ->
+                    bottomSheetDialogStand.findViewById<ChipGroup>(R.id.servicesChipGroup)
+                        ?.removeAllViews()
+                    updateBottomSheetInfoStand(stand, map.controller)
+                    bottomSheetDialogStand.show()
+                    true
+                }
+                map.invalidate()
+                map.overlays.add(markerStand)
+            }
+        }
+    }
+
+    private fun initSceneMarkers() {
+        lifecycleScope.launch {
+            while (map.repository == null) {
+                delay(100) // Delay for a short period before checking again
+            }
+            val scenes: List<Scene> = withContext(Dispatchers.IO) {
+                api.getScenes().data
+            }
+
+            for (scene: Scene in scenes) {
+                val sceneMarker = Marker(map)
+
+                sceneMarker.position =
+                    GeoPoint(scene.latitude.toDouble(), scene.longitude.toDouble())
+                val titre = scene.libelle + "\n=========\n" + scene.typescene?.libelle
+                sceneMarker.title = titre
+                sceneMarker.icon = resources.getDrawable(R.drawable.map_scene)
+                sceneMarker.setPanToView(true)
+
+                sceneMarker.setOnMarkerClickListener { marker, mapView ->
+                    updateBottomSheetInfoScene(scene, map.controller)
+                    bottomSheetDialogScene.show()
+                    true
+                }
+                map.invalidate()
+                map.overlays.add(sceneMarker)
+            }
+        }
+
     }
 
 
