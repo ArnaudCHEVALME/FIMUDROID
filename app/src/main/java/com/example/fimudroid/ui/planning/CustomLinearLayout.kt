@@ -54,7 +54,7 @@ class CustomLinearLayout(context: Context, attrs: AttributeSet?) : LinearLayout(
 
         while (i * 60 * 8f <= width) {
             canvas?.drawLine(i * 60 * 8f + d  , 100f, i * 60 * 8f + d  , height * 1f, gray)
-           /* canvas?.drawText("${(firstHour+i)%24}h", i * 60 * 8f +d - 35  , 75f, blackAndTxt)*/
+            //canvas?.drawText("${(firstHour+i)%24}h", i * 60 * 8f +d - 35  , 75f, blackAndTxt)
             i++
         }
     }

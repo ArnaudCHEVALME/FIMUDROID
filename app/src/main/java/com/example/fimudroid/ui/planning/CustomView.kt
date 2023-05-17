@@ -6,13 +6,16 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.ScrollView
 import com.example.fimudroid.R
 
 class CustomView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
 
-    private lateinit var whidthlayout: ScrollView
+    //private lateinit var whidthlayout: ScrollView
+    private lateinit var planningLayout: CustomLinearLayout
 
     private val paint = Paint().apply {
         color = Color.RED
@@ -36,8 +39,8 @@ class CustomView(context: Context, attrs: AttributeSet?) : View(context, attrs) 
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        val activity = context as Activity
-        whidthlayout = activity.findViewById(R.id.scrollViewA)
+        //val activity = context as Activity
+        //whidthlayout = activity.findViewById(R.id.scrollViewA)
         //canvas?.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paint)
 
         val textPaint = Paint().apply {
@@ -45,8 +48,9 @@ class CustomView(context: Context, attrs: AttributeSet?) : View(context, attrs) 
             color = Color.BLACK
         }
 
-        val text = "                                 14h                                 15h                                 16h                                 17h                                 18h                                 19h                                 20h                                 21h                                 22h                                 23h                                 00h                                 01h                                 02h                                 03h                                 04h                                 05h                                 06h                                 07h                                 08h                                 09h                                 10h                                "
+        val text = "           14h                                 15h                                 16h                                 17h                                 18h                                 19h                                 20h                                 21h                                 22h                                 23h                                 00h                                 01h                                 02h                                 03h                                 04h                                 05h                                 06h                                 07h                                 08h                                 09h                                 10h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                "
         canvas?.drawText(text, 0f, height.toFloat() / 2, textPaint)
+
         setMeasuredDimension(10000, 100)
     }
 }

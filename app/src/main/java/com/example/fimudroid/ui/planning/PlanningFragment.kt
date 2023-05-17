@@ -1,10 +1,12 @@
 package com.example.fimudroid.ui.planning
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Layout
+import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.widget.*
@@ -42,6 +44,7 @@ class PlanningFragment : Fragment() {
     private lateinit var horizontalScrollView: HorizontalScrollView
     private lateinit var horizontalScrollViewPlanning: HorizontalScrollView
     private lateinit var scrollScene: ScrollView
+    private lateinit var HourLayout: CustomView
     //private lateinit var scrollSceneX: HorizontalScrollView
 
     var lastX = 0f
@@ -67,6 +70,7 @@ class PlanningFragment : Fragment() {
         // Récupérer la référence de la vue HorizontalScrollView
         horizontalScrollView = root.findViewById(R.id.CustomHorizontalScrollView)
         horizontalScrollViewPlanning = root.findViewById(R.id.HorizontalScrollPlanning)
+        HourLayout = root.findViewById(R.id.customView)
 
         scrollScene = root.findViewById(R.id.scrollViewScene)
         //scrollSceneX = root.findViewById(R.id.scrollviewscenex)
@@ -93,192 +97,41 @@ class PlanningFragment : Fragment() {
             initPlanningView()
         }
 
-        ScrollViewPlanning.isHorizontalScrollBarEnabled = false
-        ScrollViewPlanning.isVerticalScrollBarEnabled = false
-        ScrollViewPlanning.isNestedScrollingEnabled = false;
-
-        planningLayout.isHorizontalScrollBarEnabled = false
-        planningLayout.isVerticalScrollBarEnabled = false
-
-
-        horizontalScrollViewPlanning.isHorizontalScrollBarEnabled = false
-        horizontalScrollViewPlanning.isVerticalScrollBarEnabled = false
-        horizontalScrollViewPlanning.isNestedScrollingEnabled = false;
-
-        ScrollViewPlanning.isHorizontalScrollBarEnabled = false
-        ScrollViewPlanning.isVerticalScrollBarEnabled = false
-        ScrollViewPlanning.isNestedScrollingEnabled = false;
-
 
 
 ////////////////////////////////////////////////////////////// Définir un écouteur tactile pour la vue NestedScrollView
 
-/*        scrollSceneX.setOnTouchListener { _, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    lastX = event.x
-                    lastY = event.y
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    val deltaX = event.x - lastX
-                    val deltaY = event.y - lastY
-                    //planningLayout.scrollBy(-deltaX.toInt(), -deltaY.toInt())
-                    ScrollViewPlanning.scrollBy(0, -deltaY.toInt())
-                    //horizontalScrollViewPlanning.scrollBy(-deltaX.toInt(), 0)
-                    //horizontalScrollView.scrollBy(-deltaX.toInt(), 0)
-                    scrollScene.scrollBy(0, -deltaY.toInt())
-                    lastX = event.x
-                    lastY = event.y
-                    return@setOnTouchListener true
-                }
-            }
-            return@setOnTouchListener false
-        }*/
-
         scrollScene.setOnScrollChangeListener { _, _, scrollY, _, _ ->
-            ScrollViewPlanning.scrollTo(0, scrollY)
+            planningLayout.scrollTo(0, scrollY)
         }
-        ScrollViewPlanning.setOnScrollChangeListener { _, _, scrollY, _, _ ->
+
+        planningLayout.setOnScrollChangeListener { _, _, scrollY, _, _ ->
             scrollScene.scrollTo(0, scrollY)
         }
 
-/*        ScrollViewPlanning.setOnScrollChangeListener { _, scrollX, _, _, _ ->
+        horizontalScrollViewPlanning.setOnScrollChangeListener { _, scrollX, _, _, _ ->
             horizontalScrollView.scrollTo(scrollX, 0)
         }
 
         horizontalScrollView.setOnScrollChangeListener { _, scrollX, _, _, _ ->
-            ScrollViewPlanning.scrollTo(scrollX, 0)
-        }*/
-
-/*
-        scrollScene.setOnScrollChangeListener { _, _, scrollY, _, _ ->
-            ScrollViewPlanning.scrollTo(0, scrollY)
-            planningLayout.scrollTo(0, scrollY)
-        }
-*/
-
-        scrollScene.scrollY = planningLayout.scrollY
-        scrollScene.scrollY = ScrollViewPlanning.scrollY
-        scrollScene.setOnTouchListener { _, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    lastX = event.x
-                    lastY = event.y
-                    ScrollViewPlanning.requestDisallowInterceptTouchEvent(true)
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    val deltaX = event.x - lastX
-                    val deltaY = event.y - lastY
-                    //planningLayout.scrollBy(-deltaX.toInt(), -deltaY.toInt())
-                    ScrollViewPlanning.scrollBy(0, -deltaY.toInt())
-                    //horizontalScrollViewPlanning.scrollBy(-deltaX.toInt(), 0)
-                    //horizontalScrollView.scrollBy(-deltaX.toInt(), 0)
-                    scrollScene.scrollBy(0, -deltaY.toInt())
-                    lastX = event.x
-                    lastY = event.y
-                    return@setOnTouchListener true
-                }
-            }
-            return@setOnTouchListener false
-        }
-
-        planningLayout.setOnTouchListener { _, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    lastX = event.x
-                    lastY = event.y
-                    ScrollViewPlanning.requestDisallowInterceptTouchEvent(true)
-                    horizontalScrollViewPlanning.requestDisallowInterceptTouchEvent(true)
-                    horizontalScrollView.requestDisallowInterceptTouchEvent(true)
-                    scrollScene.requestDisallowInterceptTouchEvent(true)
-
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    val deltaX = event.x - lastX
-                    val deltaY = event.y - lastY
-                    //planningLayout.scrollBy(-deltaX.toInt(), -deltaY.toInt())
-                    ScrollViewPlanning.scrollBy(0, -deltaY.toInt())
-                    horizontalScrollViewPlanning.scrollBy(-deltaX.toInt(), 0)
-                    horizontalScrollView.scrollBy(-deltaX.toInt(), 0)
-                    scrollScene.scrollBy(0, -deltaY.toInt())
-                    lastX = event.x
-                    lastY = event.y
-                    return@setOnTouchListener true
-                }
-            }
-            return@setOnTouchListener false
-        }
-
-        ScrollViewPlanning.setOnTouchListener { _, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    lastX = event.x
-                    lastY = event.y
-                    horizontalScrollViewPlanning.requestDisallowInterceptTouchEvent(true)
-                    horizontalScrollView.requestDisallowInterceptTouchEvent(true)
-                    scrollScene.requestDisallowInterceptTouchEvent(true)
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    val deltaX = event.x - lastX
-                    val deltaY = event.y - lastY
-                    //planningLayout.scrollBy(-deltaX.toInt(), -deltaY.toInt())
-                    ScrollViewPlanning.scrollBy(0, -deltaY.toInt())
-                    horizontalScrollViewPlanning.scrollBy(-deltaX.toInt(), 0)
-                    horizontalScrollView.scrollBy(-deltaX.toInt(), 0)
-                    scrollScene.scrollBy(0, -deltaY.toInt())
-                    lastX = event.x
-                    lastY = event.y
-                    return@setOnTouchListener true
-                }
-            }
-            return@setOnTouchListener false
-        }
-
-
-        horizontalScrollView.setOnTouchListener { _, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    lastX = event.x
-                    lastY = event.y
-
-                    ScrollViewPlanning.requestDisallowInterceptTouchEvent(true)
-                    horizontalScrollViewPlanning.requestDisallowInterceptTouchEvent(true)
-                    scrollScene.requestDisallowInterceptTouchEvent(true)
-                    return@setOnTouchListener false
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    val deltaX = event.x - lastX
-                    val deltaY = event.y - lastY
-                    //planningLayout.scrollBy(-deltaX.toInt(), -deltaY.toInt())
-                    horizontalScrollViewPlanning.scrollBy(-deltaX.toInt(), 0)
-                    horizontalScrollView.scrollBy(-deltaX.toInt(), 0)
-                    //scrollScene.scrollBy(0, -deltaY.toInt())
-                    lastX = event.x
-                    lastY = event.y
-                    return@setOnTouchListener true
-                }
-                else -> return@setOnTouchListener false
-            }
+            horizontalScrollViewPlanning.scrollTo(scrollX, 0)
         }
         horizontalScrollViewPlanning.translationY = -100f
+
         horizontalScrollViewPlanning.setOnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     lastX = event.x
                     lastY = event.y
                     ScrollViewPlanning.requestDisallowInterceptTouchEvent(true)
-                    horizontalScrollView.requestDisallowInterceptTouchEvent(true)
-                    scrollScene.requestDisallowInterceptTouchEvent(true)
                     return@setOnTouchListener false
                 }
                 MotionEvent.ACTION_MOVE -> {
                     val deltaX = event.x - lastX
-                    val deltaY = event.y - lastY
-                    //planningLayout.scrollBy(-deltaX.toInt(), -deltaY.toInt())
-                    ScrollViewPlanning.scrollBy(0, -deltaY.toInt())
+                    val deltaY = (event.y - lastY) * 0.5f
+                    scrollScene.scrollBy(0, -deltaY.toInt())
+                    planningLayout.scrollBy(0, -deltaY.toInt())
                     horizontalScrollViewPlanning.scrollBy(-deltaX.toInt(), 0)
-                    horizontalScrollView.scrollBy(-deltaX.toInt(), 0)
-                    //scrollScene.scrollBy(0, -deltaY.toInt())
                     lastX = event.x
                     lastY = event.y
                     return@setOnTouchListener true
@@ -380,6 +233,7 @@ class PlanningFragment : Fragment() {
                 }
 
         planningLayout.setStartTime(earliestTime)
+        //HourLayout.setStartTime(earliestTime)
 
         val hourSpace = LinearLayout(context)
         val hourLayoutParams = LinearLayout.LayoutParams(
@@ -446,11 +300,9 @@ class PlanningFragment : Fragment() {
             //sceneLayout.setBackgroundColor(Color.parseColor("#FF0000"))//
 
 
-
-
-
-
-
+/*          val txt = TextView(requireContext());
+            txt.setText("hello")
+            horizontalScrollView.addView(txt)*/
 
             // add a ConcertView to the linearLayout for each concert
             val concerts = concertsByScene[scene]?.sortedBy { it.heure_debut } ?: emptyList()
@@ -470,26 +322,6 @@ class PlanningFragment : Fragment() {
 
             // add the view to the LinearLayout
             concertFView.setOnClickListener{clickConcert(concertF)}
-            concertFView.setOnTouchListener { _, event ->
-                when (event.action) {
-                    MotionEvent.ACTION_DOWN -> {
-                        lastX = event.x
-                        lastY = event.y
-                    }
-                    MotionEvent.ACTION_MOVE -> {
-                        val deltaX = event.x - lastX
-                        val deltaY = event.y - lastY
-                        //planningLayout.scrollBy(-deltaX.toInt(), -deltaY.toInt())
-                        ScrollViewPlanning.scrollBy(0, -deltaY.toInt())
-                        horizontalScrollViewPlanning.scrollBy(-deltaX.toInt(), 0)
-                        horizontalScrollView.scrollBy(-deltaX.toInt(), 0)
-                        lastX = event.x
-                        lastY = event.y
-                        return@setOnTouchListener true
-                    }
-                }
-                return@setOnTouchListener false
-            }
 
             linearLayout.addView(concertFView)
             if (concerts.size > 1) {
@@ -514,42 +346,58 @@ class PlanningFragment : Fragment() {
                     concertView.setOnClickListener{clickConcert(concertN)}
                     //concertView.setOnClickListener(null)
 
-
-                    concertView.setOnTouchListener { _, event ->
-                        when (event.action) {
-                            MotionEvent.ACTION_DOWN -> {
-                                lastX = event.x
-                                lastY = event.y
-                            }
-                            MotionEvent.ACTION_MOVE -> {
-                                val deltaX = event.x - lastX
-                                val deltaY = event.y - lastY
-                                //planningLayout.scrollBy(-deltaX.toInt(), -deltaY.toInt())
-                                ScrollViewPlanning.scrollBy(0, -deltaY.toInt())
-                                horizontalScrollViewPlanning.scrollBy(-deltaX.toInt(), 0)
-                                horizontalScrollView.scrollBy(-deltaX.toInt(), 0)
-                                lastX = event.x
-                                lastY = event.y
-                                return@setOnTouchListener true
-                            }
-                        }
-                        return@setOnTouchListener false
-                    }
-
                     linearLayout.addView(concertView)
                 }
             }
 
             planningLayout.addView(linearLayout)
             //sceneLayout.rotation = 90f;
-
-
-
+            for (i in 0 until linearLayout.childCount) {
+                val childView = linearLayout.getChildAt(i)
+                childView.isClickable = false
+            }
 
 
             //sceneLayout.addView(sceneName)
         }
 
+
+/*        val layoutParams = HourLayout.layoutParams
+        layoutParams.width = 1000
+        layoutParams.height = 100
+        //HourLayout.requestLayout()
+        horizontalScrollView.requestLayout()*/
+
+        val viewTreeObserver = planningLayout.viewTreeObserver
+        viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+
+                val width = planningLayout.width
+                val height = planningLayout.height
+                Log.d("taille", width.toString())
+                Log.d("hauteur", height.toString())
+
+                // LA ON FAIS CE QUE LON VEUX
+
+
+/*                val layoutParams = HourLayout.layoutParams as ViewGroup.LayoutParams
+                layoutParams.width = 1000
+                layoutParams.height = 100
+
+                HourLayout.layoutParams = layoutParams
+
+                val parentView = HourLayout.parent as View
+                parentView.requestLayout()
+                HourLayout.requestLayout()*/
+
+               // Log.d("tailleHour", HourLayout.layoutParams.width.toString())
+               // Log.d("hauteurHour", HourLayout.layoutParams.height.toString())
+                //invalidate()
+                //requestLayout()
+                // Supprimez l'écouteur de l'observateur de l'arbre de vue
+                planningLayout.viewTreeObserver.removeOnGlobalLayoutListener(this)
+            }
+        })
 
     }
 
