@@ -334,8 +334,9 @@ class MapFragment : Fragment() {
             "Partenaire" -> resources.getDrawable(R.drawable.map_stand)
             "Point Infos" -> resources.getDrawable(R.drawable.map_info)
             "Prévention" -> resources.getDrawable(R.drawable.map_prevention)
-            "Secours" -> resources.getDrawable(R.drawable.map_entree_sortie)
+            "Secours" -> resources.getDrawable(R.drawable.map_secours)
             "Stand alimentaire" -> resources.getDrawable(R.drawable.map_resto)
+            "Toilettes" -> resources.getDrawable(R.drawable.map_toilet)
             else -> {
                 resources.getDrawable(R.drawable.map_stand)
             }
