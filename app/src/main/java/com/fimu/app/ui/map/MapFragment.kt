@@ -1,0 +1,626 @@
+package com.fimu.app.ui.map
+
+import android.Manifest
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
+import android.os.Bundle
+import android.preference.PreferenceManager
+import android.provider.Settings
+import android.util.Log
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.*
+import androidx.core.app.ActivityCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
+import com.fimu.app.R
+import com.fimu.app.database.FimuDB
+import com.fimu.app.database.daos.TypeStandDao
+import com.fimu.app.database.models.TypeStand
+import com.fimu.app.network.FimuApiService
+import com.fimu.app.network.models.*
+import com.fimu.app.network.retrofit
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.osmdroid.api.IMapController
+import org.osmdroid.config.Configuration
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.BoundingBox
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.CustomZoomButtonsController
+import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker
+
+
+class MapFragment : Fragment() {
+    private lateinit var bottomSheetDialogStand: BottomSheetDialog
+    private lateinit var bottomSheetDialogScene: BottomSheetDialog
+    private lateinit var bottomSheetStandView: View
+    private lateinit var bottomSheetSceneView: View
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            LOCATE_ME_PERM -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(requireContext(), "Permission accordée", Toast.LENGTH_SHORT)
+                        .show()
+                    refreshFragment()
+                } else {
+                    Log.d("TAG", "Permission refusée")
+                    Toast.makeText(requireContext(), "Permission refusée", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
+    }
+
+
+    private val api: FimuApiService by lazy {
+        retrofit.create(FimuApiService::class.java)
+    }
+
+    private var locationListener: LocationListener? = null
+    private lateinit var map: MapView
+    private val LOCATE_ME_PERM = 414;
+    private lateinit var mapFilterAdapter: MapFilterAdapter
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
+
+        // Toast de chargement
+        val toast = Toast.makeText(
+            requireContext(),
+            "Chargement de la carte en cours...",
+            Toast.LENGTH_LONG
+        )
+        toast.show()
+
+        val locationManager =
+            requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            // Si la navigation n'est pas activée, proposer d'aller aux paramètres de localisation
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("Activation de la navigation")
+                .setMessage("La navigation n'est pas activée. Voulez-vous l'activer maintenant ?")
+                .setCancelable(false)
+                .setPositiveButton("Oui") { dialog, id ->
+                    // Ouverture des paramètres de localisation pour activer la navigation
+                    val settingsIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    startActivity(settingsIntent)
+                }
+                .setNegativeButton("Non") { dialog, id ->
+                    // Fermeture de la boîte de dialogue et arrêt de l'application
+                    dialog.cancel()
+                    requireActivity().finish()
+                }
+            val alert = builder.create()
+            alert.show()
+        } else if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+
+            // Demande la permission d'accès à la géolocalisation
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATE_ME_PERM
+            )
+        } else {
+            map = MapView(requireContext())
+            val root = inflater.inflate(R.layout.fragment_map, container, false)
+            map = root.findViewById(R.id.mapView)
+
+            Configuration.getInstance().load(
+                requireContext(),
+                PreferenceManager.getDefaultSharedPreferences(requireContext())
+            )
+            map.setTileSource(TileSourceFactory.MAPNIK)
+
+            map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
+
+            map.minZoomLevel = 16.5
+
+            map.maxZoomLevel = 21.5
+
+
+            val fimuBoundingBox: BoundingBox = BoundingBox(
+                47.64836242902998,
+                6.8783751401231985,
+                47.63332151596629,
+                6.852366367341309
+            ) // vrai
+            //val fimuBoundingBox : BoundingBox = BoundingBox(48.64836242902998, 6.8783751401231985,47.63332151596629, 5.852366367341309) // test
+            map.setScrollableAreaLimitDouble(fimuBoundingBox)
+
+            map.setMultiTouchControls(true)
+
+            val mapController = map.controller
+            mapController.setZoom(18.5)
+
+
+            val startPoint = GeoPoint(47.638410197922674, 6.862777328835964)
+
+            val lm: LocationManager =
+                context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val providers: List<String> = lm.getProviders(true) // get enabled providers
+            var provider: String? = null
+
+            if (providers.contains(LocationManager.GPS_PROVIDER)) {
+                provider = LocationManager.GPS_PROVIDER
+            } else if (providers.contains(LocationManager.NETWORK_PROVIDER)) {
+                provider = LocationManager.NETWORK_PROVIDER
+            }
+
+            if (provider == null) {
+                throw IllegalStateException("No enabled location provider found")
+            }
+            val gp: GeoPoint = GeoPoint(0, 0)
+
+            mapController.setCenter(startPoint)
+
+
+            var posMarker: Marker = Marker(map)
+            posMarker.icon = ResourcesCompat.getDrawable(resources, R.drawable.map_user, null)
+            posMarker.setInfoWindow(null)
+
+
+            val location = getLocation(requireContext(), posMarker)
+            val latitude = location.first
+            val longitude = location.second
+            gp.latitude = latitude
+            gp.longitude = longitude
+
+
+            val locateFloatingButton =
+                root.findViewById<FloatingActionButton>(R.id.floatingButtonLocate)
+
+            if (fimuBoundingBox.contains(gp.latitude, gp.longitude)) {
+
+
+                locateFloatingButton?.visibility = View.VISIBLE
+                locateFloatingButton.setOnClickListener {
+
+                    mapController.animateTo(gp)
+                    posMarker.position = GeoPoint(latitude, longitude)
+                    map.overlays.add(posMarker)
+
+                }
+            } else {
+                locateFloatingButton.visibility = View.GONE
+            }
+
+            /*
+            val recyclerView = inflater.inflate(R.layout.bottom_sheet_map_filter, container, false)
+                .findViewById<RecyclerView>(R.id.map_filter_recycler_view)
+            lifecycleScope.launch {
+                val types: List<TypeStand> = withContext(Dispatchers.IO) {
+                    api.getTypesStand().data
+                }
+                val mapFilterAdapter = MapFilterAdapter(types)
+                recyclerView.adapter = mapFilterAdapter
+                recyclerView.addItemDecoration(
+                    DividerItemDecoration(
+                        recyclerView.context,
+                        DividerItemDecoration.VERTICAL
+                    )
+                )
+            }
+           */
+
+
+
+            initStandMarkers()
+            initSceneMarkers()
+
+            bottomSheetStandView = inflater.inflate(R.layout.map_stand_fragment, container, false)
+            bottomSheetDialogStand = BottomSheetDialog(requireContext())
+            bottomSheetDialogStand.setContentView(bottomSheetStandView)
+
+            bottomSheetSceneView = inflater.inflate(R.layout.map_scene_fragment, container, false)
+            bottomSheetDialogScene = BottomSheetDialog(requireContext())
+            bottomSheetDialogScene.setContentView(bottomSheetSceneView)
+
+
+
+            return root
+        }
+
+// Add the else block to show a message
+        val linearLayout = LinearLayout(requireContext())
+        linearLayout.orientation = LinearLayout.VERTICAL
+
+        val textView = TextView(requireContext())
+        textView.text = "Pas de permission pour la localisation\n"
+        textView.gravity = Gravity.CENTER
+
+        val button = Button(requireContext())
+        button.text = "Refresh"
+        button.setOnClickListener {
+            refreshFragment()
+        }
+
+        linearLayout.addView(textView)
+        linearLayout.addView(button)
+        return linearLayout
+    }
+
+    private fun updateBottomSheetInfoStand(stand: Stand, mapController: IMapController) {
+        val standTitleTextView = bottomSheetStandView.findViewById<TextView>(R.id.libelleStand)
+        val standServicesGroup =
+            bottomSheetStandView.findViewById<ChipGroup>(R.id.servicesChipGroup)
+        val standImage = bottomSheetStandView.findViewById<ImageView>(R.id.imageStand)
+
+        standTitleTextView.text = stand.libelle
+        setIconForStand(stand)?.let { standImage.setImageDrawable(it) }
+        for (service: Service in stand.services) {
+            val serviceChip = Chip(requireContext())
+            serviceChip.text = service.libelle
+            standServicesGroup?.addView(serviceChip)
+        }
+        val standLocation = GeoPoint(stand.latitude.toDouble(), stand.longitude.toDouble())
+        mapController.animateTo(standLocation)
+    }
+
+    private fun updateBottomSheetInfoScene(scene: Scene, mapController: IMapController) {
+        val sceneTitleTextView = bottomSheetSceneView.findViewById<TextView>(R.id.libelleScene)
+        val concertTextView = bottomSheetSceneView.findViewById<TextView>(R.id.sceneConcert)
+        val artisteTextView = bottomSheetSceneView.findViewById<TextView>(R.id.sceneArtiste)
+        val genreTextView = bottomSheetSceneView.findViewById<TextView>(R.id.sceneGenre)
+
+
+        sceneTitleTextView.text = scene.libelle
+        var nextConcert: Concert
+        lifecycleScope.launch {
+            val concerts: List<Concert> = withContext(Dispatchers.IO) {
+                api.getConcerts().data
+            }
+
+            val concertByScene = concerts.groupBy { it.scene }
+            //val c = concertByScene[scene]?.filter { LocalDate.now().isBefore(LocalDate.parse(it.date_debut)) }?.filter { LocalTime.now().isBefore(LocalTime.parse(it.heure_debut)) }?.sortedBy { it.heure_debut }?.first() ?: null
+            val c = concerts.first() //pour présentation
+            if (c === null) {
+                concertTextView?.text = "Plus de concert"
+                artisteTextView?.text = ""
+                genreTextView?.text = ""
+            } else {
+                concertTextView?.text =
+                    c?.heure_debut?.dropLast(3) + " - " + c?.heure_fin?.dropLast(3)
+                artisteTextView.setOnClickListener {
+                    clickConcert(c)
+                    bottomSheetDialogScene.dismiss()
+                }
+                artisteTextView?.text = c?.artiste?.nom
+
+                genreTextView?.text = c?.artiste?.genres?.get(0)?.libelle
+            }
+
+        }
+
+        val sceneLocation = GeoPoint(scene.latitude.toDouble(), scene.longitude.toDouble())
+        mapController.animateTo(sceneLocation)
+    }
+
+    private fun setIconForStand(stand: Stand): Drawable? {
+        return when (stand.typestand.libelle) {
+            "Bar à eau" -> resources.getDrawable(R.drawable.map_eau)
+            "Boutique" -> resources.getDrawable(R.drawable.map_boutique)
+            "Buvette" -> resources.getDrawable(R.drawable.map_buvette)
+            "Entrées" -> resources.getDrawable(R.drawable.map_entree)
+            "FIMU des Enfants" -> resources.getDrawable(R.drawable.map_enfant)
+            "Navette" -> resources.getDrawable(R.drawable.map_navette)
+            "Parking vélos" -> resources.getDrawable(R.drawable.map_parking_velo)
+            "Partenaire" -> resources.getDrawable(R.drawable.map_stand)
+            "Point Infos" -> resources.getDrawable(R.drawable.map_info)
+            "Prévention" -> resources.getDrawable(R.drawable.map_prevention)
+            "Secours" -> resources.getDrawable(R.drawable.map_secours)
+            "Stand alimentaire" -> resources.getDrawable(R.drawable.map_resto)
+            "Toilettes" -> resources.getDrawable(R.drawable.map_toilet)
+            else -> {
+                resources.getDrawable(R.drawable.map_stand)
+            }
+        }
+    }
+
+
+    override fun onPause() {
+        //map.onPause()
+        super.onPause()
+        val locationManager =
+            requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        locationListener?.let { locationManager.removeUpdates(it) }
+
+    }
+
+    override fun onResume() {
+        //map.onResume()
+        super.onResume()
+    }
+
+    fun refreshFragment() {
+        val fragmentManager = requireFragmentManager()
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.setReorderingAllowed(true)
+
+        val mapFragment = MapFragment() // Créez une nouvelle instance de votre fragment de carte
+
+        fragmentTransaction.replace(this.id, mapFragment)
+        fragmentTransaction.addToBackStack(null)
+        fragmentTransaction.commit()
+    }
+
+    fun afficheInfoView(lieu: Any, mapController: IMapController) {
+        //val info_view = StandInfoView(requireContext(),stand)
+
+        val titre = view?.findViewById<TextView>(R.id.info_titre)
+        val findButton = view?.findViewById<ImageButton>(R.id.info_find_button)
+        val closeButton = view?.findViewById<ImageButton>(R.id.info_close_button)
+
+        if (lieu is Stand) {
+
+        } else {
+            val scene: Scene = lieu as Scene
+            val sceneLocation =
+                GeoPoint(scene.latitude.toDouble(), scene.longitude.toDouble())
+            val artisteTextView = view?.findViewById<TextView>(R.id.scene_artiste)
+            val genreTextView = view?.findViewById<TextView>(R.id.scene_genre)
+
+
+            titre?.text = "Scène de " + scene.libelle
+
+            var nextConcert: Concert
+            lifecycleScope.launch {
+                val concerts: List<Concert> = withContext(Dispatchers.IO) {
+                    api.getConcerts().data
+                }
+
+                val concertByScene = concerts.groupBy { it.scene }
+                //val c = concertByScene[scene]?.filter { LocalDate.now().isBefore(LocalDate.parse(it.date_debut)) }?.filter { LocalTime.now().isBefore(LocalTime.parse(it.heure_debut)) }?.sortedBy { it.heure_debut }?.first() ?: null
+                val c = concerts.first() //pour présentation
+                if (c === null) {
+                    artisteTextView?.text = ""
+                    genreTextView?.text = ""
+                } else {
+                        c?.heure_debut?.dropLast(3) + " - " + c?.heure_fin?.dropLast(3)
+                    artisteTextView?.text = c?.artiste?.nom
+                    genreTextView?.text = c?.artiste?.genres?.get(0)?.libelle
+                }
+
+            }
+
+            mapController.animateTo(sceneLocation)
+
+            findButton?.setOnClickListener {
+                mapController.animateTo(sceneLocation)
+            }
+        }
+    }
+
+
+    fun getLocation(context: Context, posMarker: Marker): Pair<Double, Double> {
+        val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val REQUEST_LOCATION_PERMISSION = 414
+
+        // Vérification de la permission ACCESS_FINE_LOCATION
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // Demande de permission si nécessaire
+            ActivityCompat.requestPermissions(
+                context as Activity,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_LOCATION_PERMISSION
+            )
+            return Pair(0.0, 0.0)
+        }
+
+        // Écouteur de mises à jour de localisation
+        locationListener = object : LocationListener {
+            override fun onLocationChanged(location: Location) {
+                Log.d("myTag", "latitude: ${location.latitude}, longitude: ${location.longitude}")
+                posMarker.position = GeoPoint(location.latitude, location.longitude)
+                map.invalidate()
+
+            }
+
+            override fun onProviderDisabled(provider: String) {
+                // Non utilisé
+            }
+
+            override fun onProviderEnabled(provider: String) {
+                // Non utilisé
+            }
+
+            override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
+                // Non utilisé
+            }
+        }
+
+        // Enregistrement de l'écouteur de mises à jour de localisation
+        locationManager.requestLocationUpdates(
+            LocationManager.GPS_PROVIDER,
+            3000, // Mettre à jour toutes les 3 secondes
+            2f, // Mettre à jour même si la position n'a pas bougé
+            locationListener as LocationListener
+        )
+
+        // Récupération de la dernière position connue
+        val lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+
+        return if (lastLocation != null) {
+            Pair(lastLocation.latitude, lastLocation.longitude)
+        } else {
+            Pair(0.0, 0.0)
+        }
+    }
+
+    fun clickConcert(c: Concert) {
+        val bundle = Bundle()
+        bundle.putInt("id_art", c.artisteId)
+        requireView().findNavController()
+            .navigate(R.id.action_navigation_plan_to_artisteDetailsFragment, bundle)
+    }
+
+    fun updateMap() {
+        map.overlays.clear()
+        initStandMarkers()
+        initSceneMarkers()
+        map.invalidate()
+    }
+
+    private fun initStandMarkers() {
+        lifecycleScope.launch {
+            while (map.repository == null) {
+                delay(100) // Delay for a short period before checking again
+            }
+            val stands: List<Stand> = withContext(Dispatchers.IO) {
+                api.getStands().data
+            }
+
+            val database: FimuDB = FimuDB.getInstance(requireContext())
+            val typeStandDao: TypeStandDao = database.typeStandDao()
+            val allTypeStands: List<TypeStand> = typeStandDao.getAll()
+            val standsToShow: MutableList<Stand> = mutableListOf()
+            standsToShow.addAll(stands)
+            // remove where typestand.id == stand.typestandId and allTypeStands.showed == false
+            for (stand: Stand in stands) {
+                for (typeStand: TypeStand in allTypeStands) {
+                    if (stand.typestand.libelle == typeStand.libelle && !typeStand.showed) {
+                        standsToShow.remove(stand)
+                    }
+                }
+            }
+
+
+            Log.d("STANDS", standsToShow.toString())
+            Log.d("allTypeStands", allTypeStands.toString())
+            for (stand: Stand in standsToShow) {
+                val markerStand = Marker(map)
+                markerStand.position =
+                    GeoPoint(
+                        stand.latitude.toDouble() + 0.000005,
+                        stand.longitude.toDouble()
+                    )
+                var titre = stand.libelle + "\n========="
+                for (service: Service in stand.services) {
+                    titre += "\n- " + service.libelle
+                }
+                markerStand.title = titre
+                markerStand.icon = setIconForStand(stand)
+                markerStand.setPanToView(true)
+                markerStand.setOnMarkerClickListener { marker, mapView ->
+                    bottomSheetDialogStand.findViewById<ChipGroup>(R.id.servicesChipGroup)
+                        ?.removeAllViews()
+                    updateBottomSheetInfoStand(stand, map.controller)
+                    bottomSheetDialogStand.show()
+                    true
+                }
+                map.invalidate()
+                map.overlays.add(markerStand)
+            }
+        }
+    }
+
+    private fun initSceneMarkers() {
+        lifecycleScope.launch {
+            while (map.repository == null) {
+                delay(100) // Delay for a short period before checking again
+            }
+            val scenes: List<Scene> = withContext(Dispatchers.IO) {
+                api.getScenes().data
+            }
+
+            for (scene: Scene in scenes) {
+                val sceneMarker = Marker(map)
+
+                sceneMarker.position =
+                    GeoPoint(scene.latitude.toDouble(), scene.longitude.toDouble())
+                val titre = scene.libelle + "\n=========\n" + scene.typescene?.libelle
+                sceneMarker.title = titre
+                sceneMarker.icon = resources.getDrawable(R.drawable.map_scene)
+                sceneMarker.setPanToView(true)
+
+                sceneMarker.setOnMarkerClickListener { marker, mapView ->
+                    updateBottomSheetInfoScene(scene, map.controller)
+                    bottomSheetDialogScene.show()
+                    true
+                }
+                map.invalidate()
+                map.overlays.add(sceneMarker)
+            }
+        }
+
+    }
+
+
+}
+
+
+/*class CustomInfoWindow(mapView: MapView, marker: Marker, stand: Stand): InfoWindow(R.layout.bubble_stand, mapView){
+
+    var marker: Marker
+    var stand: Stand
+    init {
+       this.marker = marker
+        this.stand = stand
+    }
+    override fun onOpen(item: Any?) {
+        view.findViewById<TextView>(R.id.bubble_title).setText(stand.libelle)
+        view.findViewById<TextView>(R.id.buble_service).setText(stand.services[0].libelle)
+        val position: GeoPoint = marker.position
+        // Convert the position to screen coordinates
+        val projection: Projection = mapView.projection
+        val screenPosition: Point = projection.toPixels(position, null)
+        // Offset the position to center the InfoWindow above the marker
+        val screenHeight: Int = mapView.height
+        // Offset the position to show the InfoWindow at the bottom of the screen
+        screenPosition.offset(0, screenHeight - mView.height - screenPosition.y)
+        // Set the position of the InfoWindow
+        mView.layoutParams = MapView.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            position,
+            MapView.LayoutParams.BOTTOM_CENTER, 0, 0
+        )
+
+    }
+
+    override fun onClose() {
+        marker.closeInfoWindow()
+        super.close()
+
+    }
+
+}*/
+
+

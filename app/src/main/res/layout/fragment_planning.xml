@@ -14,7 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cat_legend_linear_layout">
 
-        <com.example.fimudroid.ui.planning.CustomView
+        <com.fimu.app.ui.planning.CustomView
             android:id="@+id/customView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
@@ -32,16 +32,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/scrollViewA">
 
-<!--        <HorizontalScrollView
-            android:id="@+id/scrollviewscenex"
+        <!--        <HorizontalScrollView
+                    android:id="@+id/scrollviewscenex"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">-->
+
+        <com.fimu.app.ui.planning.CustomViewScene
             android:layout_width="match_parent"
-            android:layout_height="match_parent">-->
+            android:layout_height="wrap_content" />
 
-            <com.example.fimudroid.ui.planning.CustomViewScene
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-<!--        </HorizontalScrollView>-->
+        <!--        </HorizontalScrollView>-->
 
 
     </ScrollView>
@@ -69,7 +69,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/scrollView3">
 
-            <com.example.fimudroid.ui.planning.CustomLinearLayout
+            <com.fimu.app.ui.planning.CustomLinearLayout
                 android:id="@+id/planning_vertical_linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
                 android:showDividers="end|middle"
                 android:translationZ="1dp">
 
-            </com.example.fimudroid.ui.planning.CustomLinearLayout>
+            </com.fimu.app.ui.planning.CustomLinearLayout>
         </HorizontalScrollView>
     </ScrollView>
 

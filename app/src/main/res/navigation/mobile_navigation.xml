@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_news"
-        android:name="com.example.fimudroid.ui.news.NewsListFragment"
+        android:name="com.fimu.app.ui.news.NewsListFragment"
         android:label="@string/title_news"
         tools:layout="@layout/news_recycler">
         <action
@@ -28,7 +28,7 @@
 
     <fragment
         android:id="@+id/navigation_artiste_list"
-        android:name="com.example.fimudroid.ui.artistes.ArtistListFragment"
+        android:name="com.fimu.app.ui.artistes.ArtistListFragment"
         android:label="@string/title_artiste_list"
         tools:layout="@layout/artist_recycler">
         <action
@@ -45,7 +45,7 @@
 
     <fragment
         android:id="@+id/newsDetails"
-        android:name="com.example.fimudroid.ui.news.NewsDetails"
+        android:name="com.fimu.app.ui.news.NewsDetails"
         android:label="News"
         tools:layout="@layout/news_details_fragment">
         <argument android:name="news_id"
@@ -53,7 +53,7 @@
     </fragment>
     <fragment
         android:id="@+id/artisteDetailsFragment"
-        android:name="com.example.fimudroid.ui.artistes.ArtisteDetailsFragment"
+        android:name="com.fimu.app.ui.artistes.ArtisteDetailsFragment"
         android:label="@string/title_artiste_list"
         tools:layout="@layout/artiste_details_fragment">
         <argument
@@ -65,7 +65,7 @@
         android:defaultValue="0" />
     <fragment
         android:id="@+id/navigation_programmation"
-        android:name="com.example.fimudroid.ui.planning.PlanningFragment"
+        android:name="com.fimu.app.ui.planning.PlanningFragment"
         android:label="Programmation"
         tools:layout="@layout/fragment_planning">
         <action
@@ -81,7 +81,7 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_plan"
-        android:name="com.example.fimudroid.ui.map.MapFragment"
+        android:name="com.fimu.app.ui.map.MapFragment"
         android:label="Plan"
         tools:layout="@layout/fragment_map" >
         <action
@@ -95,7 +95,7 @@
 
     <fragment
         android:id="@+id/navigation_faq"
-        android:name="com.example.fimudroid.ui.FAQs.FAQListFragment"
+        android:name="com.fimu.app.ui.FAQs.FAQListFragment"
         android:label="@string/title_info"
         tools:layout="@layout/faq_recycler" >
         <action

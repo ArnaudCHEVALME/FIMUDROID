@@ -22,138 +22,24 @@
     </org.osmdroid.views.MapView>
 
 
-
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        style="?attr/materialIconButtonFilledTonalStyle"
         android:id="@+id/floatingButtonLocate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
         android:layout_marginBottom="25dp"
         android:clickable="true"
-        android:contentDescription="TODO"
+        android:contentDescription="Localisation"
         android:elevation="8dp"
-        android:src="@drawable/crosshairs"
-        android:translationX="0dp"
-        android:translationY="0dp"
+        android:src="@drawable/crosshairs_gps"
         android:visibility="visible"
-        app:backgroundTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cards_map"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:visibility="gone"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/card_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageButton
-                android:id="@+id/info_close_button"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@null"
-                android:clickable="true"
-                android:src="@drawable/close"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/info_find_button"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@null"
-                android:clickable="true"
-                android:src="@drawable/crosshairs_gps"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/info_titre"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="50dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="50dp"
-                android:gravity="center"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toStartOf="@+id/info_close_button"
-                app:layout_constraintStart_toEndOf="@+id/info_find_button"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/scene_constraint"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="36dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="36dp"
-                android:layout_marginBottom="10dp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/info_close_button"
-                app:layout_constraintStart_toEndOf="@+id/info_find_button"
-                app:layout_constraintTop_toBottomOf="@+id/info_titre">
-
-                <TextView
-                    android:id="@+id/textVIewConcert"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Concert : "
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/scene_concert"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TextView"
-                    android:textColor="@color/black"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/scene_artiste"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TextView"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/scene_concert" />
-
-                <TextView
-                    android:id="@+id/scene_genre"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TextView"
-                    android:textColor="@color/black"
-                    android:textSize="12sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/scene_concert" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
