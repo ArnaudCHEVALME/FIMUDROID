@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Typeface
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
@@ -37,44 +38,6 @@ class CustomViewScene(context: Context, attrs: AttributeSet?) : View(context, at
         setMeasuredDimension(desiredWidth, desiredHeight)
     }
 
-  /*  override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-
-        val activity = context as Activity
-        ScrollViewPlanning = activity.findViewById(R.id.planning_vertical_linear_layout)
-
-        // Utilisez ViewTreeObserver pour obtenir la hauteur de ScrollViewPlanning
-        val vto = ScrollViewPlanning.viewTreeObserver
-        vto.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                // Mesure la taille du contenu de la vue
-                val contentWidth = 170 // Remplacez cette valeur par la taille réelle de votre contenu
-
-                // Définit une taille de vue minimale en fonction des spécifications de mesure
-                val desiredWidth = resolveSize(contentWidth, widthMeasureSpec)
-
-                contentHeight = ScrollViewPlanning.height
-                Log.d("DFDFHIUFHUIHFUI", contentHeight.toString())
-
-                // Définit la taille de la vue en fonction du contenu et des spécifications de mesure
-                val desiredHeight = resolveSize(contentHeight, heightMeasureSpec)
-
-                // Définit la taille de la vue une fois que la hauteur est disponible
-                setMeasuredDimension(desiredWidth, desiredHeight)
-
-                // Une fois que la hauteur est disponible, retirez l'écouteur
-                ScrollViewPlanning.viewTreeObserver.removeOnGlobalLayoutListener(this)
-            }
-        })
-
-        // Définit une taille de vue minimale en fonction des spécifications de mesure
-        val contentWidth = 170 // Remplacez cette valeur par la taille réelle de votre contenu
-        val desiredWidth = resolveSize(contentWidth, widthMeasureSpec)
-        val desiredHeight = resolveSize(0, heightMeasureSpec) // Définir une hauteur initiale arbitraire
-
-        // Définit la taille de la vue avant d'ajouter l'écouteur
-        setMeasuredDimension(desiredWidth, desiredHeight)
-    }*/
-
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         val redPaint = Paint().apply {
@@ -87,18 +50,40 @@ class CustomViewScene(context: Context, attrs: AttributeSet?) : View(context, at
             style = Paint.Style.FILL
         }
 
-        // Dessine des rectangles alternativement en rouge et en bleu
+        val textPaint = Paint().apply {
+            color = Color.WHITE
+            textSize = 40f
+            textAlign = Paint.Align.CENTER
+        }
+
+        val tabword = arrayOf("Scene 1", "AUDITORIUM", "Grande Salle", "C.C.I", "CAMPUS", "CONCERTS DE RUE", "CORBIS", "GRANIT", "HOTEL DU DEPART", "JAZZ", "KIOSQUE", "L'ARSENAL", "SALLE DES FÊTES", "SAVOUREUSE", "SCENE DES ENFANTS", "SHOWCASE FB","St CHRISTOPHE")
+
         for (i in 0 until height step 100) {
             val paint = if (i / 500 % 2 == 0) redPaint else bluePaint
             canvas?.drawRect(0f, i.toFloat(), width.toFloat(), (i + 100).toFloat(), paint)
+
+            if (i % 500 == 0) {
+                val textX = width / 2f
+                val textY = i.toFloat() + 50f + textPaint.fontMetrics.descent - (paint.strokeWidth / 2)
+
+                // Fait pivoter le canvas de 90 degrés autour du centre du texte
+                canvas?.rotate(-90f, textX, textY)
+
+
+                val index = i / 500 // Index correspondant à l'élément du tableau tabword
+                textPaint.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
+                canvas?.drawText(tabword[index], textX + 300, textY, textPaint)
+
+                // Rétablit la rotation du canvas à sa position initiale
+                canvas?.rotate(90f, textX, textY)
+            }
         }
 
-        val textPaint = Paint().apply {
-            textSize = 50f
-            color = Color.BLACK
-        }
-
-        val text = "          15h                                 16h                                 17h                                 18h                                 19h                                 20h                                 21h                                 22h                                 23h                                 00h                                 01h                                 02h                                 03h                                 04h                                 05h                                 06h                                 07h                                 08h                                 09h                                 10h                                "
-        canvas?.drawText(text, height.toFloat() / 2, 0f, textPaint)
     }
+
+
+
+
+
+
 }

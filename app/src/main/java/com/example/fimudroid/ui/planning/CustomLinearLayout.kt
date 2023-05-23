@@ -67,7 +67,7 @@ class CustomLinearLayout(context: Context, attrs: AttributeSet?) : LinearLayout(
         val currentTime = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
         val d = getTimeDifferenceInMinutes(earliestTime, currentTime)
 
-        canvas?.drawLine(d*8f,100f,d*8f,height*1f, red)
+        //canvas?.drawLine(d*8f,100f,d*8f,height*1f, red)
     }
 
     fun setStartTime(time: String) {

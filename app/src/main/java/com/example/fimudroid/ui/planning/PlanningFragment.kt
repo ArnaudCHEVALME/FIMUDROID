@@ -342,9 +342,13 @@ class PlanningFragment : Fragment() {
                     linearLayout.addView(blankP)
 
                     val concertView = ConcertView(linearLayout.context)
+
+
                     concertView.setConcert(concertN)
                     concertView.setOnClickListener{clickConcert(concertN)}
                     //concertView.setOnClickListener(null)
+
+                    concertView.artisteNameTextView.setOnClickListener { clickConcert(concertN) }
 
                     linearLayout.addView(concertView)
                 }
@@ -356,6 +360,7 @@ class PlanningFragment : Fragment() {
                 val childView = linearLayout.getChildAt(i)
                 childView.isClickable = false
             }
+
 
 
             //sceneLayout.addView(sceneName)

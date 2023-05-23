@@ -13,7 +13,7 @@ import kotlin.math.absoluteValue
 
 class ConcertView(context: Context) : ConstraintLayout(context) {
 
-    private lateinit var artisteNameTextView: TextView
+    public lateinit var artisteNameTextView: TextView
     private lateinit var artistePaysTextView: TextView
 
     fun setConcert(concert: Concert) {
