@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:visibility="visible"
-    tools:context=".MainActivity">
+    tools:context="com.fimu.app.MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/map_filter_recycler_view"
