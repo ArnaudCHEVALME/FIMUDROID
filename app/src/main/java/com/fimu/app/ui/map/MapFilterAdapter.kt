@@ -41,6 +41,7 @@ class MapFilterAdapter(
     @OptIn(DelicateCoroutinesApi::class)
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
 
+
         val typeStandDao = FimuDB.getInstance(holder.itemView.context).typeStandDao()
 
         val typeStand = dataset[position]
@@ -58,10 +59,13 @@ class MapFilterAdapter(
             "Secours" -> R.drawable.map_secours
             "Stand alimentaire" -> R.drawable.map_resto
             "Toilettes" -> R.drawable.map_toilet
+            "Sorties " -> R.drawable.map_sortie
+            "Entrée - sortie" -> R.drawable.map_entree_sortie
             else -> {
-                R.drawable.map_marker
+                R.drawable.map_stand
             }
         }
+
         holder.typeIcon.setImageResource(drawableResource)
         holder.typeName.text = typeStand.libelle
 

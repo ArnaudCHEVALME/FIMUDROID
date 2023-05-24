@@ -89,7 +89,7 @@ class ArtisteDetailsFragment : Fragment() {
                 layoutParams.setMargins(20, 20, 20, 20)
 
                 val video_link = currentArtiste.lien_video
-                if (video_link != null) {
+                if (video_link != null && video_link != "") {
                     val btn = ImageView(linksViewGroup.context)
 //                    btn.layoutParams = layoutParams
                     btn.setImageResource(R.drawable.mdi_youtube)

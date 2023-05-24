@@ -22,6 +22,8 @@ class ArtistAdapter(
     private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<ArtistAdapter.ItemViewHolder>() {
 
+    private lateinit var savedSearch: String
+
     class ItemViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView = view.findViewById(R.id.artist_name_text_view)
         val imageView: ImageView = view.findViewById(R.id.imageButton)
@@ -45,20 +47,7 @@ class ArtistAdapter(
         val artiste = dataset[position]
         holder.textView.text = artiste.nom
         Log.d("Photo", artiste.id.toString() + ":" + artiste.nom.toString())
-/*        val drawableResource =  J'aimerais que ici il y ai l'image qui est directement recup d'un lien'
-        when (artiste.id) {
-            1 -> R.drawable.ma_joye
-            2 -> R.drawable.ma_pales
-            3 -> R.drawable.ma_grayssoker
-            4 -> R.drawable.ma_nastyjoe
-            5 -> R.drawable.ma_poligone
-            6 -> R.drawable.ma_romainmuller
-            7 -> R.drawable.ma_tomrochet
-            8 -> R.drawable.ma_oceya
-            9 -> R.drawable.ma_encore
-            10 -> R.drawable.ma_encore
-            else -> R.drawable.ma_cloud // Placeholder image when there is no matching drawable resource
-        }*/
+
 
         val imageResId: Int // Identifiant de ressource de l'image dans le dossier drawable
 
@@ -185,7 +174,35 @@ class ArtistAdapter(
     }
 
     fun updateData(artistes: List<Artiste>) {
-        this.dataset = artistes
+        this.dataset = artistes as List<Artiste>
         notifyDataSetChanged()
     }
+
+    fun sortByArtistName() {
+        dataset = dataset.sortedBy { it.nom }
+        notifyDataSetChanged()
+    }
+
+    fun sortByArtistNameDesc() {
+        dataset = dataset.sortedByDescending { it.nom }
+        notifyDataSetChanged()
+    }
+
+    fun sortByArtistCategory() {
+        dataset = dataset.sortedBy { it.categorie.libelle }
+        notifyDataSetChanged()
+    }
+
+    fun sortByArtistCategoryDesc() {
+        dataset = dataset.sortedByDescending { it.categorie.libelle }
+        notifyDataSetChanged()
+    }
+
+    fun searchByArtistName(search: String) {
+        savedSearch = search
+        dataset = dataset.filter { it.nom.contains(savedSearch, true) }
+        notifyDataSetChanged()
+    }
+
+
 }

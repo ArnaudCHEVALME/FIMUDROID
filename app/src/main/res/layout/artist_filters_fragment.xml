@@ -1,27 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/artist_bottom_sheet"
-    style="@style/Widget.Material3.BottomSheet"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    android:fitsSystemWindows="true">
+    android:visibility="visible"
+    tools:context="com.fimu.app.MainActivity"
+    android:layout_margin="5dp">
 
-    <!-- Bottom sheet contents. -->
-
-    <com.google.android.material.search.SearchBar
-        android:id="@+id/standard_button"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/searchEditTextLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:hint="Rechercher"
-        android:imeOptions="actionSearch"
-        android:inputType="text"
-        android:focusable="true"
-        android:clickable="true"
-        />
+        android:layout_marginTop="12dp"
+        android:hint="Recherche"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxCornerRadiusBottomEnd="20dp"
+        app:boxCornerRadiusBottomStart="20dp"
+        app:boxCornerRadiusTopEnd="20dp"
+        app:boxCornerRadiusTopStart="20dp"
+        app:startIconDrawable="@drawable/magnify">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/searchEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/paysSpinnerLayout"
@@ -29,8 +37,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="-12dp"
+        android:layout_marginTop="12dp"
         android:hint="Pays">
+
         <androidx.appcompat.widget.AppCompatAutoCompleteTextView
             android:id="@+id/paysTextView"
             android:layout_width="match_parent"
@@ -46,6 +55,7 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="12dp"
         android:hint="Catégorie">
+
         <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,6 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="12dp"
+        android:layout_marginBottom="20dp"
         android:hint="Jour">
 
         <AutoCompleteTextView

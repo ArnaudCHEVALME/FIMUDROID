@@ -1,7 +1,6 @@
 package com.fimu.app.database.models
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 @Entity(tableName = "artistes")
 data class Artiste(
@@ -11,5 +10,7 @@ data class Artiste(
     val lien_site: String?,
     val lien_video: String?,
     val nom: String,
-    val photo: String,
+    val photo: String
 )
+
+

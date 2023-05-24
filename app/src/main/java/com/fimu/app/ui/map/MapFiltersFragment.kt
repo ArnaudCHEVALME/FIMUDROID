@@ -28,6 +28,7 @@ class MapFiltersFragment : BottomSheetDialogFragment() {
         bottomSheet.setContentView(view)
         val recyclerView: RecyclerView = view.findViewById(R.id.map_filter_recycler_view)
         var typesStand = listOf<com.fimu.app.network.models.TypeStand>()
+        val HiddenFilters = listOf("Entrée - sortie", "Sorties ", "Entrées", "Parking vélos", "Point Infos")
 
         lifecycleScope.launch {
             if (FimuDB.getInstance(requireContext()).typeStandDao().getAll().isEmpty()) {
@@ -59,6 +60,9 @@ class MapFiltersFragment : BottomSheetDialogFragment() {
                         )
                     }
             }
+
+            // Remove hidden filters
+            typesStand = typesStand.filter { !HiddenFilters.contains(it.libelle) }
 
             val typeStandAdapter = MapFilterAdapter(typesStand, lifecycleScope)
 
