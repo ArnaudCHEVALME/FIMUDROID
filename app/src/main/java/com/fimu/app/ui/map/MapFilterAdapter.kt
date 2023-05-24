@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Switch
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.RecyclerView
 import com.fimu.app.R
@@ -15,19 +16,26 @@ import kotlinx.coroutines.*
 
 class MapFilterAdapter(
     var dataset: List<com.fimu.app.network.models.TypeStand>,
-    private val lifecycleScope: LifecycleCoroutineScope // Add this parameter
+    private val lifecycleScope: LifecycleCoroutineScope, // Add this parameter
 ) : RecyclerView.Adapter<MapFilterAdapter.ItemViewHolder>(), CoroutineScope by lifecycleScope {
+
+
+
 
     class ItemViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         val typeName: MaterialSwitch = view.findViewById(R.id.icon_name)
         val typeIcon: ImageView = view.findViewById(R.id.icon_image)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
+
         return ItemViewHolder(
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.bottom_sheet_map_filter_item, parent, false)
         )
+
+
     }
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -57,6 +65,8 @@ class MapFilterAdapter(
         holder.typeIcon.setImageResource(drawableResource)
         holder.typeName.text = typeStand.libelle
 
+
+
         GlobalScope.launch(Dispatchers.Main) {
             holder.typeName.isChecked = withContext(Dispatchers.IO) {
                 typeStandDao.isShowed(typeStand.libelle)
@@ -68,6 +78,7 @@ class MapFilterAdapter(
                     Log.d("MapFilterAdapter", "typeStandDao.getAll(): ${typeStandDao.getAll()}")
                 }
             }
+
         }
     }
 

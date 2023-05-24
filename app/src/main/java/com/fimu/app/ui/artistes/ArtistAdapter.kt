@@ -1,6 +1,10 @@
 package com.fimu.app.ui.artistes
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fimu.app.R
 import com.fimu.app.network.models.Artiste
 import com.fimu.app.util.OnItemClickListener
+import com.squareup.picasso.Picasso
+import java.io.ByteArrayOutputStream
 
 class ArtistAdapter(
     private var dataset: List<Artiste>,
@@ -38,8 +44,8 @@ class ArtistAdapter(
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val artiste = dataset[position]
         holder.textView.text = artiste.nom
-
-        val drawableResource = when (artiste.id) {
+/*        val drawableResource =  J'aimerais que ici il y ai l'image qui est directement recup d'un lien'
+        when (artiste.id) {
             1 -> R.drawable.ma_joye
             2 -> R.drawable.ma_pales
             3 -> R.drawable.ma_grayssoker
@@ -51,9 +57,18 @@ class ArtistAdapter(
             9 -> R.drawable.ma_encore
             10 -> R.drawable.ma_encore
             else -> R.drawable.ma_cloud // Placeholder image when there is no matching drawable resource
-        }
+        }*/
 
-        holder.imageView.setImageResource(drawableResource)
+// Récupérez l'URL de l'image
+        val imageUrl = artiste.photo.toString()
+
+// Utilisez Picasso pour charger l'image depuis l'URL avec la réduction de qualité et de taille souhaitée
+        Picasso.get()
+            .load(imageUrl)
+            .config(Bitmap.Config.RGB_565) // Définissez la configuration du bitmap sur RGB_565 pour une qualité réduite
+            .resize(250, 200) // Définissez la taille de l'image souhaitée
+            .centerCrop()
+            .into(holder.imageView)
 
         holder.itemView.setOnClickListener {
             listener.onItemClick(artiste.id)

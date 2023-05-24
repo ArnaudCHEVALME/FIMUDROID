@@ -1,6 +1,7 @@
 package com.fimu.app.ui.artistes
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import com.fimu.app.R
 import com.fimu.app.network.FimuApiService
 import com.fimu.app.network.retrofit
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -139,7 +141,7 @@ class ArtisteDetailsFragment : Fragment() {
                     child.layoutParams = params
                 }
 
-                val drawableResource = when (currentArtiste.id) {
+/*                val drawableResource = when (currentArtiste.id) {
                     1 -> R.drawable.ma_joye
                     2 -> R.drawable.ma_pales
                     3 -> R.drawable.ma_grayssoker
@@ -152,7 +154,16 @@ class ArtisteDetailsFragment : Fragment() {
                     10 -> R.drawable.ma_encore
                     else -> R.drawable.ma_cloud // Placeholder image when there is no matching drawable resource
                 }
-                photoGroupeView.setImageResource(drawableResource)
+                photoGroupeView.setImageResource(drawableResource)*/
+
+                // Récupérez l'URL de l'image
+                val imageUrl = currentArtiste.photo.toString()
+
+// Utilisez Picasso pour charger l'image depuis l'URL avec la réduction de qualité et de taille souhaitée
+                Picasso.get()
+                    .load(imageUrl)
+                    .config(Bitmap.Config.RGB_565) // Définissez la configuration du bitmap sur RGB_565 pour une qualité réduite
+                    .into(photoGroupeView)
 
             }
         }

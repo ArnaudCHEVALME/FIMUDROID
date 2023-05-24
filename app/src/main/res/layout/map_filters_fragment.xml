@@ -7,6 +7,12 @@
     android:visibility="visible"
     tools:context="com.fimu.app.MainActivity">
 
+    <Switch
+        android:id="@+id/switchAll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="All" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/map_filter_recycler_view"
         android:layout_width="match_parent"
