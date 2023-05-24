@@ -266,7 +266,7 @@ class ArtisteDetailsFragment : Fragment() {
                 Picasso.get()
                     .load(imageResId)
                     .config(Bitmap.Config.RGB_565)
-                    .resize(600, 600)
+                    .resize(1000, 1000)
                     .centerCrop()
                     .into(photoGroupeView)
 

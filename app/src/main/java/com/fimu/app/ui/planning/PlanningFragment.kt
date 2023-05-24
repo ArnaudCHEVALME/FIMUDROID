@@ -214,8 +214,8 @@ class PlanningFragment : Fragment() {
 
             // Add the legend view to the grid
             val params = GridLayout.LayoutParams()
-            params.rowSpec = GridLayout.spec(index / catsLegend.columnCount, 1f)
-            params.columnSpec = GridLayout.spec(index % catsLegend.columnCount, 1f)
+            params.columnSpec = GridLayout.spec(index % 2)
+            params.rowSpec = GridLayout.spec(index / 2)
             catsLegend.addView(legendView, params)
         }
     }
