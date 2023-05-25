@@ -17,9 +17,7 @@ class CustomView(context: Context, attrs: AttributeSet?) : View(context, attrs) 
         style = Paint.Style.FILL
     }
 
-/*    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val activity = context as Activity
-        whidthlayout = activity.findViewById(R.id.planning_vertical_linear_layout)
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         // Mesure la taille du contenu de la vue
         val contentWidth = 10000 // Remplacez cette valeur par la taille réelle de votre contenu
         val contentHeight = 100 // Remplacez cette valeur par la taille réelle de votre contenu
@@ -30,7 +28,7 @@ class CustomView(context: Context, attrs: AttributeSet?) : View(context, attrs) 
 
         // Appelle la méthode setMeasuredDimension() pour définir la taille de la vue
         setMeasuredDimension(desiredWidth, desiredHeight)
-    }*/
+    }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
@@ -46,6 +44,6 @@ class CustomView(context: Context, attrs: AttributeSet?) : View(context, attrs) 
         val text = "           14h                                 15h                                 16h                                 17h                                 18h                                 19h                                 20h                                 21h                                 22h                                 23h                                 00h                                 01h                                 02h                                 03h                                 04h                                 05h                                 06h                                 07h                                 08h                                 09h                                 10h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                "
         canvas?.drawText(text, 0f, height.toFloat() / 2, textPaint)
 
-        setMeasuredDimension(10000, 100)
+        //setMeasuredDimension(10000, 100)
     }
 }
