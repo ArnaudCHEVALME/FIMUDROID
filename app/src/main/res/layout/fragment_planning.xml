@@ -39,6 +39,7 @@
                     android:layout_height="match_parent">-->
 
         <com.fimu.app.ui.planning.CustomViewScene
+            android:id="@+id/Scenewrite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

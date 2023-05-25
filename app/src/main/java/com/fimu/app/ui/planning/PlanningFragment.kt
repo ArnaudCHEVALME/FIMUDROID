@@ -45,6 +45,7 @@ class PlanningFragment : Fragment() {
     private lateinit var scrollScene: ScrollView
     private lateinit var HourLayout: CustomView
     //private lateinit var scrollSceneX: HorizontalScrollView
+    private lateinit var  SceneView:  CustomViewScene
 
     var lastX = 0f
     var lastY = 0f
@@ -70,6 +71,7 @@ class PlanningFragment : Fragment() {
         horizontalScrollView = root.findViewById(R.id.CustomHorizontalScrollView)
         horizontalScrollViewPlanning = root.findViewById(R.id.HorizontalScrollPlanning)
         HourLayout = root.findViewById(R.id.customView)
+        SceneView = root.findViewById(R.id.Scenewrite)
 
         scrollScene = root.findViewById(R.id.scrollViewScene)
         //scrollSceneX = root.findViewById(R.id.scrollviewscenex)
@@ -93,12 +95,13 @@ class PlanningFragment : Fragment() {
             dates = concertsByDateByScene.keys.sorted()
             initBtns()
             concertsByScene = concertsByDateByScene[dates[0]] ?: emptyMap()
-            initPlanningView()
+            initPlanningView(270f)
         }
 
-
-
+        SceneView.tabword = arrayOf("Scene 1", "Auditorium", "Grande Salle", "CAMPUS", "CONCERTS DE RUE", "CORBIS", "GRANIT", "JAZZ", "KIOSQUE", "L'ARSENAL", "SALLE DES FÊTES", "SAVOUREUSE", "SHOWCASE FB", "St CHRISTOPHE", "SALLE DES FÊTES","SCENE DES ENFANTS", "HOTEL DU DEPART")
 ////////////////////////////////////////////////////////////// Définir un écouteur tactile pour la vue NestedScrollView
+        HourLayout.text = "           16h                                 17h                                 18h                                 19h                                 20h                                 21h                                 22h                                 23h                                 00h                                 01h                                 02h                                 03h                                 04h                                 05h                                 06h                                 07h                                 08h                                 09h                                 10h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                "
+
 
         scrollScene.setOnScrollChangeListener { _, _, scrollY, _, _ ->
             planningLayout.scrollTo(0, scrollY)
@@ -152,13 +155,34 @@ class PlanningFragment : Fragment() {
             button.text = "$jour $mois"
             button.setOnClickListener {
                 concertsByScene = concertsByDateByScene[d]!!
-                initPlanningView()
+                if (d == "2023-05-26")
+                {
+                    SceneView.tabword = arrayOf("Scene 1", "Auditorium", "Grande Salle", "CAMPUS", "CONCERTS DE RUE", "CORBIS", "GRANIT", "JAZZ", "KIOSQUE", "L'ARSENAL", "SALLE DES FÊTES", "SAVOUREUSE", "SHOWCASE FB", "St CHRISTOPHE", "SALLE DES FÊTES","SCENE DES ENFANTS", "HOTEL DU DEPART")
+                    HourLayout.text = "           16h                                 17h                                 18h                                 19h                                 20h                                 21h                                 22h                                 23h                                 00h                                 01h                                 02h                                 03h                                 04h                                 05h                                 06h                                 07h                                 08h                                 09h                                 10h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                "
+                    initPlanningView(270f)
+                }
+                if (d == "2023-05-27")
+                {
+                    SceneView.tabword = arrayOf("Scene 1", "Auditorium", "Grande Salle", "C.C.I", "CAMPUS", "CONCERTS DE RUE", "CORBIS", "GRANIT", "HOTEL DU DEPART", "JAZZ", "KIOSQUE", "L'ARSENAL", "SALLE DES FÊTES", "SAVOUREUSE", "SCENE DES ENFANTS", "SHOWCASE FB","St CHRISTOPHE")
+                    HourLayout.text = "           14h                                 15h                                 16h                                 17h                                 18h                                 19h                                 20h                                 21h                                 22h                                 23h                                 00h                                 01h                                 02h                                 03h                                 04h                                 05h                                 06h                                 07h                                 08h                                 09h                                 10h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                "
+                    initPlanningView(0f)
+                }
+                if (d == "2023-05-28")
+                {
+                    SceneView.tabword = arrayOf("Scene 1", "Auditorium", "Grande Salle", "C.C.I", "CAMPUS", "CONCERTS DE RUE", "CORBIS", "GRANIT", "HOTEL DU DEPART", "JAZZ", "KIOSQUE", "L'ARSENAL", "SALLE DES FÊTES", "SAVOUREUSE", "SCENE DES ENFANTS", "SHOWCASE FB","St CHRISTOPHE")
+                    HourLayout.text = "           14h                                 15h                                 16h                                 17h                                 18h                                 19h                                 20h                                 21h                                 22h                                 23h                                 00h                                 01h                                 02h                                 03h                                 04h                                 05h                                 06h                                 07h                                 08h                                 09h                                 10h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                 09h                                "
+                    initPlanningView(0f)
+                }
+                HourLayout.invalidate()
+                SceneView.invalidate()
+
+
             }
             toggleButtonGroup.addView(button)
         }
-
-
     }
+
+
     private fun getMonth(month: Month) : String{
         return when (month) {
             Month.JANUARY -> "Janvier"
@@ -181,7 +205,7 @@ class PlanningFragment : Fragment() {
         val categories = concertsByScene.values.flatten().map { it.artiste?.categorie }.distinct()
 
         // Définir l'ordre personnalisé des catégories
-        val customOrder = listOf("Musique actuelle", "Musique du monde", "Musique classique", "Jazz") // Remplacez avec votre propre ordre
+        val customOrder = listOf("Musique actuelle", "Sono Mondiale", "Musiques classiques", "Jazz & Musiques Improvisées") // Remplacez avec votre propre ordre
 
         val sortedCategories = categories.sortedWith(compareBy { customOrder.indexOf(it?.libelle) })
 
@@ -221,9 +245,8 @@ class PlanningFragment : Fragment() {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun initPlanningView() {
+    private fun initPlanningView(trans: Float) {
         planningLayout.removeAllViews()
-
         val earliestTime =
             concertsByScene
                 .minOf { entry: Map.Entry<Scene, List<Concert>> ->
@@ -248,6 +271,8 @@ class PlanningFragment : Fragment() {
         // Add a linearLayout for each scene
         for (scene in concertsByScene.keys.sortedBy { it.libelle }) {
             val linearLayout = LinearLayout(planningLayout.context)
+            linearLayout.translationX = trans
+
 
 
             // Set dimensions of the row

@@ -12,7 +12,7 @@ class CustomViewScene(context: Context, attrs: AttributeSet?) : View(context, at
 
     private lateinit var ScrollViewPlanning: CustomLinearLayout
     private var contentHeight = 3100 // Initialiser à 0
-
+    var tabword = arrayOf("")//arrayOf("Scene 1", "AUDITORIUM", "Grande Salle", "C.C.I", "CAMPUS", "CONCERTS DE RUE", "CORBIS", "GRANIT", "HOTEL DU DEPART", "JAZZ", "KIOSQUE", "L'ARSENAL", "SALLE DES FÊTES", "SAVOUREUSE", "SCENE DES ENFANTS", "SHOWCASE FB","St CHRISTOPHE")
 
     private val paint = Paint().apply {
         color = Color.RED
@@ -51,7 +51,6 @@ class CustomViewScene(context: Context, attrs: AttributeSet?) : View(context, at
             textAlign = Paint.Align.CENTER
         }
 
-        val tabword = arrayOf("Scene 1", "AUDITORIUM", "Grande Salle", "C.C.I", "CAMPUS", "CONCERTS DE RUE", "CORBIS", "GRANIT", "HOTEL DU DEPART", "JAZZ", "KIOSQUE", "L'ARSENAL", "SALLE DES FÊTES", "SAVOUREUSE", "SCENE DES ENFANTS", "SHOWCASE FB","St CHRISTOPHE")
 
         for (i in 0 until height step 100) {
             val paint = if (i / 500 % 2 == 0) redPaint else bluePaint

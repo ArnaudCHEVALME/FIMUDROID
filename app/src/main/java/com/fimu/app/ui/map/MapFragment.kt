@@ -47,6 +47,8 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import java.time.LocalDate
+import java.time.LocalTime
 
 
 class MapFragment : Fragment() {
@@ -305,8 +307,8 @@ class MapFragment : Fragment() {
             }
 
             val concertByScene = concerts.groupBy { it.scene }
-            //val c = concertByScene[scene]?.filter { LocalDate.now().isBefore(LocalDate.parse(it.date_debut)) }?.filter { LocalTime.now().isBefore(LocalTime.parse(it.heure_debut)) }?.sortedBy { it.heure_debut }?.first() ?: null
-            val c = concerts.first() //pour présentation
+            val c = concertByScene[scene]?.filter { LocalDate.now().isBefore(LocalDate.parse(it.date_debut)) }?.filter { LocalTime.now().isBefore(LocalTime.parse(it.heure_debut)) }?.sortedBy { it.heure_debut }?.first() ?: null
+            //val c = concerts.first() //pour présentation
             if (c === null) {
                 concertTextView?.text = "Plus de concert"
                 artisteTextView?.text = ""
